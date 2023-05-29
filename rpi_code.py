@@ -15,7 +15,7 @@ Initialisation
 pixel_pin = board.D18
 board_width = 30
 board_height = 20
-pixel_brightness = 1
+pixel_brightness = 0.5
 
 # Initialise NeoPixel grid
 pixels = neopixel.NeoPixel(
@@ -32,8 +32,8 @@ pixel_framebuf = PixelFramebuffer(
     board_width,
     board_height,
     rotation=2,
-    reverse_x=False,
-    reverse_y=True
+    reverse_x=True,
+    reverse_y=False
 )
 
 
@@ -84,7 +84,8 @@ colours = {
     "Green" : (0, 255, 0),
     "Blue" : (0, 0, 255),
     "Purple" : (160, 32, 240),
-    "Black" : (0, 0, 0)
+    "Black" : (0, 0, 0),
+    "White" : (255, 255, 255)
 }
 
 # Startup function (To check there is no errors with the code)
@@ -427,7 +428,7 @@ def displayWave(wave_array):
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
-        time.sleep(0.1)
+        time.sleep(0.3)
 
 
 """
@@ -506,27 +507,61 @@ Main loop
 setAllPixelsColour(colours["Black"])
 
 # Compute test waves
-# to_merge = []
-# test_1_wave = precomputeRipple(20, 14, 20)
-# test_1_wave_c = precomputeColours(test_1_wave, colours["Green"], colours["Purple"], 5)
-# to_merge.append(test_1_wave_c)
+to_merge = []
+test_1 = precomputeRipple(25, 14, 5)
+test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
+to_merge.append(test_1_c)
+test_2 = precomputeWave(2, 10)
+test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
+to_merge.append(test_2_c)
 # test_2_wave = precomputeRipple(10, 8, 20)
 # test_2_wave_c = precomputeColours(test_2_wave, colours["Red"], colours["Orange"], 7)
 # to_merge.append(test_2_wave_c)
-# merged_test_waves = mergeWaves(to_merge)
+merged_test_waves = mergeWaves(to_merge)
 
 # Main running loop
 while True:
-#     setAllPixelsColour(colours["Black"])
+    setAllPixelsColour(colours["Black"])
     print("Running")
     print("Still")
+    time.sleep(0.5)
 #     drawLine(0, 0, 3, 2, colours["Green"])
 #     drawStraightLine(4, 4, 5, colours["Blue"], True)
 #     drawStraightLine(4, 4, 4, colours["Blue"], False)
 #     drawRect(6, 6, 8, 8, colours["Red"], False)
 #     drawRect(8, 8, 3, 3, colours["Orange"], True)
+#     drawCircle(10, 10, 1, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 2, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 3, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 4, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 5, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 6, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 7, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 8, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 9, colours["Green"])
+#     time.sleep(0.5)
 #     drawCircle(10, 10, 10, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 11, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 12, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 13, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 14, colours["Green"])
+#     time.sleep(0.5)
+#     drawCircle(10, 10, 15, colours["Green"])
+#     time.sleep(0.5)
 #     drawText("XDD", 10, 10, colours["Red"])
-#     scrollText(-50, 5, "This is a test message", colours["Red"], 0.5)
-#     displayWave(merged_test_waves)
+#     time.sleep(1)
+#     scrollText(-100, 5, "This is a test message", colours["Red"], 0.01)
+    displayWave(merged_test_waves)
 #     startup()
