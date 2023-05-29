@@ -6,6 +6,7 @@ import copy
 # To use these, follow this guide: https://learn.adafruit.com/easy-neopixel-graphics-with-the-circuitpython-pixel-framebuf-library/import-and-setup
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
+import random
 
 
 """
@@ -480,6 +481,11 @@ def scrollText(end_x, y, text, colour, wait_time):
         time.sleep(wait_time)
         setAllPixelsColour(colours["Black"])
         x -= 1
+        
+        
+def random_pattern():
+    num = random.randint()
+    
 
 
 """
