@@ -31,6 +31,7 @@ pixel_framebuf = PixelFramebuffer(
     pixels,
     board_width,
     board_height,
+    rotation=2
 )
 
 
@@ -50,12 +51,12 @@ def getLED(input_x, input_y):
     return output + 0   # This is because the LEDs start at 1 not 0
 
 def RGBToHex(colour):
-    return "{:02x}{:02x}{:02x}".format(colour[0], colour[1], colour[2])
+    return int("{:02x}{:02x}{:02x}".format(colour[0], colour[1], colour[2]), 16)
 
 # Set all pixels to a specified colour
 def setAllPixelsColour(colour):
-    # pixels.fill(colour)
-    # pixels.show()
+#     pixels.fill(colour)
+#     pixels.show()
     pixel_framebuf.fill(RGBToHex(colour))
     pixel_framebuf.display()
 
@@ -107,7 +108,7 @@ Note: The coordinates start from the bottom left and the first LED is (0, 0)
 """
 # Wave function that computes every tick of the wave and returns an array
 # Note: A duration of over 60 gets increasingly slower to compute
-def precomputeWave(x, y, duration):   # duration is how many ticks the wave goes for (starts from 1)
+def precomputeRipple(x, y, duration):   # duration is how many ticks the wave goes for (starts from 1)
     # Each top-level item is each tick of the wave
     # Each array in the top-level is the list of LEDs that have to be turned on for that tick
     # Each LED contains an array that has its x and y coordinates
@@ -171,6 +172,62 @@ def precomputeWave(x, y, duration):   # duration is how many ticks the wave goes
 
     return precomputed_wave
 
+# Output should be in the same format of precomputeRipple so that precomputeColours can be used on this
+def precomputeWave(pos, duration):
+    # Pos:
+    #   0 = Up to down
+    #   1 = Down to up
+    #   2 = Right to left
+    #   3 = Left to right
+    precomputed_wave = [[]]
+    if pos == 0:
+        x = 0
+        while x < 30:
+            precomputed_wave[0].append([x, 19])
+            x += 1
+    elif pos == 1:
+        x = 0
+        while x < 30:
+            precomputed_wave[0].append([x, 0])
+            x += 1
+    elif pos == 2:
+        y = 0
+        while y < 20:
+            precomputed_wave[0].append([29, y])
+            y += 1
+    elif pos == 3:
+        y = 0
+        while y < 20:
+            precomputed_wave[0].append([0, y])
+            y += 1
+
+    for tick in range(1, duration):
+        tick_array = []
+        # Get the previous tick array to calculate next tick
+        previous_tick_array = precomputed_wave[tick-1]
+
+        # For every LED in the previous tick array
+        for i in previous_tick_array:
+            # Get the separate x and y values to change it
+            i_x = i[0]
+            i_y = i[1]
+
+            if pos == 0:
+                tick_array.append([i_x, i_y - 1])
+            elif pos == 1:
+                tick_array.append([i_x, i_y + 1])
+            elif pos == 2:
+                tick_array.append([i_x - 1, i_y])
+            elif pos == 3:
+                tick_array.append([i_x + 1, i_y])
+        # Add tick_array to precomputed_wave
+        precomputed_wave.append(tick_array)
+
+    return precomputed_wave
+
+
+
+
 # Precompute and extend the precompute array into 4D crest colors and fade colors
 def precomputeColours(input_wave, i_color, e_color, fade):
     # Create array copy to not change original values
@@ -180,29 +237,23 @@ def precomputeColours(input_wave, i_color, e_color, fade):
         # Calculate the shift in color each tick
     if i_color[0] < e_color[0]:
         r_shift_per_tick = (e_color[0] - i_color[0]) / (len(precomputed_wave) - 1)
-        r_fade_per_tick =  (e_color[0] - i_color[0]) / fade
         r_direction = 0
     else:
         r_shift_per_tick = (i_color[0] - e_color[0]) / (len(precomputed_wave) - 1)
-        r_fade_per_tick =  (i_color[0] - e_color[0]) / fade
         r_direction = 1
 
     if i_color[1] < e_color[1]:
         g_shift_per_tick = (e_color[1] - i_color[1]) / (len(precomputed_wave) - 1)
-        g_fade_per_tick =  (e_color[1] - i_color[1]) / fade
         g_direction = 0
     else:
         g_shift_per_tick = (i_color[1] - e_color[1]) / (len(precomputed_wave) - 1)
-        g_fade_per_tick =  (i_color[1] - e_color[1]) / fade
         g_direction = 1
 
     if i_color[2] < e_color[2]:
         b_shift_per_tick = (e_color[2] - i_color[2]) / (len(precomputed_wave) - 1)
-        b_fade_per_tick =  (e_color[2] - i_color[2]) / fade
         b_direction = 0
     else:
         b_shift_per_tick = (i_color[2] - e_color[2]) / (len(precomputed_wave) - 1)
-        b_fade_per_tick =  (i_color[2] - e_color[2]) / fade
         b_direction = 1
 
         # Extend the array to include crest colors
@@ -374,7 +425,7 @@ def displayWave(wave_array):
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
-        # time.sleep(0.05)
+        time.sleep(0.1)
 
 
 """
@@ -399,12 +450,17 @@ def drawStraightLine(x, y, length, colour, horizontal):
     pixel_framebuf.display()
 
 # Draw a hollow or filled rectangle (starts from the top left corner)
-def drawRectangle(x, y, width, height, colour, filled):
+def drawRect(x, y, width, height, colour, filled):
     if filled == True:
         pixel_framebuf.fill_rect(x, y, width, height, RGBToHex(colour))
     else:
         pixel_framebuf.rect(x, y, width, height, RGBToHex(colour))
 
+    pixel_framebuf.display()
+
+# Draws a circle with center (x, y)
+def drawCircle(x, y, radius, colour):
+    pixel_framebuf.circle(x, y, radius, colour)
     pixel_framebuf.display()
 
 # Draw text on the screen (starts from the top left corner and can go off screen)
@@ -414,16 +470,13 @@ def drawText(text, x, y, colour):
 
 # Animate text scrolling from right to left
 # Note: The text will always start from off-screen to the right and go to the left
-def scrollText(end_x, y, text, colour):
+def scrollText(end_x, y, text, colour, wait_time):
     x = board_width + 1
     while x > end_x:
         drawText(text, x, y, colour)
+        time.sleep(wait_time)
+        setAllPixelsColour(colours["Black"])
         x -= 1
-
-# Draws a circle with center (x, y)
-def drawCircle(x, y, radius, colour):
-    pixel_framebuf.circle(x, y, radius, colour)
-    pixel_framebuf.display()
 
 
 """
@@ -451,18 +504,27 @@ Main loop
 setAllPixelsColour(colours["Black"])
 
 # Compute test waves
-to_merge = []
-test_1_wave = precomputeWave(20, 14, 20)
-test_1_wave_c = precomputeColours(test_1_wave, colours["Green"], colours["Purple"], 5)
-to_merge.append(test_1_wave_c)
-test_2_wave = precomputeWave(10, 8, 20)
-test_2_wave_c = precomputeColours(test_2_wave, colours["Red"], colours["Orange"], 7)
-to_merge.append(test_2_wave_c)
-merged_test_waves = mergeWaves(to_merge)
+# to_merge = []
+# test_1_wave = precomputeRipple(20, 14, 20)
+# test_1_wave_c = precomputeColours(test_1_wave, colours["Green"], colours["Purple"], 5)
+# to_merge.append(test_1_wave_c)
+# test_2_wave = precomputeRipple(10, 8, 20)
+# test_2_wave_c = precomputeColours(test_2_wave, colours["Red"], colours["Orange"], 7)
+# to_merge.append(test_2_wave_c)
+# merged_test_waves = mergeWaves(to_merge)
 
 # Main running loop
 while True:
-    setAllPixelsColour(colours["Black"])
+#     setAllPixelsColour(colours["Black"])
     print("Running")
     print("Still")
-    displayWave(merged_test_waves)
+#     drawLine(0, 0, 3, 2, colours["Green"])
+#     drawStraightLine(4, 4, 5, colours["Blue"], True)
+#     drawStraightLine(4, 4, 4, colours["Blue"], False)
+#     drawRect(6, 6, 8, 8, colours["Red"], False)
+#     drawRect(8, 8, 3, 3, colours["Orange"], True)
+#     drawCircle(10, 10, 10, colours["Green"])
+#     drawText("XDD", 10, 10, colours["Red"])
+#     scrollText(-50, 5, "This is a test message", colours["Red"], 0.5)
+#     displayWave(merged_test_waves)
+#     startup()
