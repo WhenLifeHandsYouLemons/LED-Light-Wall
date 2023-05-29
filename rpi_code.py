@@ -31,7 +31,9 @@ pixel_framebuf = PixelFramebuffer(
     pixels,
     board_width,
     board_height,
-    rotation=2
+    rotation=2,
+    reverse_x=False,
+    reverse_y=True
 )
 
 
