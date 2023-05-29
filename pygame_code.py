@@ -168,7 +168,7 @@ def mergeWaves(wave_arrays):
 
 # Wave function that computes every tick of the wave and returns an array
 # Note: A duration of over 60 gets increasingly slower to compute
-def precomputeWave(x, y, duration):   # duration is how many ticks the wave goes for (starts from 1)
+def precomputeRipple(x, y, duration):   # duration is how many ticks the wave goes for (starts from 1)
     # Each top-level item is each tick of the wave
     # Each array in the top-level is the list of LEDs that have to be turned on for that tick
     # Each LED contains an array that has its x and y coordinates
@@ -206,7 +206,7 @@ def precomputeWave(x, y, duration):   # duration is how many ticks the wave goes
                 used_leds.append([i_x - 1, i_y])
 
             # Check if the LED to the right of it is in any of the previous arrays
-            if [i_x + 1, i_y] not in used_leds and i_x + 1 < max_x:
+            if [i_x + 1, i_y] not in used_leds and i_x + 1 < board_width:
                 # Add it to tick_array
                 tick_array.append([i_x + 1, i_y])
                 # Add to used_leds
@@ -214,7 +214,7 @@ def precomputeWave(x, y, duration):   # duration is how many ticks the wave goes
                 # If not, then add that to the tick_array
 
             # Check if the LED above it is in any of the previous arrays
-            if [i_x, i_y + 1] not in used_leds and i_y + 1 < max_y:
+            if [i_x, i_y + 1] not in used_leds and i_y + 1 < board_height:
                 # Add it to tick_array
                 tick_array.append([i_x, i_y + 1])
                 # Add to used_leds
@@ -227,6 +227,60 @@ def precomputeWave(x, y, duration):   # duration is how many ticks the wave goes
                 # Add to used_leds
                 used_leds.append([i_x, i_y - 1])
 
+        # Add tick_array to precomputed_wave
+        precomputed_wave.append(tick_array)
+
+    return precomputed_wave
+
+# Output should be in the same format of precomputeRipple so that precomputeColours can be used on this
+# Output should be in the same format of precomputeRipple so that precomputeColours can be used on this
+def precomputeWave(pos, duration):
+    # Pos:
+    #   0 = Up to down
+    #   1 = Down to up
+    #   2 = Right to left
+    #   3 = Left to right
+    precomputed_wave = [[]]
+    if pos == 0:
+        x = 0
+        while x < 30:
+            precomputed_wave[0].append([x, 19])
+            x += 1
+    elif pos == 1:
+        x = 0
+        while x < 30:
+            precomputed_wave[0].append([x, 0])
+            x += 1
+    elif pos == 2:
+        y = 0
+        while y < 20:
+            precomputed_wave[0].append([29, y])
+            y += 1
+    elif pos == 3:
+        y = 0
+        while y < 20:
+            precomputed_wave[0].append([0, y])
+            y += 1
+
+    for tick in range(1, duration):
+        tick_array = []
+        # Get the previous tick array to calculate next tick
+        previous_tick_array = precomputed_wave[tick-1]
+
+        # For every LED in the previous tick array
+        for i in previous_tick_array:
+            # Get the separate x and y values to change it
+            i_x = i[0]
+            i_y = i[1]
+
+            if pos == 0:
+                tick_array.append([i_x, i_y - 1])
+            elif pos == 1:
+                tick_array.append([i_x, i_y + 1])
+            elif pos == 2:
+                tick_array.append([i_x - 1, i_y])
+            elif pos == 3:
+                tick_array.append([i_x + 1, i_y])
         # Add tick_array to precomputed_wave
         precomputed_wave.append(tick_array)
 
@@ -460,7 +514,7 @@ def displayWave(wave_array):
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pygame.display.update()
-        # time.sleep(0.1)
+        time.sleep(0.1)
 
 # Compute test waves
 # test_1 = precomputeWave(20, 14, 30)
@@ -470,6 +524,11 @@ def displayWave(wave_array):
 # test_3 = precomputeWave(1, 5, 30)
 # test_3_wave_with_c = precomputeColours(test_3, colours["Yellow"], colours["Black"], 10)
 # merged_test_waves = mergeWaves([test_1_wave_with_c, test_2_wave_with_c, test_3_wave_with_c])
+test_1_wave = precomputeWave(0, 10)
+# print(test_1_wave)
+# print(len(test_1_wave))
+# print(len(test_1_wave[0]))
+test_1_wave_c = precomputeColours(test_1_wave, colours["Green"], colours["Purple"], 5)
 
 # Main loop
 RUNNING_WINDOW = True
@@ -481,7 +540,7 @@ while RUNNING_WINDOW == True:
 
     setAllPixelsColour(colours["White"])
 
-    # displayWave(merged_test_waves)
+    displayWave(test_1_wave_c)
 
     pygame.display.update()
 
