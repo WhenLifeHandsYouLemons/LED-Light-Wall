@@ -230,6 +230,15 @@ def precomputeWave(pos, duration):
     return precomputed_wave
 
 
+# TO DO: Patterns
+# "Rain"
+# "Lines"
+# "Images"
+# "Circle"
+
+# Sequences
+
+
 
 
 # Precompute and extend the precompute array into 4D crest colors and fade colors
@@ -487,14 +496,21 @@ def random_pattern():
     n = 5 # n = number of unique patterns
     num_of_patterns = random.randint(1, 3)
     if num_of_patterns == 3:
-        max = 7
+        max_fade = 7
+        max_duration = 30
     i = 0
+    log = []
     while i < num_of_patterns:
         pattern = random.randint(1, n)
+        log.append(pattern)
         if pattern == 1:
-            # Call function
+            # Wave
+            wave = precomputeWave(2, 10)
+            wave = precomputeColours(wave, colours["Blue"], colours["Black"], 7)
+
+
         elif pattern == 2:
-            # Call function
+            # Ripple
         elif pattern == 3:
             # Call function
         elif pattern == 4:
