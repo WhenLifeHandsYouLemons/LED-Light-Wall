@@ -484,7 +484,24 @@ def scrollText(end_x, y, text, colour, wait_time):
         
         
 def random_pattern():
-    num = random.randint()
+    n = 5 # n = number of unique patterns
+    num_of_patterns = random.randint(1, 3)
+    if num_of_patterns == 3:
+        max = 7
+    i = 0
+    while i < num_of_patterns:
+        pattern = random.randint(1, n)
+        if pattern == 1:
+            # Call function
+        elif pattern == 2:
+            # Call function
+        elif pattern == 3:
+            # Call function
+        elif pattern == 4:
+            # Call function
+        elif pattern == 5:
+            # Call function
+    
     
 
 
