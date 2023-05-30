@@ -180,8 +180,8 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
 def precomputeWave(pos, duration):
     # Pos:
     #   0 = Up to down
-    #   1 = Down to up
-    #   2 = Right to left
+    #   1 = Right to left
+    #   2 = Down to up
     #   3 = Left to right
     precomputed_wave = [[]]
     if pos == 0:
@@ -190,15 +190,15 @@ def precomputeWave(pos, duration):
             precomputed_wave[0].append([x, 19])
             x += 1
     elif pos == 1:
-        x = 0
-        while x < 30:
-            precomputed_wave[0].append([x, 0])
-            x += 1
-    elif pos == 2:
         y = 0
         while y < 20:
             precomputed_wave[0].append([29, y])
             y += 1
+    elif pos == 2:
+        x = 0
+        while x < 30:
+            precomputed_wave[0].append([x, 0])
+            x += 1
     elif pos == 3:
         y = 0
         while y < 20:
@@ -432,13 +432,14 @@ def mergeWaves(wave_arrays):
     return merged_wave_array
 
 # This takes a wave array (can be merged or just a single wave array)
-def displayWave(wave_array):
+# The wave_array has to be a 4d array (include colour information too)
+def displayWave(wave_array, delay):
     for tick in wave_array:
         for LED in tick:
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
-        time.sleep(0.3)
+        time.sleep(delay)
 
 
 """
@@ -490,8 +491,49 @@ def scrollText(end_x, y, text, colour, wait_time):
         time.sleep(wait_time)
         setAllPixelsColour(colours["Black"])
         x -= 1
-        
-        
+
+def testGraphics(delay):
+    drawLine(0, 0, 3, 2, colours["Green"])
+    drawStraightLine(4, 4, 5, colours["Blue"], True)
+    drawStraightLine(4, 4, 4, colours["Blue"], False)
+    drawRect(6, 6, 8, 8, colours["Red"], False)
+    drawRect(8, 8, 3, 3, colours["Orange"], True)
+    drawCircle(10, 10, 1, colours["Green"])
+    time.sleep(delay)
+    setAllPixelsColour(colours["Black"])
+    # scrollText(-100, 5, "Test", colours["Red"], 0.01)
+    # setAllPixelsColour(colours["Black"])
+
+def drawCircularWave():
+    # drawCircle(10, 10, 2, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 3, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 4, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 5, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 6, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 7, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 8, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 9, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 10, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 11, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 12, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 13, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 14, colours["Green"])
+    # time.sleep(0.5)
+    # drawCircle(10, 10, 15, colours["Green"])
+    time.sleep(1)
+
 def random_pattern():
     n = 5 # n = number of unique patterns
     num_of_patterns = random.randint(1, 3)
@@ -517,8 +559,8 @@ def random_pattern():
             # Call function
         elif pattern == 5:
             # Call function
-    
-    
+
+
 
 
 """
@@ -561,46 +603,7 @@ merged_test_waves = mergeWaves(to_merge)
 # Main running loop
 while True:
     setAllPixelsColour(colours["Black"])
-    print("Running")
-    print("Still")
-    time.sleep(0.5)
-#     drawLine(0, 0, 3, 2, colours["Green"])
-#     drawStraightLine(4, 4, 5, colours["Blue"], True)
-#     drawStraightLine(4, 4, 4, colours["Blue"], False)
-#     drawRect(6, 6, 8, 8, colours["Red"], False)
-#     drawRect(8, 8, 3, 3, colours["Orange"], True)
-#     drawCircle(10, 10, 1, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 2, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 3, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 4, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 5, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 6, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 7, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 8, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 9, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 10, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 11, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 12, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 13, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 14, colours["Green"])
-#     time.sleep(0.5)
-#     drawCircle(10, 10, 15, colours["Green"])
-#     time.sleep(0.5)
-#     drawText("XDD", 10, 10, colours["Red"])
-#     time.sleep(1)
-#     scrollText(-100, 5, "This is a test message", colours["Red"], 0.01)
-    displayWave(merged_test_waves)
-#     startup()
+    print("Working")
+    testGraphics(1)
+    displayWave(merged_test_waves, 0.3)
+    # startup()

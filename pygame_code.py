@@ -2,7 +2,6 @@
 import time
 import sys
 import pygame
-import imageio as iio
 import copy
 
 num_pixels = 600    # Number of LEDs lit up
@@ -233,12 +232,11 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
     return precomputed_wave
 
 # Output should be in the same format of precomputeRipple so that precomputeColours can be used on this
-# Output should be in the same format of precomputeRipple so that precomputeColours can be used on this
 def precomputeWave(pos, duration):
     # Pos:
     #   0 = Up to down
-    #   1 = Down to up
-    #   2 = Right to left
+    #   1 = Right to left
+    #   2 = Down to up
     #   3 = Left to right
     precomputed_wave = [[]]
     if pos == 0:
@@ -247,15 +245,15 @@ def precomputeWave(pos, duration):
             precomputed_wave[0].append([x, 19])
             x += 1
     elif pos == 1:
-        x = 0
-        while x < 30:
-            precomputed_wave[0].append([x, 0])
-            x += 1
-    elif pos == 2:
         y = 0
         while y < 20:
             precomputed_wave[0].append([29, y])
             y += 1
+    elif pos == 2:
+        x = 0
+        while x < 30:
+            precomputed_wave[0].append([x, 0])
+            x += 1
     elif pos == 3:
         y = 0
         while y < 20:
@@ -492,21 +490,6 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
 
     # Update LEDs
     pygame.display.update()
-
-def showQRCode(image_path):
-    image = iio.read(image_path).get_data(0)
-
-    y = 0
-    while y < len(image):
-        x = 0
-        while x < len(image[y]):
-            setPixelsColour(image[y][x], getLED(x, y))
-            x += 1
-        y += 1
-
-# Test QR code functionality
-# showQRCode("test_qr_code.png")
-# time.sleep(10)
 
 def displayWave(wave_array):
     for tick in wave_array:
