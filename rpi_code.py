@@ -88,6 +88,7 @@ colours = {
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
+num_to_colours = ["Red", ]
 
 # Startup function (To check there is no errors with the code)
 def startup():
@@ -542,13 +543,45 @@ def random_pattern():
         max_duration = 30
     i = 0
     log = []
+    pos = []
+    colors = []
     while i < num_of_patterns:
         pattern = random.randint(1, n)
-        log.append(pattern)
         if pattern == 1:
             # Wave
-            wave = precomputeWave(2, 10)
-            wave = precomputeColours(wave, colours["Blue"], colours["Black"], 7)
+            coords = random.randint(0, 3)
+            duration = random.randint(5, 30)
+            wave = precomputeWave(coords, duration)
+
+
+            check = True
+            i_color = random.randint(1, len(colours))
+            for i in colors:
+                if e_color == i[0]:
+                    check = False
+            while check == False:
+                i_color = random.randint(1, len(colours))
+                check = True
+                for i in colors:
+                    if e_color == i[0]:
+                        check = False
+            check = True
+            e_color = random.randint(1, len(colours))
+            for i in colors:
+                if e_color == i[1]:
+                    check = False
+            while e_color == i_color and check == False:
+                e_color = random.randint(1, len(colours))
+                check = True
+                for i in colors:
+                    if e_color == i[1]:
+                        check = False
+                    
+            colors.append([i_color, e_color])
+
+            
+            wave = precomputeColours(wave, ["Blue"], colours["Black"], 7)
+            log.append(wave)
 
 
         elif pattern == 2:
