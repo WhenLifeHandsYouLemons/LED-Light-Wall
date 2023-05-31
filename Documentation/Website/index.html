@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Technical Reference Guide</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		header {
+			background-color: #333;
+			color: #fff;
+			padding: 10px;
+			text-align: center;
+		}
+
+		nav {
+			background-color: #eee;
+			border-right: 1px solid #ccc;
+			float: left;
+			height: calc(100vh - 50px);
+			overflow-y: auto;
+			padding: 10px;
+			width: 200px;
+		}
+
+		nav ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		nav ul li {
+			margin: 0;
+			padding: 0;
+		}
+
+		nav ul li a {
+			color: #333;
+			display: block;
+			padding: 5px 10px;
+			text-decoration: none;
+		}
+
+		nav ul li a:hover {
+			background-color: #ccc;
+		}
+
+		main {
+			margin-left: 220px;
+			padding:20px;
+		}
+
+		h1 {
+			margin-bottom: 0;
+		}
+
+		h2 {
+			margin-top: 30px;
+		}
+
+		code {
+			background-color: #f5f5f5;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			display: inline-block;
+			font-family: monospace;
+			padding: 2px 5px;
+		}
+
+		pre {
+			background-color: #f5f5f5;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			font-family: monospace;
+			margin: 20px 0;
+			overflow-x: auto;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Technical Reference Guide</h1>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="#drawcircle-function">drawCircle</a></li>
+			<li><a href="#drawtext-function">drawText</a></li>
+			<li><a href="#scrolltext-function">scrollText</a></li>
+			<li><a href="#displayimage-function">displayImage</a></li>
+		</ul>
+	</nav>
+	<main>
+		<section id="drawcircle-function">
+			<h2>drawCircle function</h2>
+			<p>The <code>drawCircle</code> function draws a circle with a specified center point, radius, and color on a pixel frame buffer.</p>
+
+			<h3>Function Signature</h3>
+			<pre><code>function drawCircle(x, y, radius, color) {
+    // implementation
+}</code></pre>
+
+			<h3>Parameters</h3>
+			<ul>
+				<li><code>x</code> (number): An integer representing the x coordinate of the center of the circle.</li>
+				<li><code>y</code> (number): An integer representing the y coordinate of the center of the circle.</li>
+				<li><code>radius</code> (number): An integer representing the radius of the circle.</li>
+				<li><code>color</code> (array): An array of three integers representing the RGB color values for the circle.</li>
+			</ul>
+
+			<h3>Return Value</h3>
+			<p>The <code>drawCircle</code> function does not return any value.</p>
+		</section>
+
+		<section id="drawtext-function">
+			<h2>drawText function</h2>
+			<p>The <code>drawText</code> function draws text with a specified color at a specified location on a pixel frame buffer.</p>
+
+			<h3>Function Signature</h3>
+			<pre><code>function drawText(text, x, y, color) {
+    // implementation
+}</code></pre>
+
+			<h3>Parameters</h3>
+			<ul>
+				<li><code>text</code> (string): A string representing the text to be drawn on the pixel frame buffer.</li>
+				<li><code>x</code> (number): An integer representing the x coordinate of the top-left corner of the text.</li>
+				<li><code>y</code> (number): An integer representing the y coordinate of the top-left corner of the text.</li>
+				<li><code>color</code> (array): An array of three integers representing the RGB color values for the text.</li>
+			</ul>
+
+			<h3>Return Value</h3>
+			<p>The <code>drawText</code> function does not return any value.</p>
+		</section>
+
+		<section id="scrolltext-function">
+			<h2>scrollText function</h2>
+			<p>The <code>scrollText</code> function animates text scrolling from right to left on a pixel frame buffer.</p>
+
+			<h3>Function Signature</h3>
+			<pre><code>function scrollText(endX, y, text, color, waitTime) {
+    // implementation
+}</code></pre>
+
+			<h3>Parameters</h3>
+			<ul>
+				<li><code>endX</code> (number): An integer representing the x coordinate where the scrolling text will stop.</li>
+				<li><code>y</code> (number): An integer representing the y coordinate of the top-left corner of the scrolling text.</li>
+				<li><code>text</code> (string): A string representing the text to be scrolled on the pixel frame buffer.</li>
+				<li><code>color</code> (array): An array of three integers representing the RGB color values for the scrolling text.</li>
+				<li><code>waitTime</code> (number): A floating-point number representing the duration in seconds between each frame of the scrolling text animation.</li>
+			</ul>
+
+			<h3>Return Value</h3>
+			<p>The <code>scrollText</code> function does not return any value.</p>
+		</section>
+
+		<section id="displayimage-function">
+			<h2>displayImage function</h2>
+			<p>The <code>displayImage</code> function displays an image on a pixel frame buffer.</p>
+
+			<h3>Function Signature</h3>
+			<pre><code>function displayImage(imagePath, blend) {
+    // implementation
+}</code></pre>
+
+			<h3>Parameters</h3>
+			<ul>
+				<li><code>imagePath</code> (string): A string representing the file path of the image to be displayed on the pixel frame buffer.</li>
+				<li><code>blend</code> (boolean): A boolean value indicating whether the image should be blended with the existing pixel frame buffer or replace it entirely.</li>
+			</ul>
+
+			<h3>Return Value</h3>
+			<p>The <code>displayImage</code> function does not return any value.</p>
+		</section>
+	</main>
+</body>
+</html>
