@@ -202,21 +202,29 @@ def precomputeWave(pos, duration):
         while x < 30:
             precomputed_wave[0].append([x, 19])
             x += 1
+        if duration > 20:
+            duration = 20
     elif pos == 1:
         y = 0
         while y < 20:
             precomputed_wave[0].append([29, y])
             y += 1
+        if duration > 20:
+            duration = 20
     elif pos == 2:
         x = 0
         while x < 30:
             precomputed_wave[0].append([x, 0])
             x += 1
+        if duration > 30:
+            duration = 30
     elif pos == 3:
         y = 0
         while y < 20:
             precomputed_wave[0].append([0, y])
             y += 1
+        if duration > 30:
+            duration = 30
 
     for tick in range(1, duration):
         tick_array = []
@@ -241,6 +249,19 @@ def precomputeWave(pos, duration):
         precomputed_wave.append(tick_array)
 
     return precomputed_wave
+
+def precomputeRain(x):
+    duration = 20
+    y = 19
+    precomputed_wave = [[]]
+    precomputed_wave[0].append([x, y])
+    i = 0
+    while i < duration:
+        y =- 1
+        precomputed_wave[i].append([x, y])
+        i += 1
+    return precomputed_wave
+
 
 
 # TO DO: Patterns
@@ -562,7 +583,7 @@ def random_pattern():
         if pattern == 1:
             # Wave
             coords = random.randint(0, 3)
-            duration = random.randint(5, 30)
+            duration = random.randint(15, 30)
             wave = precomputeWave(coords, duration)
 
 
@@ -592,7 +613,7 @@ def random_pattern():
             colors.append([i_color, e_color])
 
             
-            wave = precomputeColours(wave, ["Blue"], colours["Black"], 7)
+            wave = precomputeColours(wave, colours[num_to_colours[i_color]], colours[num_to_colours[e_color]], 7)
             log.append(wave)
 
 
