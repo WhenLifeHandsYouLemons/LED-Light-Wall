@@ -77,33 +77,45 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
             # Increment LED index
             pixel_index_start = pixel_index_start + 1
 
-# Dictionary for words
+# Dictionary for colors
 colours = {
     "Red" : (255, 0, 0),
+    "Pink" : (100, 75, 80),
+    "Vermilion" : (89, 26, 20),
     "Orange" : (255, 165, 0),
+    "Amber" : (100, 75, 0),
     "Yellow" : (255, 255, 0),
+    "Lime": (75, 100, 0),
     "Green" : (0, 255, 0),
+    "Dark Green" : (0, 20, 13),
+    "Light Blue" : (68, 85, 90),
     "Blue" : (0, 0, 255),
+    "Dark Blue" : (0, 0, 55),
     "Purple" : (160, 32, 240),
+    "Grey" : (128, 128, 128),
+    "Brown" : (139, 69, 19),
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
-num_to_colours = ["Red", ]
+num_to_colours = ["Red", "Pink", "Vermilion", "Orange", "Amber", "Yellow", "Lime", "Green", "Dark Green", "Light Blue", "Blue", "Dark Blue", "Purple", "Grey", "Brown", "Black", "White"]
 
 # Startup function (To check there is no errors with the code)
 def startup():
-    setAllPixelsColour(colours["Red"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Orange"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Yellow"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Green"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Blue"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Purple"])
-    time.sleep(1)
+    for i in num_to_colours:
+        setAllPixelsColour(colours[num_to_colours[i]])
+        time.sleep(1)
+    # setAllPixelsColour(colours["Red"])
+    # time.sleep(1)
+    # setAllPixelsColour(colours["Orange"])
+    # time.sleep(1)
+    # setAllPixelsColour(colours["Yellow"])
+    # time.sleep(1)
+    # setAllPixelsColour(colours["Green"])
+    # time.sleep(1)
+    # setAllPixelsColour(colours["Blue"])
+    # time.sleep(1)
+    # setAllPixelsColour(colours["Purple"])
+    # time.sleep(1)
 
 
 """
