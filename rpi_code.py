@@ -16,7 +16,7 @@ Initialisation
 pixel_pin = board.D18
 board_width = 30
 board_height = 20
-pixel_brightness = 0.3
+pixel_brightness = 0.25
 
 # Initialise NeoPixel grid
 pixels = neopixel.NeoPixel(
@@ -103,20 +103,7 @@ num_to_colours = ["Red", "Pink", "Vermilion", "Orange", "Amber", "Yellow", "Lime
 def startup():
     for i in num_to_colours:
         setAllPixelsColour(colours[i])
-        print(colours[i])
         time.sleep(0.5)
-    # setAllPixelsColour(colours["Red"])
-    # time.sleep(1)
-    # setAllPixelsColour(colours["Orange"])
-    # time.sleep(1)
-    # setAllPixelsColour(colours["Yellow"])
-    # time.sleep(1)
-    # setAllPixelsColour(colours["Green"])
-    # time.sleep(1)
-    # setAllPixelsColour(colours["Blue"])
-    # time.sleep(1)
-    # setAllPixelsColour(colours["Purple"])
-    # time.sleep(1)
 
 
 """
@@ -635,10 +622,10 @@ setAllPixelsColour(colours["Black"])
 
 # Compute test waves
 to_merge = []
-test_1 = precomputeRipple(25, 14, 5)
+test_1 = precomputeRipple(25, 14, 10)
 test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
 to_merge.append(test_1_c)
-test_2 = precomputeWave(2, 10)
+test_2 = precomputeWave(0, 15)
 test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
 to_merge.append(test_2_c)
 # test_2_wave = precomputeRipple(10, 8, 20)
@@ -648,9 +635,9 @@ merged_test_waves = mergeWaves(to_merge)
 
 # Main running loop
 while True:
-    #setAllPixelsColour(colours["Red"])
-    startup()
+    setAllPixelsColour(colours["Black"])
+#     startup()
     print("Working")
 #     testGraphics(1)
-#     displayWave(merged_test_waves, 0.3)
+    displayWave(merged_test_waves, 0.3)
     # startup()
