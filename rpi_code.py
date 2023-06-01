@@ -16,7 +16,7 @@ Initialisation
 pixel_pin = board.D18
 board_width = 30
 board_height = 20
-pixel_brightness = 0.5
+pixel_brightness = 0.3
 
 # Initialise NeoPixel grid
 pixels = neopixel.NeoPixel(
@@ -58,10 +58,10 @@ def RGBToHex(colour):
 
 # Set all pixels to a specified colour
 def setAllPixelsColour(colour):
-#     pixels.fill(colour)
-#     pixels.show()
-    pixel_framebuf.fill(RGBToHex(colour))
-    pixel_framebuf.display()
+     pixels.fill(colour)
+     pixels.show()
+    #pixel_framebuf.fill(RGBToHex(colour))
+    #pixel_framebuf.display()
 
 # Set specified colour to consecutive or single pixels
 def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
@@ -102,8 +102,9 @@ num_to_colours = ["Red", "Pink", "Vermilion", "Orange", "Amber", "Yellow", "Lime
 # Startup function (To check there is no errors with the code)
 def startup():
     for i in num_to_colours:
-        setAllPixelsColour(colours[num_to_colours[i]])
-        time.sleep(1)
+        setAllPixelsColour(colours[i])
+        print(colours[i])
+        time.sleep(0.5)
     # setAllPixelsColour(colours["Red"])
     # time.sleep(1)
     # setAllPixelsColour(colours["Orange"])
@@ -202,29 +203,21 @@ def precomputeWave(pos, duration):
         while x < 30:
             precomputed_wave[0].append([x, 19])
             x += 1
-        if duration > 20:
-            duration = 20
     elif pos == 1:
         y = 0
         while y < 20:
             precomputed_wave[0].append([29, y])
             y += 1
-        if duration > 20:
-            duration = 20
     elif pos == 2:
         x = 0
         while x < 30:
             precomputed_wave[0].append([x, 0])
             x += 1
-        if duration > 30:
-            duration = 30
     elif pos == 3:
         y = 0
         while y < 20:
             precomputed_wave[0].append([0, y])
             y += 1
-        if duration > 30:
-            duration = 30
 
     for tick in range(1, duration):
         tick_array = []
@@ -249,19 +242,6 @@ def precomputeWave(pos, duration):
         precomputed_wave.append(tick_array)
 
     return precomputed_wave
-
-def precomputeRain(x):
-    duration = 20
-    y = 19
-    precomputed_wave = [[]]
-    precomputed_wave[0].append([x, y])
-    i = 0
-    while i < duration:
-        y =- 1
-        precomputed_wave[i].append([x, y])
-        i += 1
-    return precomputed_wave
-
 
 
 # TO DO: Patterns
@@ -583,7 +563,7 @@ def random_pattern():
         if pattern == 1:
             # Wave
             coords = random.randint(0, 3)
-            duration = random.randint(15, 30)
+            duration = random.randint(5, 30)
             wave = precomputeWave(coords, duration)
 
 
@@ -613,18 +593,18 @@ def random_pattern():
             colors.append([i_color, e_color])
 
             
-            wave = precomputeColours(wave, colours[num_to_colours[i_color]], colours[num_to_colours[e_color]], 7)
+            wave = precomputeColours(wave, ["Blue"], colours["Black"], 7)
             log.append(wave)
 
 
-        elif pattern == 2:
-            # Ripple
-        elif pattern == 3:
-            # Call function
-        elif pattern == 4:
-            # Call function
-        elif pattern == 5:
-            # Call function
+#         elif pattern == 2:
+#             # Ripple
+#         elif pattern == 3:
+#             # Call function
+#         elif pattern == 4:
+#             # Call function
+#         elif pattern == 5:
+#             # Call function
 
 
 
@@ -668,8 +648,9 @@ merged_test_waves = mergeWaves(to_merge)
 
 # Main running loop
 while True:
-    setAllPixelsColour(colours["Black"])
+    #setAllPixelsColour(colours["Red"])
+    startup()
     print("Working")
-    testGraphics(1)
-    displayWave(merged_test_waves, 0.3)
+#     testGraphics(1)
+#     displayWave(merged_test_waves, 0.3)
     # startup()
