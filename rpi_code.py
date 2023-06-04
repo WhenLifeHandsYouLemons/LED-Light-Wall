@@ -39,7 +39,7 @@ pixel_framebuf = PixelFramebuffer(
 
 
 """
-Useful functions
+Utilities
 """
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
@@ -97,13 +97,12 @@ colours = {
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
-num_to_colours = ["Red", "Pink", "Vermilion", "Orange", "Amber", "Yellow", "Lime", "Green", "Dark Green", "Light Blue", "Blue", "Dark Blue", "Purple", "Grey", "Brown", "Black", "White"]
 
 # Startup function (To check there is no errors with the code)
-def startup():
-    for i in num_to_colours:
-        setAllPixelsColour(colours[i])
-        time.sleep(0.5)
+def startup(delay):
+    for key in iter(colours):
+        setAllPixelsColour(colours[key])
+        time.sleep(delay)
 
 
 """
@@ -576,22 +575,22 @@ def random_pattern():
                 for i in colors:
                     if e_color == i[1]:
                         check = False
-                    
+
             colors.append([i_color, e_color])
 
-            
+
             wave = precomputeColours(wave, ["Blue"], colours["Black"], 7)
             log.append(wave)
 
 
-#         elif pattern == 2:
-#             # Ripple
-#         elif pattern == 3:
-#             # Call function
-#         elif pattern == 4:
-#             # Call function
-#         elif pattern == 5:
-#             # Call function
+        elif pattern == 2:
+            # Ripple
+        elif pattern == 3:
+            # Call function
+        elif pattern == 4:
+            # Call function
+        elif pattern == 5:
+            # Call function
 
 
 

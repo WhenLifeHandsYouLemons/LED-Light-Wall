@@ -4,9 +4,14 @@ import sys
 import pygame
 import copy
 
-num_pixels = 600    # Number of LEDs lit up
+board_width = 30
+board_height = 20
 pixel_brightness = 1
 
+
+"""
+Utilities
+"""
 mapping = {}
 # Function to create the 2D array and map each pixel
 def createGrid(x, y):
@@ -15,7 +20,7 @@ def createGrid(x, y):
     right_direction = True
     array = [[None for i in range(x)] for j in range(y)]
 
-    val = num_pixels
+    val = board_width * board_height
     while i >= 0:   # Y value
         if right_direction:
             ii = 0
@@ -40,23 +45,16 @@ def createGrid(x, y):
 
     return array
 
-# Function to print the grid neatly
-def printGrid(grid):
-    print(grid[i] for i in range(max_y-1, -1, -1))
-
-# Create a grid and print it
-max_x = 30
-max_y = 20
-map_grid = createGrid(max_x, max_y)
-# printGrid(map_grid)
+# Create a grid
+map_grid = createGrid(board_width, board_height)
 
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
-    if input_x < 0 or input_y < 0 or input_x > max_x or input_y > max_y:
-        return num_pixels + 1
+    if input_x < 0 or input_y < 0 or input_x > board_width or input_y > board_height:
+        return (board_height * board_width) + 1
 
     right_direction = True
-    output = input_y * max_x
+    output = input_y * board_width
 
     if input_y % 2 != 0:
         right_direction = False
@@ -64,107 +62,99 @@ def getLED(input_x, input_y):
     if right_direction:
         output += input_x
     else:
-        output += ((max_x - 1) - input_x)
+        output += ((board_width - 1) - input_x)
 
     return output + 1
 
-# Dictionary for words
+# Set all pixels to a specified colour
+def setAllPixelsColour(colour):
+    # Go through the total y LEDs
+    for y in range(board_height+1):
+        # Go through the total x LEDs
+        for x in range(board_width):
+            # drawLED at x, y and the colour
+            drawLED(x, y, colour)
+
+    pygame.display.update()
+
+# Set specified colour to consecutive or single pixels
+def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
+    # Checks if it's one pixel or multiple that need to change
+    if pixel_index_end == None:
+        # Find the x and y coords of the index
+        escape = False
+        y = 0
+        while y < len(map_grid):
+            x = 0
+            while x < len(map_grid[0]):
+                if map_grid[y][x] == pixel_index_start:
+                    escape = True
+                    break
+                else:
+                    x += 1
+            if escape == True:
+                break
+            y += 1
+        # Change LED colour
+        drawLED(x, y, colour)
+    else:
+        # Start loop to change all LEDs to specified colour
+        while pixel_index_start != pixel_index_end + 1:
+            # Find the x and y coords of the index
+            escape = False
+            y = 0
+            while y < len(map_grid):
+                x = 0
+                while x < len(map_grid[0]):
+                    if map_grid[y][x] == pixel_index_start:
+                        escape = True
+                        break
+                    else:
+                        x += 1
+                if escape == True:
+                    break
+                y += 1
+            # Change LED colour
+            drawLED(x, y, colour)
+            # Increment LED index
+            pixel_index_start = pixel_index_start + 1
+
+    # Update LEDs
+    pygame.display.update()
+
+# Dictionary for colors
 colours = {
     "Red" : (255, 0, 0),
+    "Pink" : (100, 75, 80),
+    "Vermilion" : (89, 26, 20),
     "Orange" : (255, 165, 0),
+    "Amber" : (100, 75, 0),
     "Yellow" : (255, 255, 0),
+    "Lime": (75, 100, 0),
     "Green" : (0, 255, 0),
+    "Dark Green" : (0, 20, 13),
+    "Light Blue" : (68, 85, 90),
     "Blue" : (0, 0, 255),
+    "Dark Blue" : (0, 0, 55),
     "Purple" : (160, 32, 240),
+    "Grey" : (128, 128, 128),
+    "Brown" : (139, 69, 19),
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
 
 # Startup function (To check there is no errors with the code)
-def startup():
-    setAllPixelsColour(colours["Red"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Orange"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Yellow"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Green"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Blue"])
-    time.sleep(1)
-    setAllPixelsColour(colours["Purple"])
-    time.sleep(1)
-
-# This takes an array of wave arrays and merges it into one master array to be displayed
-def mergeWaves(wave_arrays):
-    merged_wave_array = []
-
-    # Find the longest number of ticks
-    total_ticks = 0
-    for wave in wave_arrays:
-        if len(wave) > total_ticks:
-            total_ticks = len(wave)
+def startup(delay):
+    for key in iter(colours):
+        setAllPixelsColour(colours[key])
+        time.sleep(delay)
 
 
-    # Make all waves have the same number of ticks
-    for wave in wave_arrays:
-        while len(wave) != total_ticks:
-            wave.append(wave[-1])
+"""
+For waves
 
-    # Sort all the LEDs for every wave into one singular array by ticks.
-    sorted_wave_array = []
-    for tick in range(total_ticks):
-        temp_tick = []
-
-        # Go through each wave
-        for wave in wave_arrays:
-            for LED in wave[tick]:
-                temp_tick.append(LED)
-
-        sorted_wave_array.append(temp_tick)
-
-    # Merge all duplicates in each tick separately
-    used_coords = []
-    tick = 0
-    while tick < len(sorted_wave_array):
-        # Get the current led coords
-        current_led_no = 0
-        temp_tick = []
-        used_coords = []
-
-        while current_led_no < len(sorted_wave_array[tick]):
-            if [sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]] not in used_coords:
-                # Go through all the coords in the current tick
-                check_led_no = current_led_no + 1
-                total_leds = 1
-                total_colour = sorted_wave_array[tick][current_led_no][2].copy()
-                used_coords.append([sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]])
-
-                while check_led_no < len(sorted_wave_array[tick]):
-                    # If current coords same as checking coords
-                    if sorted_wave_array[tick][check_led_no][0:2] == sorted_wave_array[tick][current_led_no][0:2]:
-                        # Add to total colour
-                        total_colour[0] += sorted_wave_array[tick][check_led_no][2][0]
-                        total_colour[1] += sorted_wave_array[tick][check_led_no][2][1]
-                        total_colour[2] += sorted_wave_array[tick][check_led_no][2][2]
-
-                        # Increment total leds
-                        total_leds += 1
-                    check_led_no += 1
-
-                # Get average of total
-                total_colour[0] /= total_leds
-                total_colour[1] /= total_leds
-                total_colour[2] /= total_leds
-
-                temp_tick.append([sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1], total_colour])
-
-            current_led_no += 1
-        merged_wave_array.append(temp_tick)
-
-        tick += 1
-    return merged_wave_array
-
+Note: The coordinates start from the bottom left and the first LED is (0, 0)
+"""
 # Wave function that computes every tick of the wave and returns an array
 # Note: A duration of over 60 gets increasingly slower to compute
 def precomputeRipple(x, y, duration):   # duration is how many ticks the wave goes for (starts from 1)
@@ -284,41 +274,35 @@ def precomputeWave(pos, duration):
 
     return precomputed_wave
 
-# Precompute and extend the precompute array into 4D crest colours and fade colours
+# Precompute and extend the precompute array into 4D crest colors and fade colors
 def precomputeColours(input_wave, i_color, e_color, fade):
     # Create array copy to not change original values
     precomputed_wave = copy.deepcopy(input_wave)
 
-    # Calculate crest colours as it shifts
+    # Calculate crest colors as it shifts
         # Calculate the shift in color each tick
     if i_color[0] < e_color[0]:
         r_shift_per_tick = (e_color[0] - i_color[0]) / (len(precomputed_wave) - 1)
-        r_fade_per_tick =  (e_color[0] - i_color[0]) / fade
         r_direction = 0
     else:
         r_shift_per_tick = (i_color[0] - e_color[0]) / (len(precomputed_wave) - 1)
-        r_fade_per_tick =  (i_color[0] - e_color[0]) / fade
         r_direction = 1
 
     if i_color[1] < e_color[1]:
         g_shift_per_tick = (e_color[1] - i_color[1]) / (len(precomputed_wave) - 1)
-        g_fade_per_tick =  (e_color[1] - i_color[1]) / fade
         g_direction = 0
     else:
         g_shift_per_tick = (i_color[1] - e_color[1]) / (len(precomputed_wave) - 1)
-        g_fade_per_tick =  (i_color[1] - e_color[1]) / fade
         g_direction = 1
 
     if i_color[2] < e_color[2]:
         b_shift_per_tick = (e_color[2] - i_color[2]) / (len(precomputed_wave) - 1)
-        b_fade_per_tick =  (e_color[2] - i_color[2]) / fade
         b_direction = 0
     else:
         b_shift_per_tick = (i_color[2] - e_color[2]) / (len(precomputed_wave) - 1)
-        b_fade_per_tick =  (i_color[2] - e_color[2]) / fade
         b_direction = 1
 
-        # Extend the array to include crest colours
+        # Extend the array to include crest colors
     tick_count = 0
     for tick in precomputed_wave:
         if r_direction == 0:
@@ -411,8 +395,88 @@ def precomputeColours(input_wave, i_color, e_color, fade):
 
     return precomputed_wave
 
+# This takes an array of wave arrays and merges it into one master array to be displayed
+def mergeWaves(wave_arrays):
+    # Find the longest number of ticks
+    total_ticks = 0
+    for wave in wave_arrays:
+        if len(wave) > total_ticks:
+            total_ticks = len(wave)
+
+
+    # Make all waves have the same number of ticks
+    for wave in wave_arrays:
+        while len(wave) != total_ticks:
+            wave.append(wave[-1])
+
+    # Sort all the LEDs for every wave into one singular array by ticks.
+    sorted_wave_array = []
+    for tick in range(total_ticks):
+        temp_tick = []
+
+        # Go through each wave
+        for wave in wave_arrays:
+            for LED in wave[tick]:
+                temp_tick.append(LED)
+
+        sorted_wave_array.append(temp_tick)
+
+    # Merge all duplicates in each tick separately
+    merged_wave_array = []
+    used_coords = []
+    tick = 0
+    while tick < len(sorted_wave_array):
+        # Get the current led coords
+        current_led_no = 0
+        temp_tick = []
+        used_coords = []
+
+        while current_led_no < len(sorted_wave_array[tick]):
+            if [sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]] not in used_coords:
+                # Go through all the coords in the current tick
+                check_led_no = current_led_no + 1
+                total_leds = 1
+                total_colour = sorted_wave_array[tick][current_led_no][2].copy()
+                used_coords.append([sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]])
+
+                while check_led_no < len(sorted_wave_array[tick]):
+                    # If current coords same as checking coords
+                    if sorted_wave_array[tick][check_led_no][0:2] == sorted_wave_array[tick][current_led_no][0:2]:
+                        # Add to total colour
+                        total_colour[0] += sorted_wave_array[tick][check_led_no][2][0]
+                        total_colour[1] += sorted_wave_array[tick][check_led_no][2][1]
+                        total_colour[2] += sorted_wave_array[tick][check_led_no][2][2]
+
+                        # Increment total leds
+                        total_leds += 1
+                    check_led_no += 1
+
+                # Get average of total
+                total_colour[0] = int(total_colour[0] / total_leds)
+                total_colour[1] = int(total_colour[1] / total_leds)
+                total_colour[2] = int(total_colour[2] / total_leds)
+
+                temp_tick.append([sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1], total_colour])
+
+            current_led_no += 1
+        merged_wave_array.append(temp_tick)
+
+        tick += 1
+    return merged_wave_array
+
+# This takes a wave array (can be merged or just a single wave array)
+# The wave_array has to be a 4d array (include colour information too)
+def displayWave(wave_array, delay):
+    for tick in wave_array:
+        for LED in tick:
+            setPixelsColour(LED[2], getLED(LED[0], LED[1]))
+
+        pygame.display.update()
+        time.sleep(delay)
+
+
 """
-PYGAME
+For Pygame
 """
 # Variables for Pygame
 pixel_size = 20
@@ -420,10 +484,8 @@ gap_size = 5
 
 # Pygame window stuff
 bg_colour = 0, 0, 0
-horizontal_leds = 30
-vertical_leds = 20
-window_height = (pixel_size + gap_size) * vertical_leds
-window_width = (pixel_size + gap_size) * horizontal_leds
+window_height = (pixel_size + gap_size) * board_height
+window_width = (pixel_size + gap_size) * board_width
 WIN = pygame.display.set_mode((window_width, window_height))
 WIN.fill(bg_colour)
 
@@ -435,95 +497,33 @@ def drawLED(x, y, colour):
 # Set FPS for pygame
 clock = pygame.time.Clock()
 
-# Set all pixels to a specified colour
-def setAllPixelsColour(colour):
-    # Go through the total y LEDs
-    for y in range(vertical_leds+1):
-        # Go through the total x LEDs
-        for x in range(horizontal_leds):
-            # drawLED at x, y and the colour
-            drawLED(x, y, colour)
-
-    pygame.display.update()
-
-# Set specified colour to consecutive or single pixels
-def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
-    # Checks if it's one pixel or multiple that need to change
-    if pixel_index_end == None:
-        # Find the x and y coords of the index
-        escape = False
-        y = 0
-        while y < len(map_grid):
-            x = 0
-            while x < len(map_grid[0]):
-                if map_grid[y][x] == pixel_index_start:
-                    escape = True
-                    break
-                else:
-                    x += 1
-            if escape == True:
-                break
-            y += 1
-        # Change LED colour
-        drawLED(x, y, colour)
-    else:
-        # Start loop to change all LEDs to specified colour
-        while pixel_index_start != pixel_index_end + 1:
-            # Find the x and y coords of the index
-            escape = False
-            y = 0
-            while y < len(map_grid):
-                x = 0
-                while x < len(map_grid[0]):
-                    if map_grid[y][x] == pixel_index_start:
-                        escape = True
-                        break
-                    else:
-                        x += 1
-                if escape == True:
-                    break
-                y += 1
-            # Change LED colour
-            drawLED(x, y, colour)
-            # Increment LED index
-            pixel_index_start = pixel_index_start + 1
-
-    # Update LEDs
-    pygame.display.update()
-
-def displayWave(wave_array):
-    for tick in wave_array:
-        for LED in tick:
-            setPixelsColour(LED[2], getLED(LED[0], LED[1]))
-
-        pygame.display.update()
-        time.sleep(0.1)
-
-# Compute test waves
-# test_1 = precomputeWave(20, 14, 30)
-# test_1_wave_with_c = precomputeColours(test_1, colours["Green"], colours["Black"], 5)
-# test_2 = precomputeWave(10, 8, 30)
-# test_2_wave_with_c = precomputeColours(test_2, colours["Red"], colours["Black"], 7)
-# test_3 = precomputeWave(1, 5, 30)
-# test_3_wave_with_c = precomputeColours(test_3, colours["Yellow"], colours["Black"], 10)
-# merged_test_waves = mergeWaves([test_1_wave_with_c, test_2_wave_with_c, test_3_wave_with_c])
-test_1_wave = precomputeWave(0, 10)
-# print(test_1_wave)
-# print(len(test_1_wave))
-# print(len(test_1_wave[0]))
-test_1_wave_c = precomputeColours(test_1_wave, colours["Green"], colours["Purple"], 5)
-
 # Main loop
 RUNNING_WINDOW = True
+
+# Reset board
+setAllPixelsColour(colours["Black"])
+
+# Compute test waves
+to_merge = []
+test_1 = precomputeRipple(25, 14, 10)
+test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
+to_merge.append(test_1_c)
+test_2 = precomputeWave(0, 15)
+test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
+to_merge.append(test_2_c)
+test_3 = precomputeRipple(10, 8, 20)
+test_3_c = precomputeColours(test_3, colours["Light Blue"], colours["Pink"], 7)
+to_merge.append(test_3_c)
+merged_test_waves = mergeWaves(to_merge)
+
 while RUNNING_WINDOW == True:
     clock.tick(30)
 
     keys = pygame.key.get_pressed()
     mouse = pygame.mouse.get_pos()
 
-    setAllPixelsColour(colours["White"])
-
-    displayWave(test_1_wave_c)
+    setAllPixelsColour(colours["Black"])
+    displayWave(merged_test_waves, 0.3)
 
     pygame.display.update()
 
