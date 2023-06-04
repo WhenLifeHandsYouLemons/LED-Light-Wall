@@ -33,5 +33,5 @@ for dir in top_level_dir:
         file_contents.append('</html>')
 
         # Save it to a new file with name_of_orig_file.html as the filename to "assets/templates"
-        with open(f"assets/templates/{filename}.html", "w") as new_file:
+        with open(f"documentation/{dir}/{filename}.html", "w") as new_file:
             new_file.write("\n".join(file_contents))
