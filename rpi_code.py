@@ -7,6 +7,7 @@ import copy
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
 import random
+import math
 
 
 """
@@ -198,15 +199,15 @@ def precomputeWave(pos, duration):
         while y < 20:
             precomputed_wave[0].append([29, y])
             y += 1
-        if duration > 20:
-            duration = 20
+        if duration > 30:
+            duration = 30
     elif pos == 2:
         x = 0
         while x < 30:
             precomputed_wave[0].append([x, 0])
             x += 1
-        if duration > 30:
-            duration = 30
+        if duration > 20:
+            duration = 20
     elif pos == 3:
         y = 0
         while y < 20:
@@ -240,7 +241,7 @@ def precomputeWave(pos, duration):
     return precomputed_wave
 
 # Precompute a singluar rain drop pattern which can be extended by precomputeColours
-def precomputeRain(x):
+def precomputeRain(x): # x: x position
     duration = 20
     y = 19
     precomputed_wave = [[]]
@@ -249,6 +250,47 @@ def precomputeRain(x):
     while i < duration:
         y =- 1
         precomputed_wave[i].append([x, y])
+        i += 1
+    return precomputed_wave
+
+# Precompute a singular, straight line
+def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center coordinantes. e_x, e_y: The end center coordinate (controls direction of line). Width: width of line
+    precomputed_wave = [[]]
+    dx = e_x - x
+    dy = e_y - y
+    m = dy / dx # m = gradient
+
+    # y = mx + c
+    c = y - (m * x) # c = y int
+
+    i = 0
+    for x in range(x, e_x):
+        w_count = width - 1
+
+        y = (m * x) + c
+        precomputed_wave[i].append([x, y])
+        
+        # Normal
+        n_m = -1/m
+        n_c = y - (m * x)
+
+        if (math.fabs(dx) > math.fabs(dy)):
+            skew = True
+            # True = left
+        else:
+            skew = False
+            # False = down
+        
+
+        while w_count > 0:
+            if skew:
+                n_x = x - (math.ceil((width - w_count)/2))
+            else:
+                n_x = x + (math.ceil((width - w_count)/2))
+            n_y = (n_m * n_x) + n_c
+            precomputed_wave[i].append([n_x, n_y])
+            w_count -= 1
+
         i += 1
     return precomputed_wave
 
