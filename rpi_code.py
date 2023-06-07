@@ -229,6 +229,19 @@ def precomputeWave(pos, duration):
 
     return precomputed_wave
 
+# Precompute a singluar rain drop pattern which can be extended by precomputeColours
+def precomputeRain(x):
+    duration = 20
+    y = 19
+    precomputed_wave = [[]]
+    precomputed_wave[0].append([x, y])
+    i = 0
+    while i < duration:
+        y =- 1
+        precomputed_wave[i].append([x, y])
+        i += 1
+    return precomputed_wave
+
 
 # TO DO: Patterns
 # "Rain"
