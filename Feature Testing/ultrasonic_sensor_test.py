@@ -5,7 +5,7 @@ import time
 # https://gpiozero.readthedocs.io/en/stable/api_input.html
 # Don't put the GPIO pins to the SDA and SCL on the RPi, it should be on the normal GPIO pins
 sensor1 = DistanceSensor(echo=17, trigger=27)
-sensor2 = DistanceSensor(echo=22, trigger=5)
+sensor2 = DistanceSensor(echo=22, trigger=23)
 # All data is in cm
 sensor1_data = []
 sensor2_data = []
