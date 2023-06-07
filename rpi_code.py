@@ -269,7 +269,7 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
 
         y = (m * x) + c
         precomputed_wave[i].append([x, y])
-        
+
         # Normal
         n_m = -1/m
         n_c = y - (m * x)
@@ -280,7 +280,7 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
         else:
             skew = False
             # False = down
-        
+
 
         while w_count > 0:
             if skew:
@@ -498,7 +498,7 @@ def mergeWaves(wave_arrays):
 
 # This takes a wave array (can be merged or just a single wave array)
 # The wave_array has to be a 4d array (include colour information too)
-def displayWave(wave_array, delay):
+def displayWave(wave_array, delay = 0):
     for tick in wave_array:
         for LED in tick:
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
@@ -648,14 +648,14 @@ def random_pattern():
             log.append(wave)
 
 
-        elif pattern == 2:
-            # Ripple
-        elif pattern == 3:
-            # Call function
-        elif pattern == 4:
-            # Call function
-        elif pattern == 5:
-            # Call function
+        # elif pattern == 2:
+        #     # Ripple
+        # elif pattern == 3:
+        #     # Call function
+        # elif pattern == 4:
+        #     # Call function
+        # elif pattern == 5:
+        #     # Call function
 
 
 
@@ -685,23 +685,28 @@ Main loop
 setAllPixelsColour(colours["Black"])
 
 # Compute test waves
-to_merge = []
-test_1 = precomputeRipple(25, 14, 10)
-test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
-to_merge.append(test_1_c)
-test_2 = precomputeWave(0, 15)
-test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
-to_merge.append(test_2_c)
+# to_merge = []
+# test_1 = precomputeRipple(25, 14, 10)
+# test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
+# to_merge.append(test_1_c)
+# test_2 = precomputeWave(0, 15)
+# test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
+# to_merge.append(test_2_c)
 # test_2_wave = precomputeRipple(10, 8, 20)
 # test_2_wave_c = precomputeColours(test_2_wave, colours["Red"], colours["Orange"], 7)
 # to_merge.append(test_2_wave_c)
-merged_test_waves = mergeWaves(to_merge)
+# merged_test_waves = mergeWaves(to_merge)
 
 # Main running loop
 while True:
     setAllPixelsColour(colours["Black"])
-#     startup()
     print("Working")
-#     testGraphics(1)
-    displayWave(merged_test_waves, 0.3)
+    displayWave(precomputeColours(precomputeRipple(10, 10, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(11, 11, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(11, 12, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(12, 12, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(12, 13, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(12, 14, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(13, 14, 2), colours["Green"], colours["Black"], 2), 0.01)
+    # displayWave(merged_test_waves, 0.3)
     # startup()
