@@ -45,7 +45,7 @@ Utilities
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
     if input_x > 29 or input_x < 0 or input_y > 19 or input_y < 0:
-        raise Exception("x and y coordinates are out of bounds")
+        raise ValueError(f"x and y coordinates are out of bounds: x = {input_x}, y = {input_y}")
     right_direction = True
     output = input_y * board_width
     if input_y % 2 != 0:
@@ -57,17 +57,22 @@ def getLED(input_x, input_y):
     return output + 0   # This is because the LEDs start at 1 not 0
 
 def RGBToHex(colour):
+    if colour[0] > 255 or colour[1] > 255 or colour[2] > 255 or colour[0] < 0 or colour[1] < 0 or colour[2] < 0:
+        raise ValueError(f"The colour values are out of bounds: r = {colour[0]}, g = {colour[1]}, b = {colour[2]}")
     return int("{:02x}{:02x}{:02x}".format(colour[0], colour[1], colour[2]), 16)
 
 # Set all pixels to a specified colour
 def setAllPixelsColour(colour):
-     pixels.fill(colour)
-     pixels.show()
-    #pixel_framebuf.fill(RGBToHex(colour))
-    #pixel_framebuf.display()
+    pixels.fill(colour)
+    pixels.show()
 
 # Set specified colour to consecutive or single pixels
 def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
+    if pixel_index_start > board_height * board_width or pixel_index_start < 0:
+        raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
+    elif pixel_index_end > board_height * board_width or pixel_index_end < 0:
+        raise IndexError(f"pixel_index_end is out of the allowed range: pixel_index_end = {pixel_index_end}")
+
     # Checks if it's one pixel or multiple that need to change
     if pixel_index_end == None:
         # Change LED colour
@@ -101,7 +106,10 @@ colours = {
     "White" : (255, 255, 255)
 }
 
-num_to_colours = ["Red", "Pink", "Vermilion", "Orange", "Amber", "Yellow", "Lime", "Green", "Dark Green", "Light Blue", "Blue", "Dark Blue", "Purple", "Grey", "Brown", "Black", "White"]
+num_to_colours = []
+# Add all the colours to num_to_colours
+for key in iter(colours):
+    num_to_colours.append(key)
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
