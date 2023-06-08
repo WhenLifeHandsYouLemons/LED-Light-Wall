@@ -186,35 +186,31 @@ def precomputeWave(pos, duration):
     #   1 = Right to left
     #   2 = Down to up
     #   3 = Left to right
+    if pos == 0 or pos == 2 and duration > 20:
+        duration == 20
+    if pos == 1 or pos == 3 and duration > 30:
+        duration = 30
     precomputed_wave = [[]]
     if pos == 0:
         x = 0
         while x < 30:
             precomputed_wave[0].append([x, 19])
             x += 1
-        if duration > 20:
-            duration = 20
     elif pos == 1:
         y = 0
         while y < 20:
             precomputed_wave[0].append([29, y])
             y += 1
-        if duration > 30:
-            duration = 30
     elif pos == 2:
         x = 0
         while x < 30:
             precomputed_wave[0].append([x, 0])
             x += 1
-        if duration > 20:
-            duration = 20
     elif pos == 3:
         y = 0
         while y < 20:
             precomputed_wave[0].append([0, y])
             y += 1
-        if duration > 30:
-            duration = 30
 
     for tick in range(1, duration):
         tick_array = []
@@ -296,9 +292,6 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
 
 
 # TO DO: Patterns
-# "Rain"
-# "Lines"
-# "Images"
 # "Circle"
 
 # Sequences
