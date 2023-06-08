@@ -494,6 +494,9 @@ def mergeWaves(wave_arrays):
 def displayWave(wave_array, delay = 0):
     for tick in wave_array:
         for LED in tick:
+            LED[2][0] = int(LED[2][0])
+            LED[2][1] = int(LED[2][1])
+            LED[2][2] = int(LED[2][2])
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
@@ -694,12 +697,12 @@ setAllPixelsColour(colours["Black"])
 while True:
     setAllPixelsColour(colours["Black"])
     print("Working")
-    displayWave(precomputeColours(precomputeRipple(10, 10, 2), colours["Green"], colours["Black"], 2), 0.01)
-    displayWave(precomputeColours(precomputeRipple(11, 11, 2), colours["Green"], colours["Black"], 2), 0.01)
-    displayWave(precomputeColours(precomputeRipple(11, 12, 2), colours["Green"], colours["Black"], 2), 0.01)
-    displayWave(precomputeColours(precomputeRipple(12, 12, 2), colours["Green"], colours["Black"], 2), 0.01)
-    displayWave(precomputeColours(precomputeRipple(12, 13, 2), colours["Green"], colours["Black"], 2), 0.01)
-    displayWave(precomputeColours(precomputeRipple(12, 14, 2), colours["Green"], colours["Black"], 2), 0.01)
-    displayWave(precomputeColours(precomputeRipple(13, 14, 2), colours["Green"], colours["Black"], 2), 0.01)
+    displayWave(precomputeColours(precomputeRipple(10, 10, 5), colours["Green"], colours["Black"], 3), 0.02)
+    displayWave(precomputeColours(precomputeRipple(11, 11, 5), colours["Green"], colours["Black"], 3), 0.02)
+    displayWave(precomputeColours(precomputeRipple(11, 12, 5), colours["Green"], colours["Black"], 3), 0.02)
+    displayWave(precomputeColours(precomputeRipple(12, 12, 5), colours["Green"], colours["Black"], 3), 0.02)
+    displayWave(precomputeColours(precomputeRipple(12, 13, 5), colours["Green"], colours["Black"], 3), 0.02)
+    displayWave(precomputeColours(precomputeRipple(12, 14, 5), colours["Green"], colours["Black"], 3), 0.02)
+    displayWave(precomputeColours(precomputeRipple(13, 14, 5), colours["Green"], colours["Black"], 3), 0.02)
     # displayWave(merged_test_waves, 0.3)
     # startup()
