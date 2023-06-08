@@ -245,7 +245,6 @@ def precomputeRain(x): # x: x position
     i = 0
     while i < duration - 1:
         y -= 1
-        print(i)
         precomputed_wave.append([[x, y]])
         i += 1
     return precomputed_wave
