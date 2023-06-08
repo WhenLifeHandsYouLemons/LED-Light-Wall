@@ -44,6 +44,8 @@ Utilities
 """
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
+    if input_x > 29 or input_x < 0 or input_y > 19 or input_y < 0:
+        raise Exception("x and y coordinates are out of bounds")
     right_direction = True
     output = input_y * board_width
     if input_y % 2 != 0:
@@ -186,9 +188,9 @@ def precomputeWave(pos, duration):
     #   1 = Right to left
     #   2 = Down to up
     #   3 = Left to right
-    if pos == 0 or pos == 2 and duration > 20:
-        duration == 20
-    if pos == 1 or pos == 3 and duration > 30:
+    if (pos == 0 or pos == 2) and duration > 20:
+        duration = 20
+    if (pos == 1 or pos == 3) and duration > 30:
         duration = 30
     precomputed_wave = [[]]
     if pos == 0:
@@ -212,10 +214,10 @@ def precomputeWave(pos, duration):
             precomputed_wave[0].append([0, y])
             y += 1
 
-    for tick in range(1, duration):
+    for tick in range(0, duration):
         tick_array = []
         # Get the previous tick array to calculate next tick
-        previous_tick_array = precomputed_wave[tick-1]
+        previous_tick_array = precomputed_wave[tick]
 
         # For every LED in the previous tick array
         for i in previous_tick_array:
@@ -226,9 +228,9 @@ def precomputeWave(pos, duration):
             if pos == 0:
                 tick_array.append([i_x, i_y - 1])
             elif pos == 1:
-                tick_array.append([i_x, i_y + 1])
-            elif pos == 2:
                 tick_array.append([i_x - 1, i_y])
+            elif pos == 2:
+                tick_array.append([i_x, i_y + 1])
             elif pos == 3:
                 tick_array.append([i_x + 1, i_y])
         # Add tick_array to precomputed_wave
@@ -710,7 +712,7 @@ while True:
 #     displayWave(precomputeColours(precomputeRipple(12, 12, 5), colours["Green"], colours["Black"], 3), 0.02)
 #     displayWave(precomputeColours(precomputeRipple(12, 13, 5), colours["Green"], colours["Black"], 3), 0.02)
 #     displayWave(precomputeColours(precomputeRipple(12, 14, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(13, 14, 5), colours["Green"], colours["Black"], 3), 0.02)
-    displayWave(precomputeColours(precomputeLines(20, 11, 21, 18, 2), colours["Green"], colours["Black"], 7), 0.01)
+    displayWave(precomputeColours(precomputeWave(3, 15), colours["Green"], colours["Black"], 5), 0.01)
+#     displayWave(precomputeColours(precomputeLines(20, 11, 21, 18, 2), colours["Green"], colours["Black"], 7), 0.01)
 #     displayWave(merged_test_waves)
     # startup()
