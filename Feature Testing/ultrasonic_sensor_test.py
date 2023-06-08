@@ -42,7 +42,7 @@ while end_time - start_time < DURATION:
         dx, dy = 0, 0
         x = 0
         y = 0
-    
+
     print(x, y, dx, dy)
 
     # Remove if outside allowed range
@@ -64,7 +64,6 @@ while end_time - start_time < DURATION:
         y_axis.append(y_axis[-1])
 
     end_time = time.time()
-    # time.sleep(1)
 
 # Display data in matplotlib
 print(x_axis, y_axis)

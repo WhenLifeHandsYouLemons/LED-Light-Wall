@@ -47,7 +47,7 @@ Utilities
 """
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
-    if input_x > 29 or input_x < 0 or input_y > 19 or input_y < 0:
+    if input_x > board_width - 1 or input_x < 0 or input_y > board_height - 1 or input_y < 0:
         raise ValueError(f"x and y coordinates are out of bounds: x = {input_x}, y = {input_y}")
 
     right_direction = True
