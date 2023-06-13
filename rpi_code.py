@@ -645,7 +645,7 @@ def random_pattern():
     num_of_patterns = random.randint(1, 3)
     if num_of_patterns == 3:
         max_fade = 7
-        max_duration = 30
+        max_duration = 20
     i = 0
     log = []
     pos = []
@@ -714,7 +714,12 @@ def random_pattern():
 
             colors.append([i_color, e_color])
 
-            wave = precomputeColours(wave, colours[num_to_colours[i_color]], colours[num_to_colours[e_color]], 7)
+            if num_of_patterns == 3:
+                fade = max_fade
+            else:
+                fade = random.randint(1, 10)
+
+            wave = precomputeColours(wave, colours[num_to_colours[i_color]], colours[num_to_colours[e_color]], fade)
             log.append(wave)
 
 
