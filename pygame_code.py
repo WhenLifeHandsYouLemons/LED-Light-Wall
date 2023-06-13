@@ -1,12 +1,15 @@
-# Imports
+"""
+Imports
+"""
 import time
 import sys
-import pygame
 import copy
+import math
+import random
+import pygame
 
 board_width = 30
 board_height = 20
-pixel_brightness = 1
 
 
 """
@@ -50,8 +53,8 @@ map_grid = createGrid(board_width, board_height)
 
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
-    if input_x < 0 or input_y < 0 or input_x > board_width or input_y > board_height:
-        return (board_height * board_width) + 1
+    if input_x > 29 or input_x < 0 or input_y > 19 or input_y < 0:
+        raise ValueError(f"x and y coordinates are out of bounds: x = {input_x}, y = {input_y}")
 
     right_direction = True
     output = input_y * board_width
@@ -78,7 +81,13 @@ def setAllPixelsColour(colour):
     pygame.display.update()
 
 # Set specified colour to consecutive or single pixels
-def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
+def setPixelsColour(colour, pixel_index_start, pixel_index_end = None):
+    if pixel_index_start > board_height * board_width or pixel_index_start < 0:
+        raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
+    if pixel_index_end != None:
+        if pixel_index_end > board_height * board_width or pixel_index_end < 0:
+            raise IndexError(f"pixel_index_end is out of the allowed range: pixel_index_end = {pixel_index_end}")
+
     # Checks if it's one pixel or multiple that need to change
     if pixel_index_end == None:
         # Find the x and y coords of the index
@@ -142,6 +151,11 @@ colours = {
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
+
+num_to_colours = []
+# Add all the colours to num_to_colours
+for key in iter(colours):
+    num_to_colours.append(key)
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
@@ -228,6 +242,10 @@ def precomputeWave(pos, duration):
     #   1 = Right to left
     #   2 = Down to up
     #   3 = Left to right
+    if (pos == 0 or pos == 2) and duration > 20:
+        duration = 20
+    if (pos == 1 or pos == 3) and duration > 30:
+        duration = 30
     precomputed_wave = [[]]
     if pos == 0:
         x = 0
@@ -250,10 +268,10 @@ def precomputeWave(pos, duration):
             precomputed_wave[0].append([0, y])
             y += 1
 
-    for tick in range(1, duration):
+    for tick in range(0, duration):
         tick_array = []
         # Get the previous tick array to calculate next tick
-        previous_tick_array = precomputed_wave[tick-1]
+        previous_tick_array = precomputed_wave[tick]
 
         # For every LED in the previous tick array
         for i in previous_tick_array:
@@ -264,14 +282,68 @@ def precomputeWave(pos, duration):
             if pos == 0:
                 tick_array.append([i_x, i_y - 1])
             elif pos == 1:
-                tick_array.append([i_x, i_y + 1])
-            elif pos == 2:
                 tick_array.append([i_x - 1, i_y])
+            elif pos == 2:
+                tick_array.append([i_x, i_y + 1])
             elif pos == 3:
                 tick_array.append([i_x + 1, i_y])
         # Add tick_array to precomputed_wave
         precomputed_wave.append(tick_array)
 
+    return precomputed_wave
+
+# Precompute a singluar rain drop pattern which can be extended by precomputeColours
+def precomputeRain(x): # x: x position
+    duration = 20
+    y = 19
+    precomputed_wave = [[]]
+    precomputed_wave[0].append([x, y])
+    i = 0
+    while i < duration - 1:
+        y -= 1
+        precomputed_wave.append([[x, y]])
+        i += 1
+    return precomputed_wave
+
+# Precompute a singular, straight line
+def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center coordinantes. e_x, e_y: The end center coordinate (controls direction of line). Width: width of line
+    precomputed_wave = [[]]
+    dx = e_x - x
+    dy = e_y - y
+    m = dy / dx # m = gradient
+
+    # y = mx + c
+    c = y - (m * x) # c = y int
+
+    i = 0
+    for x in range(x, e_x):
+        w_count = width - 1
+
+        y = (m * x) + c
+        precomputed_wave.append([[int(x), int(y)]])
+
+        # Normal
+        n_m = -1/m
+        n_c = y - (m * x)
+
+        if (math.fabs(dx) > math.fabs(dy)):
+            skew = True
+            # True = left
+        else:
+            skew = False
+            # False = down
+
+
+        while w_count > 0:
+            if skew:
+                n_x = x - (math.ceil((width - w_count)/2))
+            else:
+                n_x = x + (math.ceil((width - w_count)/2))
+            n_y = (n_m * n_x) + n_c
+            precomputed_wave.append([[int(n_x), int(n_y)]])
+            w_count -= 1
+
+        i += 1
     return precomputed_wave
 
 # Precompute and extend the precompute array into 4D crest colors and fade colors
@@ -396,7 +468,14 @@ def precomputeColours(input_wave, i_color, e_color, fade):
     return precomputed_wave
 
 # This takes an array of wave arrays and merges it into one master array to be displayed
-def mergeWaves(wave_arrays):
+def mergeWaves(wave_arrays, wave_starts):
+    # Go through each wave_array and add empty ticks to the start of the wave depending on the specific wave_start
+    wave_no = 0
+    while wave_no < len(wave_arrays):
+        for i in range(wave_starts[wave_no]):
+            wave_arrays[wave_no].insert(0, [])
+        wave_no += 1
+
     # Find the longest number of ticks
     total_ticks = 0
     for wave in wave_arrays:
@@ -466,9 +545,12 @@ def mergeWaves(wave_arrays):
 
 # This takes a wave array (can be merged or just a single wave array)
 # The wave_array has to be a 4d array (include colour information too)
-def displayWave(wave_array, delay):
+def displayWave(wave_array, delay = 0):
     for tick in wave_array:
         for LED in tick:
+            LED[2][0] = int(LED[2][0])
+            LED[2][1] = int(LED[2][1])
+            LED[2][2] = int(LED[2][2])
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pygame.display.update()
@@ -505,16 +587,13 @@ setAllPixelsColour(colours["Black"])
 
 # Compute test waves
 to_merge = []
-test_1 = precomputeRipple(25, 14, 10)
-test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
-to_merge.append(test_1_c)
-test_2 = precomputeWave(0, 15)
-test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
-to_merge.append(test_2_c)
-test_3 = precomputeRipple(10, 8, 20)
-test_3_c = precomputeColours(test_3, colours["Light Blue"], colours["Pink"], 7)
-to_merge.append(test_3_c)
-merged_test_waves = mergeWaves(to_merge)
+to_merge.append(precomputeColours(precomputeRain(10), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(11), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(16), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(5), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(23), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(1), colours["Blue"], colours["Black"], 7))
+merged_test_waves = mergeWaves(to_merge, [0, 5, 14, 10, 20, 17])
 
 while RUNNING_WINDOW == True:
     clock.tick(30)
@@ -523,7 +602,7 @@ while RUNNING_WINDOW == True:
     mouse = pygame.mouse.get_pos()
 
     setAllPixelsColour(colours["Black"])
-    displayWave(merged_test_waves, 0.3)
+    displayWave(merged_test_waves, 0.05)
 
     pygame.display.update()
 

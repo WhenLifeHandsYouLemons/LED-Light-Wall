@@ -1,13 +1,16 @@
-# Imports
+"""
+Imports
+"""
 import time
-# To use these, follow this guide: https://learn.adafruit.com/neopixels-on-raspberry-pi/python-usage
-import board, neopixel
 import copy
+import random
+import math
+# To use these, follow this guide: https://learn.adafruit.com/neopixels-on-raspberry-pi/python-usage
+import board
+import neopixel
 # To use these, follow this guide: https://learn.adafruit.com/easy-neopixel-graphics-with-the-circuitpython-pixel-framebuf-library/import-and-setup
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
-import random
-import math
 
 
 """
@@ -44,28 +47,41 @@ Utilities
 """
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
+    if input_x > board_width - 1 or input_x < 0 or input_y > board_height - 1 or input_y < 0:
+        raise ValueError(f"x and y coordinates are out of bounds: x = {input_x}, y = {input_y}")
+
     right_direction = True
     output = input_y * board_width
+
     if input_y % 2 != 0:
         right_direction = False
+
     if right_direction:
         output += input_x
     else:
         output += ((board_width - 1) - input_x)
-    return output + 0   # This is because the LEDs start at 1 not 0
+
+    # If there's anything wrong with the display, this should be +1 when outputting
+    return output
 
 def RGBToHex(colour):
+    if colour[0] > 255 or colour[1] > 255 or colour[2] > 255 or colour[0] < 0 or colour[1] < 0 or colour[2] < 0:
+        raise ValueError(f"The colour values are out of bounds: r = {colour[0]}, g = {colour[1]}, b = {colour[2]}")
     return int("{:02x}{:02x}{:02x}".format(colour[0], colour[1], colour[2]), 16)
 
 # Set all pixels to a specified colour
 def setAllPixelsColour(colour):
-     pixels.fill(colour)
-     pixels.show()
-    #pixel_framebuf.fill(RGBToHex(colour))
-    #pixel_framebuf.display()
+    pixels.fill(colour)
+    pixels.show()
 
 # Set specified colour to consecutive or single pixels
 def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
+    if pixel_index_start > board_height * board_width or pixel_index_start < 0:
+        raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
+    if pixel_index_end != None:
+        if pixel_index_end > board_height * board_width or pixel_index_end < 0:
+            raise IndexError(f"pixel_index_end is out of the allowed range: pixel_index_end = {pixel_index_end}")
+
     # Checks if it's one pixel or multiple that need to change
     if pixel_index_end == None:
         # Change LED colour
@@ -99,7 +115,10 @@ colours = {
     "White" : (255, 255, 255)
 }
 
-num_to_colours = ["Red", "Pink", "Vermilion", "Orange", "Amber", "Yellow", "Lime", "Green", "Dark Green", "Light Blue", "Blue", "Dark Blue", "Purple", "Grey", "Brown", "Black", "White"]
+num_to_colours = []
+# Add all the colours to num_to_colours
+for key in iter(colours):
+    num_to_colours.append(key)
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
@@ -186,9 +205,9 @@ def precomputeWave(pos, duration):
     #   1 = Right to left
     #   2 = Down to up
     #   3 = Left to right
-    if pos == 0 or pos == 2 and duration > 20:
-        duration == 20
-    if pos == 1 or pos == 3 and duration > 30:
+    if (pos == 0 or pos == 2) and duration > 20:
+        duration = 20
+    if (pos == 1 or pos == 3) and duration > 30:
         duration = 30
     precomputed_wave = [[]]
     if pos == 0:
@@ -212,10 +231,10 @@ def precomputeWave(pos, duration):
             precomputed_wave[0].append([0, y])
             y += 1
 
-    for tick in range(1, duration):
+    for tick in range(0, duration):
         tick_array = []
         # Get the previous tick array to calculate next tick
-        previous_tick_array = precomputed_wave[tick-1]
+        previous_tick_array = precomputed_wave[tick]
 
         # For every LED in the previous tick array
         for i in previous_tick_array:
@@ -226,9 +245,9 @@ def precomputeWave(pos, duration):
             if pos == 0:
                 tick_array.append([i_x, i_y - 1])
             elif pos == 1:
-                tick_array.append([i_x, i_y + 1])
-            elif pos == 2:
                 tick_array.append([i_x - 1, i_y])
+            elif pos == 2:
+                tick_array.append([i_x, i_y + 1])
             elif pos == 3:
                 tick_array.append([i_x + 1, i_y])
         # Add tick_array to precomputed_wave
@@ -295,8 +314,6 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
 # "Circle"
 
 # Sequences
-
-
 
 
 # Precompute and extend the precompute array into 4D crest colors and fade colors
@@ -421,7 +438,14 @@ def precomputeColours(input_wave, i_color, e_color, fade):
     return precomputed_wave
 
 # This takes an array of wave arrays and merges it into one master array to be displayed
-def mergeWaves(wave_arrays):
+def mergeWaves(wave_arrays, wave_starts):
+    # Go through each wave_array and add empty ticks to the start of the wave depending on the specific wave_start
+    wave_no = 0
+    while wave_no < len(wave_arrays):
+        for i in range(wave_starts[wave_no]):
+            wave_arrays[wave_no].insert(0, [])
+        wave_no += 1
+
     # Find the longest number of ticks
     total_ticks = 0
     for wave in wave_arrays:
@@ -497,7 +521,6 @@ def displayWave(wave_array, delay = 0):
             LED[2][0] = int(LED[2][0])
             LED[2][1] = int(LED[2][1])
             LED[2][2] = int(LED[2][2])
-#             print(LED[0], LED[1], LED[2])
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
@@ -563,10 +586,10 @@ def testGraphics(delay):
     drawCircle(10, 10, 1, colours["Green"])
     time.sleep(delay)
     setAllPixelsColour(colours["Black"])
-    # scrollText(-100, 5, "Test", colours["Red"], 0.01)
-    # setAllPixelsColour(colours["Black"])
+    scrollText(-100, 5, "Test", colours["Red"], 0.01)
+    setAllPixelsColour(colours["Black"])
 
-def drawCircularWave():
+def drawCircularWave(x, y, duration, trail_length, i_colour, e_colour, delay):
     # drawCircle(10, 10, 2, colours["Green"])
     # time.sleep(0.5)
     # drawCircle(10, 10, 3, colours["Green"])
@@ -683,34 +706,17 @@ setAllPixelsColour(colours["Black"])
 
 # Compute test waves
 to_merge = []
-to_merge.append(precomputeColours(precomputeRain(10), colours["Green"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(11), colours["Green"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(16), colours["Green"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(5), colours["Green"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(23), colours["Green"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(1), colours["Green"], colours["Black"], 7))
-# test_1 = precomputeRipple(25, 14, 10)
-# test_1_c = precomputeColours(test_1, colours["Green"], colours["Red"], 3)
-# to_merge.append(test_1_c)
-# test_2 = precomputeWave(0, 15)
-# test_2_c = precomputeColours(test_2, colours["Blue"], colours["Black"], 7)
-# to_merge.append(test_2_c)
-# test_2_wave = precomputeRipple(10, 8, 20)
-# test_2_wave_c = precomputeColours(test_2_wave, colours["Red"], colours["Orange"], 7)
-# to_merge.append(test_2_wave_c)
-merged_test_waves = mergeWaves(to_merge)
+to_merge.append(precomputeColours(precomputeRain(10), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(11), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(16), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(5), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(23), colours["Blue"], colours["Black"], 7))
+to_merge.append(precomputeColours(precomputeRain(1), colours["Blue"], colours["Black"], 7))
+merged_test_waves = mergeWaves(to_merge, [0, 3, 4, 10, 2, 7])
 
 # Main running loop
 while True:
     setAllPixelsColour(colours["Black"])
-    print("Working")
-#     displayWave(precomputeColours(precomputeRipple(10, 10, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(11, 11, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(11, 12, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(12, 12, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(12, 13, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(12, 14, 5), colours["Green"], colours["Black"], 3), 0.02)
-#     displayWave(precomputeColours(precomputeRipple(13, 14, 5), colours["Green"], colours["Black"], 3), 0.02)
-    displayWave(precomputeColours(precomputeLines(20, 11, 21, 18, 2), colours["Green"], colours["Black"], 7), 0.01)
-#     displayWave(merged_test_waves)
-    # startup()
+    print("Running")
+    # displayWave(precomputeColours(precomputeLines(20, 11, 21, 18, 2), colours["Green"], colours["Black"], 7), 0.01)
+    displayWave(merged_test_waves, 0.01)
