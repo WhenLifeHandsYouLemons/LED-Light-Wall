@@ -16,7 +16,8 @@ y_axis = []
 # Collect data for 10 seconds
 start_time = time.time()
 end_time = 0
-DURATION = 3
+DURATION = 10
+max_change = 1
 
 initial = 0
 while end_time - start_time < DURATION:
@@ -27,18 +28,15 @@ while end_time - start_time < DURATION:
 
     # Check which sensor is detecting the object
     x = s1
+    y = 1
     if s2 > s3:
-        if s2 - s3 < 10:
-            x = (s3 + (s2 - s3)/2)
-        else:
-            y = s3
+        y = s3
     else:
-        if s3 - s2 < 10:
-            x = (s2 + (s3 - s2)/2)
-        else:
-            y = s2
+        y = s2
+    y = 1 - y
+
     # Weird bug but the sensor data only stores in the array if you print it out
-    # print(x, y)
+    print(x, y)
 
     # Calculate change in previous and current value
     if len(y_axis) > 0:
@@ -48,8 +46,6 @@ while end_time - start_time < DURATION:
         dx, dy = 0, 0
         x = 0
         y = 0
-
-    print(x, y, dx, dy)
 
     # Remove if outside allowed range
     add = True
@@ -62,13 +58,16 @@ while end_time - start_time < DURATION:
         add = True
         initial += 1
 
-    if s1 < 1 and (s2 < 1 or s3 < 1) and (add or (dx < 0.25 and dy < 0.25)):
+    if s1 < 1 and (s2 < 1 or s3 < 1) and (add or (dx < max_change and dy < max_change)):
         x_axis.append(round(x, 4))
         y_axis.append(round(y, 4))
-    else:
+    elif len(y_axis) > 0:
     # elif (not add or not (dx < 0.25 and dy < 0.25)):
         x_axis.append(x_axis[-1])
         y_axis.append(y_axis[-1])
+    else:
+        x_axis.append(0)
+        y_axis.append(0)
 
     end_time = time.time()
 
@@ -82,7 +81,7 @@ print(x_axis, y_axis)
 
 DEBUG = True
 if DEBUG:
-    plt.plot(x_axis, y_axis, "ro")
+    plt.plot(x_axis, y_axis)
     plt.title("Field of View of the Ultrasonic Sensors")
     plt.grid(True)
     plt.xlim([0, 100])
