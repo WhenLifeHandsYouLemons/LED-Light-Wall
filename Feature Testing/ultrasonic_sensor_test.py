@@ -18,10 +18,12 @@ y_axis = []
 start_time = time.time()
 end_time = 0
 DURATION = 10
-max_change = 1
+max_change = 0.25
 
 initial = 0
 while end_time - start_time < DURATION:
+# while len(x_axis) < 100:
+#     time.sleep(0.25)
     # Get data from the sensors
     s1 = sensor1.distance
     s2 = sensor2.distance
@@ -30,7 +32,13 @@ while end_time - start_time < DURATION:
 
     # Check which sensor is detecting the object
     x = s1
-    y = 1
+    if s2 > 0.7:
+        s2 = 1
+    if s3 > 0.7:
+        s3 = 1
+    if s4 > 0.7:
+        s4 = 1
+
     if s2 < s3 and s2 < s4:
         y = s2
     elif s3 < s2 and s3 < s4:
@@ -66,7 +74,6 @@ while end_time - start_time < DURATION:
         x_axis.append(round(x, 4))
         y_axis.append(round(y, 4))
     elif len(y_axis) > 0:
-    # elif (not add or not (dx < 0.25 and dy < 0.25)):
         x_axis.append(x_axis[-1])
         y_axis.append(y_axis[-1])
     else:
