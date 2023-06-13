@@ -315,35 +315,50 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
     # y = mx + c
     c = y - (m * x) # c = y int
 
-    i = 0
-    for x in range(x, e_x):
-        w_count = width - 1
+    if (math.fabs(dx) > math.fabs(dy)):
+        skew = True
+        # True = m < 1
+    else:
+        skew = False
+        # False = m > 1
 
-        y = (m * x) + c
-        precomputed_wave.append([[int(x), int(y)]])
+    if skew:
+        i = 0
+        check = 1
+        if x > e_x:
+            check = -1
+        for x in range(x, e_x, check):
+            w_count = width - 1
 
-        # Normal
-        n_m = -1/m
-        n_c = y - (m * x)
+            y = (m * x) + c
+            precomputed_wave.append([[int(x), int(y)]])
 
-        if (math.fabs(dx) > math.fabs(dy)):
-            skew = True
-            # True = left
-        else:
-            skew = False
-            # False = down
+            while w_count > 0:
+                n_x = x - (math.floor((width - w_count)/2))
+                n_y = y - (math.ceil((width - w_count)/2))
+                precomputed_wave[-1].append([int(n_x), int(n_y)])
+                w_count -= 1
 
+            i += 1
+    else:
+        i = 0
+        check = 1
+        if y > e_y:
+            check = -1
+        for y in range(y, e_y, check):
+            w_count = width - 1
+            x = (y - c) / m
+            precomputed_wave.append([[int(x), int(y)]])
 
-        while w_count > 0:
-            if skew:
-                n_x = x - (math.ceil((width - w_count)/2))
-            else:
+            while w_count > 0:
                 n_x = x + (math.ceil((width - w_count)/2))
-            n_y = (n_m * n_x) + n_c
-            precomputed_wave.append([[int(n_x), int(n_y)]])
-            w_count -= 1
+                n_y = y + (math.floor((width - w_count)/2))
 
-        i += 1
+                precomputed_wave[-1].append([int(n_x), int(n_y)])
+                w_count -= 1
+
+            i += 1
+    
     return precomputed_wave
 
 # Precompute and extend the precompute array into 4D crest colors and fade colors
@@ -586,14 +601,15 @@ RUNNING_WINDOW = True
 setAllPixelsColour(colours["Black"])
 
 # Compute test waves
-to_merge = []
-to_merge.append(precomputeColours(precomputeRain(10), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(11), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(16), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(5), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(23), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(1), colours["Blue"], colours["Black"], 7))
-merged_test_waves = mergeWaves(to_merge, [0, 5, 14, 10, 20, 17])
+# to_merge = []
+# to_merge.append(precomputeColours(precomputeRain(10), colours["Blue"], colours["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(11), colours["Blue"], colours["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(16), colours["Blue"], colours["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(5), colours["Blue"], colours["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(23), colours["Blue"], colours["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(1), colours["Blue"], colours["Black"], 7))
+# merged_test_waves = mergeWaves(to_merge, [0, 5, 14, 10, 20, 17])
+x = precomputeColours(precomputeLines(29, 10, 2, 2, 2), colours["Blue"], colours["Black"], 7)
 
 while RUNNING_WINDOW == True:
     clock.tick(30)
@@ -602,7 +618,7 @@ while RUNNING_WINDOW == True:
     mouse = pygame.mouse.get_pos()
 
     setAllPixelsColour(colours["Black"])
-    displayWave(merged_test_waves, 0.05)
+    displayWave(x, 0.1)
 
     pygame.display.update()
 
