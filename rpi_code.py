@@ -837,12 +837,9 @@ while True:
             elif l_y < 16:
                 l_y -= 2
 
-        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and (add or (dx < MAX_CHANGE and dy < MAX_CHANGE)):
+        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and dx < MAX_CHANGE and dy < MAX_CHANGE:
             displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
         elif p_x != 0 and p_y != 0:
             displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
         else:
             displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
-
-    # displayWave(merge_test_waves, 0.1)
-
