@@ -341,13 +341,7 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
     
     return precomputed_wave
 
-
-# TO DO: Patterns
-# "Circle"
-# Sequences
-
-
-# Precompute and extend the precompute array into 4D crest colors and fade colors
+# Extend the precompute array into a 4D array with crest colors and fade colors
 def precomputeColours(input_wave, i_color, e_color, fade):
     # Create array copy to not change original values
     precomputed_wave = copy.deepcopy(input_wave)
@@ -375,7 +369,7 @@ def precomputeColours(input_wave, i_color, e_color, fade):
         b_shift_per_tick = (i_color[2] - e_color[2]) / (len(precomputed_wave) - 1)
         b_direction = 1
 
-        # Extend the array to include crest colors
+    # Extend the array to include crest colors
     tick_count = 0
     for tick in precomputed_wave:
         if r_direction == 0:
@@ -453,7 +447,7 @@ def precomputeColours(input_wave, i_color, e_color, fade):
 
         tick_count += 1
 
-    # # Add all previous tick's LEDs without changing colour to have accurate colour mixing
+    # Add all previous tick's LEDs without changing colour to have accurate colour mixing
     start_tick = len(precomputed_wave) - 1
     while start_tick >= fade:
         # Go through every tick from 0 to start_tick-fade
@@ -545,10 +539,11 @@ def mergeWaves(wave_arrays, wave_starts):
     return merged_wave_array
 
 # This takes a wave array (can be merged or just a single wave array)
-# The wave_array has to be a 4d array (include colour information too)
+# The wave_array has to be a 4d array (includes colour information)
 def displayWave(wave_array, delay = 0):
     for tick in wave_array:
         for LED in tick:
+            # Change all colour values to integers to stop any float errors
             LED[2][0] = int(LED[2][0])
             LED[2][1] = int(LED[2][1])
             LED[2][2] = int(LED[2][2])
@@ -650,6 +645,10 @@ def drawCircularWave(x, y, duration, trail_length, i_colour, e_colour, delay):
     # drawCircle(10, 10, 15, colours["Green"])
     time.sleep(1)
 
+def randomiseText():
+    pass
+
+# Displays multiple wave patterns with random colours, positions, durations, and more
 def random_pattern():
     n = 5 # n = number of unique patterns
     num_of_patterns = random.randint(1, 3)
@@ -759,6 +758,8 @@ def displayImage(image_path, blend=False):
 
     pixel_framebuf.display()
 
+def randomiseImage():
+    pass
 
 """
 Main loop
@@ -784,6 +785,7 @@ while True:
     print("Running")
     displayWave(merge_test_waves, 0.05)
 
+    # To use ultrasonic sensors
     p_x, p_y = x, y
 
     # Get data from the sensors
@@ -812,7 +814,7 @@ while True:
         x = s1
         y = 1 - y
 
-        # Weird bug but the sensor data only stores in the array if you print it out
+        # Weird bug but the sensor data only stores in the variable if you print it out
         print(x, y)
 
         # Calculate change in previous and current value
@@ -824,22 +826,16 @@ while True:
             x = 0
             y = 0
 
-        add = True
-        # if x == p_x and y == p_y:
-        #     add = False
-
-        # 30-4 leds mapped to 1m
+        # Map the physical positions to the LED positions
         l_x = int(round(round(x, 4) * 26, 0))
         l_y = int(round(round(y, 4) * 20, 0))
 
-        print(l_x, l_y)
+        # Compensate for inaccuracies in the sensors
         if l_y != 0:
             if l_y < 11:
                 l_y -= 3
             elif l_y < 16:
                 l_y -= 2
-
-        print(l_x, l_y)
 
         if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and (add or (dx < MAX_CHANGE and dy < MAX_CHANGE)):
             displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
