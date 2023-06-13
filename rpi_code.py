@@ -98,19 +98,21 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
 colours = {
     "Red" : (255, 0, 0),
     "Pink" : (100, 75, 80),
-    "Vermilion" : (89, 26, 20),
+    "Red Orange" : (100, 33, 29),
     "Orange" : (255, 165, 0),
     "Amber" : (100, 75, 0),
     "Yellow" : (255, 255, 0),
     "Lime": (75, 100, 0),
     "Green" : (0, 255, 0),
+    "Blue Green" : (5, 60, 73),
     "Dark Green" : (0, 20, 13),
     "Light Blue" : (68, 85, 90),
     "Blue" : (0, 0, 255),
     "Dark Blue" : (0, 0, 55),
-    "Purple" : (160, 32, 240),
-    "Grey" : (128, 128, 128),
+    "Blue Purple" : (54, 17, 89),
+    "Purple" : (50, 0, 50),
     "Brown" : (139, 69, 19),
+    "Grey" : (128, 128, 128),
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
@@ -123,6 +125,7 @@ num_to_colours = []
 # Add all the colours to num_to_colours
 for key in iter(colours):
     num_to_colours.append(key)
+
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
@@ -331,7 +334,6 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
 
 # TO DO: Patterns
 # "Circle"
-
 # Sequences
 
 
@@ -648,6 +650,8 @@ def random_pattern():
     log = []
     pos = []
     colors = []
+    n = random.randint(0, len(colour_matches) - 4)
+
     while i < num_of_patterns:
         pattern = random.randint(1, n)
         if pattern == 1:
@@ -655,33 +659,60 @@ def random_pattern():
             coords = random.randint(0, 3)
             duration = random.randint(15, 30)
             wave = precomputeWave(coords, duration)
+            # check = True
 
+            # d = dice
+            d_max = 15
+            d = random.randint(1, d_max)
+            if d == d_max:
+                i_color = len(colours)
+            elif d == d_max - 1:
+                i_color = len(colours) - 1
+            elif d == d_max - 2:
+                i_color == len(colours) - 2 
+            else:
+                i_color = n
+                if n > len(colour_matches) - 4:
+                    n = 0
+                else:
+                    n += 1
 
-            check = True
-            i_color = random.randint(1, len(colours))
-            for i in colors:
-                if e_color == i[0]:
-                    check = False
-            while check == False:
-                i_color = random.randint(1, len(colours))
-                check = True
-                for i in colors:
-                    if e_color == i[0]:
-                        check = False
-            check = True
-            e_color = random.randint(1, len(colours))
-            for i in colors:
-                if e_color == i[1]:
-                    check = False
-            while e_color == i_color and check == False:
-                e_color = random.randint(1, len(colours))
-                check = True
-                for i in colors:
-                    if e_color == i[1]:
-                        check = False
+            d2 = random.randint(1, d_max)
+            if d2 == d_max and d2 != d:
+                e_color = len(colours)
+            elif d2 == d_max - 1 and d2 != d:
+                e_color = len(colours) - 1
+            elif d2 == d_max - 2 and d2 != d:
+                e_color == len(colours) - 2 
+            else:
+                e_color = n
+                if n > len(colour_matches) - 4:
+                    n = 0
+                else:
+                    n += 1
+            
+            # for i in colors:
+            #     if e_color == i[0]:
+            #         check = False
+            # while check == False:
+            #     i_color = random.randint(1, len(colours))
+            #     check = True
+            #     for i in colors:
+            #         if e_color == i[0]:
+            #             check = False
+            # check = True
+            # e_color = random.randint(1, len(colours))
+            # for i in colors:
+            #     if e_color == i[1]:
+            #         check = False
+            # while e_color == i_color and check == False:
+            #     e_color = random.randint(1, len(colours))
+            #     check = True
+            #     for i in colors:
+            #         if e_color == i[1]:
+            #             check = False
 
             colors.append([i_color, e_color])
-
 
             wave = precomputeColours(wave, colours[num_to_colours[i_color]], colours[num_to_colours[e_color]], 7)
             log.append(wave)

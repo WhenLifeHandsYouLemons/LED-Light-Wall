@@ -135,27 +135,36 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end = None):
 colours = {
     "Red" : (255, 0, 0),
     "Pink" : (100, 75, 80),
-    "Vermilion" : (89, 26, 20),
+    "Red Orange" : (100, 33, 29),
     "Orange" : (255, 165, 0),
     "Amber" : (100, 75, 0),
     "Yellow" : (255, 255, 0),
     "Lime": (75, 100, 0),
     "Green" : (0, 255, 0),
+    "Blue Green" : (5, 60, 73),
     "Dark Green" : (0, 20, 13),
     "Light Blue" : (68, 85, 90),
     "Blue" : (0, 0, 255),
     "Dark Blue" : (0, 0, 55),
-    "Purple" : (160, 32, 240),
-    "Grey" : (128, 128, 128),
+    "Blue Purple" : (54, 17, 89),
+    "Purple" : (50, 0, 50),
     "Brown" : (139, 69, 19),
+    "Grey" : (128, 128, 128),
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
+
+colour_matches = [
+    ["Dark Blue", "Green", "Black"]
+]
 
 num_to_colours = []
 # Add all the colours to num_to_colours
 for key in iter(colours):
     num_to_colours.append(key)
+
+print(len(num_to_colours))
+print(num_to_colours)
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
