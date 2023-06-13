@@ -12,6 +12,17 @@ import neopixel
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
 
+# For the ultrasonic sensors
+from gpiozero import DistanceSensor
+import matplotlib.pyplot as plt
+# https://gpiozero.readthedocs.io/en/stable/api_input.html
+# Don't put the GPIO pins to the SDA and SCL on the RPi, it should be on the normal GPIO pins
+sensor1 = DistanceSensor(echo=17, trigger=27)
+sensor2 = DistanceSensor(echo=22, trigger=23)
+sensor3 = DistanceSensor(echo=26, trigger=6)
+sensor4 = DistanceSensor(echo=5, trigger=16)
+# Variables for 2d positioning
+MAX_CHANGE = 0.25
 
 """
 Initialisation
@@ -125,7 +136,6 @@ num_to_colours = []
 # Add all the colours to num_to_colours
 for key in iter(colours):
     num_to_colours.append(key)
-
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
@@ -732,9 +742,6 @@ def random_pattern():
         # elif pattern == 5:
         #     # Call function
 
-
-
-
 """
 For images
 
@@ -767,13 +774,79 @@ merged.append(precomputeColours(precomputeRain(16), colours["Dark Blue"], colour
 merged.append(precomputeColours(precomputeRain(5), colours["Dark Blue"], colours["Black"], 7))
 merged.append(precomputeColours(precomputeRain(23), colours["Dark Blue"], colours["Black"], 7))
 merged.append(precomputeColours(precomputeRain(1), colours["Dark Blue"], colours["Black"], 7))
-merged.append(precomputeColours(precomputeRipple(10, 15, 10), colours["Green"], colours["Black"], 7))
+# merged.append(precomputeColours(precomputeRipple(10, 15, 10), colours["Green"], colours["Black"], 7))
 merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
 
 # Main running loop
+x, y = -1, -1
 while True:
     setAllPixelsColour(colours["Black"])
     print("Running")
+    displayWave(merge_test_waves, 0.05)
 
-    displayWave(merge_test_waves, 0.1)
+    p_x, p_y = x, y
+
+    # Get data from the sensors
+    s1 = sensor1.distance
+    s2 = sensor2.distance
+    s3 = sensor3.distance
+    s4 = sensor4.distance
+
+    # Check if the sensors detected anything
+    if s1 != 1 and (s2 != 1 or s3 != 1 or s4 != 1):
+        # Get the x and y value of the detected object from the multiple sensors
+        if s2 > 0.7:
+            s2 = 1
+        if s3 > 0.7:
+            s3 = 1
+        if s4 > 0.7:
+            s4 = 1
+
+        if s2 < s3 and s2 < s4:
+            y = s2
+        elif s3 < s2 and s3 < s4:
+            y = s3
+        else:
+            y = s4
+
+        x = s1
+        y = 1 - y
+
+        # Weird bug but the sensor data only stores in the array if you print it out
+        print(x, y)
+
+        # Calculate change in previous and current value
+        if p_x != -1 and p_y != -1:
+            dx = math.fabs(x - p_x)
+            dy = math.fabs(y - p_y)
+        else:
+            dx, dy = 0, 0
+            x = 0
+            y = 0
+
+        add = True
+        # if x == p_x and y == p_y:
+        #     add = False
+
+        # 30-4 leds mapped to 1m
+        l_x = int(round(round(x, 4) * 26, 0))
+        l_y = int(round(round(y, 4) * 20, 0))
+
+        print(l_x, l_y)
+        if l_y != 0:
+            if l_y < 11:
+                l_y -= 3
+            elif l_y < 16:
+                l_y -= 2
+
+        print(l_x, l_y)
+
+        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and (add or (dx < MAX_CHANGE and dy < MAX_CHANGE)):
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
+        elif p_x != 0 and p_y != 0:
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
+        else:
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
+
+    # displayWave(merge_test_waves, 0.1)
 
