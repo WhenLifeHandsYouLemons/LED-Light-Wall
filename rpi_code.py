@@ -20,7 +20,7 @@ Initialisation
 pixel_pin = board.D18
 board_width = 30
 board_height = 20
-pixel_brightness = 0.25
+pixel_brightness = 0.2
 
 # Initialise NeoPixel grid
 pixels = neopixel.NeoPixel(
@@ -114,6 +114,10 @@ colours = {
     "Black" : (0, 0, 0),
     "White" : (255, 255, 255)
 }
+
+colour_matches = [
+    ["Dark Blue", "Green", "Black"]
+]
 
 num_to_colours = []
 # Add all the colours to num_to_colours
@@ -705,18 +709,20 @@ Main loop
 setAllPixelsColour(colours["Black"])
 
 # Compute test waves
-to_merge = []
-to_merge.append(precomputeColours(precomputeRain(10), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(11), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(16), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(5), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(23), colours["Blue"], colours["Black"], 7))
-to_merge.append(precomputeColours(precomputeRain(1), colours["Blue"], colours["Black"], 7))
-merged_test_waves = mergeWaves(to_merge, [0, 3, 4, 10, 2, 7])
+merged = []
+merged.append(precomputeColours(precomputeRain(10), colours["Dark Blue"], colours["Black"], 7))
+merged.append(precomputeColours(precomputeRain(11), colours["Dark Blue"], colours["Black"], 7))
+merged.append(precomputeColours(precomputeRain(16), colours["Dark Blue"], colours["Black"], 7))
+merged.append(precomputeColours(precomputeRain(5), colours["Dark Blue"], colours["Black"], 7))
+merged.append(precomputeColours(precomputeRain(23), colours["Dark Blue"], colours["Black"], 7))
+merged.append(precomputeColours(precomputeRain(1), colours["Dark Blue"], colours["Black"], 7))
+merged.append(precomputeColours(precomputeRipple(10, 15, 10), colours["Green"], colours["Black"], 7))
+merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
 
 # Main running loop
 while True:
     setAllPixelsColour(colours["Black"])
     print("Running")
-    # displayWave(precomputeColours(precomputeLines(20, 11, 21, 18, 2), colours["Green"], colours["Black"], 7), 0.01)
-    displayWave(merged_test_waves, 0.01)
+
+    displayWave(merge_test_waves, 0.1)
+
