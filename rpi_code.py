@@ -17,7 +17,6 @@ from PIL import Image
 
 # For the ultrasonic sensors
 from gpiozero import DistanceSensor
-import matplotlib.pyplot as plt
 # https://gpiozero.readthedocs.io/en/stable/api_input.html
 # Don't put the GPIO pins to the SDA and SCL on the RPi, it should be on the normal GPIO pins
 sensor1 = DistanceSensor(echo=17, trigger=27)
