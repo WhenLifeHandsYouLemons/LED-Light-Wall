@@ -1,6 +1,7 @@
 """
 Imports
 """
+import os
 import time
 import copy
 import random
@@ -589,13 +590,13 @@ def drawCircle(x, y, radius, colour):
     pixel_framebuf.display()
 
 # Draw text on the screen (starts from the top left corner and can go off screen)
-def drawText(text, x, y, colour):
+def drawText(text, x, y = 5, colour):
     pixel_framebuf.text(text, x, y, RGBToHex(colour))
     pixel_framebuf.display()
 
 # Animate text scrolling from right to left
 # Note: The text will always start from off-screen to the right and go to the left
-def scrollText(end_x, y, text, colour, wait_time):
+def scrollText(text, end_x, y = 5, colour, wait_time):
     x = board_width + 1
     while x > end_x:
         drawText(text, x, y, colour)
@@ -603,7 +604,26 @@ def scrollText(end_x, y, text, colour, wait_time):
         setAllPixelsColour(colours["Black"])
         x -= 1
 
-def testGraphics(delay):
+def randomiseText(colour, delay, scroll_delay):
+    # Store all text in an array
+    all_text = ["Hello there!"]
+
+    # Have an empty array to store all the random numbers chosen
+    chosen_numbers = []
+
+    total_shown = 0
+    while total_shown < len(all_text):
+        number = random.randint(0, len(all_text) - 1)
+
+        # If it's not already chosen
+        if number not in chosen_numbers:
+            drawText(0, 5, all_text[number], colour)
+            chosen_numbers.append(number)
+            time.sleep(delay)
+
+            total_shown += 1
+
+def testGraphics(delay = 1):
     drawLine(0, 0, 3, 2, colours["Green"])
     drawStraightLine(4, 4, 5, colours["Blue"], True)
     drawStraightLine(4, 4, 4, colours["Blue"], False)
@@ -612,7 +632,7 @@ def testGraphics(delay):
     drawCircle(10, 10, 1, colours["Green"])
     time.sleep(delay)
     setAllPixelsColour(colours["Black"])
-    scrollText(-100, 5, "Test", colours["Red"], 0.01)
+    scrollText("Text", -100, 5, colours["Red"], 0.01)
     setAllPixelsColour(colours["Black"])
 
 def drawCircularWave(x, y, duration, trail_length, i_colour, e_colour, delay):
@@ -644,9 +664,6 @@ def drawCircularWave(x, y, duration, trail_length, i_colour, e_colour, delay):
     # time.sleep(0.5)
     # drawCircle(10, 10, 15, colours["Green"])
     time.sleep(1)
-
-def randomiseText():
-    pass
 
 # Displays multiple wave patterns with random colours, positions, durations, and more
 def random_pattern():
@@ -744,10 +761,14 @@ def random_pattern():
 """
 For images
 
-Note: The images have to be the same width and height as the board
+Note: The images have to be the same or smaller width and height as the board
 """
-def displayImage(image_path, blend=False):
+def displayImage(image_path, blend = False, lock_aspect = False):
     image = Image.open(image_path)
+    if lock_aspect:
+        image = image.thumbnail((30, 30))
+    else:
+        image = image.resize((30, 20))
 
     if blend:
         background = Image.new("RGBA", (board_width, board_height))
@@ -758,8 +779,24 @@ def displayImage(image_path, blend=False):
 
     pixel_framebuf.display()
 
-def randomiseImage():
-    pass
+def randomiseImage(delay = 0):
+    # Get all the image paths in the images directory
+    image_dir = "images/"
+    all_images = [f"{image_dir}{im}" for im in os.listdir(image_dir)]
+
+    # Have an empty array to store all the random numbers chosen
+    chosen_numbers = []
+
+    total_shown = 0
+    while total_shown < len(all_images):
+        number = random.randint(0, len(all_images) - 1)
+        # If it's not already chosen
+        if number not in chosen_numbers:
+            displayImage(all_images[number])
+            chosen_numbers.append(number)
+            time.sleep(delay)
+
+            total_shown += 1
 
 """
 Main loop
