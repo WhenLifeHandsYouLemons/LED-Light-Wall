@@ -6,9 +6,11 @@ import time
 import copy
 import random
 import math
+
 # To use these, follow this guide: https://learn.adafruit.com/neopixels-on-raspberry-pi/python-usage
 import board
 import neopixel
+
 # To use these, follow this guide: https://learn.adafruit.com/easy-neopixel-graphics-with-the-circuitpython-pixel-framebuf-library/import-and-setup
 from adafruit_pixel_framebuf import PixelFramebuffer
 from PIL import Image
@@ -28,17 +30,17 @@ MAX_CHANGE = 0.25
 """
 Initialisation
 """
-# Variables for initialising NeoPixels
-pixel_pin = board.D18
-board_width = 30
-board_height = 20
-pixel_brightness = 0.2
+# Values for initialising NeoPixels
+DATA_PIN = board.D18
+BOARD_WIDTH = 30
+BOARD_HEIGHT = 20
+PIXEL_BRIGHTNESS = 0.2
 
 # Initialise NeoPixel grid
 pixels = neopixel.NeoPixel(
-    pixel_pin,
-    board_width * board_height,
-    brightness=pixel_brightness,    # Brightness out of 1
+    DATA_PIN,
+    BOARD_WIDTH * BOARD_HEIGHT,
+    brightness=PIXEL_BRIGHTNESS,    # Brightness out of 1
     auto_write=False,
     pixel_order=neopixel.GRB
 )
@@ -46,8 +48,8 @@ pixels = neopixel.NeoPixel(
 # Initialise framebuffer for displaying graphics easily
 pixel_framebuf = PixelFramebuffer(
     pixels,
-    board_width,
-    board_height,
+    BOARD_WIDTH,
+    BOARD_HEIGHT,
     rotation=2,
     reverse_x=True,
     reverse_y=False
@@ -59,11 +61,11 @@ Utilities
 """
 # Getting the number of the LED when you enter X and Y coordinates
 def getLED(input_x, input_y):
-    if input_x > board_width - 1 or input_x < 0 or input_y > board_height - 1 or input_y < 0:
+    if input_x > BOARD_WIDTH - 1 or input_x < 0 or input_y > BOARD_HEIGHT - 1 or input_y < 0:
         raise ValueError(f"x and y coordinates are out of bounds: x = {input_x}, y = {input_y}")
 
     right_direction = True
-    output = input_y * board_width
+    output = input_y * BOARD_WIDTH
 
     if input_y % 2 != 0:
         right_direction = False
@@ -71,7 +73,7 @@ def getLED(input_x, input_y):
     if right_direction:
         output += input_x
     else:
-        output += ((board_width - 1) - input_x)
+        output += ((BOARD_WIDTH - 1) - input_x)
 
     # If there's anything wrong with the display, this should be +1 when outputting
     return output
@@ -88,10 +90,10 @@ def setAllPixelsColour(colour):
 
 # Set specified colour to consecutive or single pixels
 def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
-    if pixel_index_start > board_height * board_width or pixel_index_start < 0:
+    if pixel_index_start > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_start < 0:
         raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
     if pixel_index_end != None:
-        if pixel_index_end > board_height * board_width or pixel_index_end < 0:
+        if pixel_index_end > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_end < 0:
             raise IndexError(f"pixel_index_end is out of the allowed range: pixel_index_end = {pixel_index_end}")
 
     # Checks if it's one pixel or multiple that need to change
@@ -107,7 +109,7 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
             pixel_index_start = pixel_index_start + 1
 
 # Dictionary for colors
-colours = {
+COLOURS = {
     "Red" : (255, 0, 0),
     "Pink" : (100, 75, 80),
     "Red Orange" : (100, 33, 29),
@@ -129,19 +131,19 @@ colours = {
     "White" : (255, 255, 255)
 }
 
-colour_matches = [
+COLOUR_MATCHES = [
     ["Dark Blue", "Green", "Black"]
 ]
 
 num_to_colours = []
 # Add all the colours to num_to_colours
-for key in iter(colours):
+for key in iter(COLOURS):
     num_to_colours.append(key)
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
-    for key in iter(colours):
-        setAllPixelsColour(colours[key])
+    for key in iter(COLOURS):
+        setAllPixelsColour(COLOURS[key])
         time.sleep(delay)
 
 
@@ -190,7 +192,7 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
                 used_leds.append([i_x - 1, i_y])
 
             # Check if the LED to the right of it is in any of the previous arrays
-            if [i_x + 1, i_y] not in used_leds and i_x + 1 < board_width:
+            if [i_x + 1, i_y] not in used_leds and i_x + 1 < BOARD_WIDTH:
                 # Add it to tick_array
                 tick_array.append([i_x + 1, i_y])
                 # Add to used_leds
@@ -198,7 +200,7 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
                 # If not, then add that to the tick_array
 
             # Check if the LED above it is in any of the previous arrays
-            if [i_x, i_y + 1] not in used_leds and i_y + 1 < board_height:
+            if [i_x, i_y + 1] not in used_leds and i_y + 1 < BOARD_HEIGHT:
                 # Add it to tick_array
                 tick_array.append([i_x, i_y + 1])
                 # Add to used_leds
@@ -216,9 +218,10 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
 
     return precomputed_wave
 
-# Creates a true circular wave (using the Bresenham Circle Algorithm)
+# Precomputes a true circular wave (using the Bresenham Circle Algorithm)
 def precomputeCircularWave(x, y, duration):
     precomputed_wave = []
+    offset_x, offset_y = x, y
 
     # Hard-code the first tick
     precomputed_wave.append([x, y])
@@ -229,26 +232,25 @@ def precomputeCircularWave(x, y, duration):
         first_oct = []
 
         # Calculate all the first octant LEDs
-        cur_x, cur_y = x + tick, y
-        while cur_x >= cur_y:
+        while x >= y:
             # if x^2 + y^2 - r^2 > 0
-            if ((cur_x - tick)**2 + cur_y**2 - tick**2) > 0:
-                first_oct.append([cur_x - 1, cur_y])
+            if (x**2 + y**2 - tick**2) > 0:
+                first_oct.append([x - 1, y])
             else:
-                first_oct.append([cur_x, cur_y])
+                first_oct.append([x, y])
 
-            cur_y += 1
+            y += 1
         
         # Add the first octant and all other octants to the tick_array
-        for led in first_oct:
-            tick_array.append(led)
-            tick_array.append([-led[0], led[1]])
-            tick_array.append([led[0], -led[1]])
-            tick_array.append([-led[0], -led[1]])
-            tick_array.append([led[1], led[0]])
-            tick_array.append([-led[1], led[0]])
-            tick_array.append([led[1], -led[0]])
-            tick_array.append([-led[1], -led[0]])
+        for LED in first_oct:
+            tick_array.append([offset_x + LED[0], offset_y + LED[1])
+            tick_array.append([offset_x - LED[0], offset_y + LED[1])
+            tick_array.append([offset_x + LED[0], offset_y - LED[1])
+            tick_array.append([offset_x - LED[0], offset_y - LED[1])
+            tick_array.append([offset_x + LED[1], offset_y + LED[0])
+            tick_array.append([offset_x - LED[1], offset_y + LED[0])
+            tick_array.append([offset_x + LED[1], offset_y - LED[0])
+            tick_array.append([offset_x - LED[1], offset_y - LED[0])
 
         # Add tick_array to precomputed_wave
         precomputed_wave.append(tick_array)
@@ -636,11 +638,11 @@ def drawText(text, x, y = 5, colour):
 # Animate text scrolling from right to left
 # Note: The text will always start from off-screen to the right and go to the left
 def scrollText(text, end_x, y = 5, colour, wait_time):
-    x = board_width + 1
+    x = BOARD_WIDTH + 1
     while x > end_x:
         drawText(text, x, y, colour)
         time.sleep(wait_time)
-        setAllPixelsColour(colours["Black"])
+        setAllPixelsColour(COLOURS["Black"])
         x -= 1
 
 def randomiseText(colour, delay, scroll_delay):
@@ -663,16 +665,16 @@ def randomiseText(colour, delay, scroll_delay):
             total_shown += 1
 
 def testGraphics(delay = 1):
-    drawLine(0, 0, 3, 2, colours["Green"])
-    drawStraightLine(4, 4, 5, colours["Blue"], True)
-    drawStraightLine(4, 4, 4, colours["Blue"], False)
-    drawRect(6, 6, 8, 8, colours["Red"], False)
-    drawRect(8, 8, 3, 3, colours["Orange"], True)
-    drawCircle(10, 10, 1, colours["Green"])
+    drawLine(0, 0, 3, 2, COLOURS["Green"])
+    drawStraightLine(4, 4, 5, COLOURS["Blue"], True)
+    drawStraightLine(4, 4, 4, COLOURS["Blue"], False)
+    drawRect(6, 6, 8, 8, COLOURS["Red"], False)
+    drawRect(8, 8, 3, 3, COLOURS["Orange"], True)
+    drawCircle(10, 10, 1, COLOURS["Green"])
     time.sleep(delay)
-    setAllPixelsColour(colours["Black"])
-    scrollText("Text", -100, 5, colours["Red"], 0.01)
-    setAllPixelsColour(colours["Black"])
+    setAllPixelsColour(COLOURS["Black"])
+    scrollText("Text", -100, 5, COLOURS["Red"], 0.01)
+    setAllPixelsColour(COLOURS["Black"])
 
 # Displays multiple wave patterns with random colours, positions, durations, and more
 def random_pattern():
@@ -685,7 +687,7 @@ def random_pattern():
     log = []
     pos = []
     colors = []
-    n = random.randint(0, len(colour_matches) - 4)
+    n = random.randint(0, len(COLOUR_MATCHES) - 4)
 
     while i < num_of_patterns:
         pattern = random.randint(1, n)
@@ -700,28 +702,28 @@ def random_pattern():
             d_max = 15
             d = random.randint(1, d_max)
             if d == d_max:
-                i_color = len(colours)
+                i_color = len(COLOURS)
             elif d == d_max - 1:
-                i_color = len(colours) - 1
+                i_color = len(COLOURS) - 1
             elif d == d_max - 2:
-                i_color == len(colours) - 2 
+                i_color == len(COLOURS) - 2 
             else:
                 i_color = n
-                if n > len(colour_matches) - 4:
+                if n > len(COLOUR_MATCHES) - 4:
                     n = 0
                 else:
                     n += 1
 
             d2 = random.randint(1, d_max)
             if d2 == d_max and d2 != d:
-                e_color = len(colours)
+                e_color = len(COLOURS)
             elif d2 == d_max - 1 and d2 != d:
-                e_color = len(colours) - 1
+                e_color = len(COLOURS) - 1
             elif d2 == d_max - 2 and d2 != d:
-                e_color == len(colours) - 2 
+                e_color == len(COLOURS) - 2 
             else:
                 e_color = n
-                if n > len(colour_matches) - 4:
+                if n > len(COLOUR_MATCHES) - 4:
                     n = 0
                 else:
                     n += 1
@@ -730,18 +732,18 @@ def random_pattern():
             #     if e_color == i[0]:
             #         check = False
             # while check == False:
-            #     i_color = random.randint(1, len(colours))
+            #     i_color = random.randint(1, len(COLOURS))
             #     check = True
             #     for i in colors:
             #         if e_color == i[0]:
             #             check = False
             # check = True
-            # e_color = random.randint(1, len(colours))
+            # e_color = random.randint(1, len(COLOURS))
             # for i in colors:
             #     if e_color == i[1]:
             #         check = False
             # while e_color == i_color and check == False:
-            #     e_color = random.randint(1, len(colours))
+            #     e_color = random.randint(1, len(COLOURS))
             #     check = True
             #     for i in colors:
             #         if e_color == i[1]:
@@ -754,7 +756,7 @@ def random_pattern():
             else:
                 fade = random.randint(1, 10)
 
-            wave = precomputeColours(wave, colours[num_to_colours[i_color]], colours[num_to_colours[e_color]], fade)
+            wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
 
 
@@ -780,7 +782,7 @@ def displayImage(image_path, blend = False, lock_aspect = False):
         image = image.resize((30, 20))
 
     if blend:
-        background = Image.new("RGBA", (board_width, board_height))
+        background = Image.new("RGBA", (BOARD_WIDTH, BOARD_HEIGHT))
         background.alpha_composite(image)
         pixel_framebuf.image(background.convert("RGB"))
     else:
@@ -807,31 +809,12 @@ def randomiseImage(delay = 0):
 
             total_shown += 1
 
+
 """
-Main loop
+For external input
 """
-# Reset board
-setAllPixelsColour(colours["Black"])
-
-# Compute test waves
-merged = []
-merged.append(precomputeColours(precomputeRain(10), colours["Dark Blue"], colours["Black"], 7))
-merged.append(precomputeColours(precomputeRain(11), colours["Dark Blue"], colours["Black"], 7))
-merged.append(precomputeColours(precomputeRain(16), colours["Dark Blue"], colours["Black"], 7))
-merged.append(precomputeColours(precomputeRain(5), colours["Dark Blue"], colours["Black"], 7))
-merged.append(precomputeColours(precomputeRain(23), colours["Dark Blue"], colours["Black"], 7))
-merged.append(precomputeColours(precomputeRain(1), colours["Dark Blue"], colours["Black"], 7))
-# merged.append(precomputeColours(precomputeRipple(10, 15, 10), colours["Green"], colours["Black"], 7))
-merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
-
-# Main running loop
-x, y = -1, -1
-while True:
-    setAllPixelsColour(colours["Black"])
-    print("Running")
-    displayWave(merge_test_waves, 0.05)
-
-    # To use ultrasonic sensors
+def ultrasonicSensors():
+    # Store the previous x and y values
     p_x, p_y = x, y
 
     # Get data from the sensors
@@ -876,7 +859,7 @@ while True:
         l_x = int(round(round(x, 4) * 26, 0))
         l_y = int(round(round(y, 4) * 20, 0))
 
-        # Compensate for inaccuracies in the sensors
+        # Compensate for sensing inaccuracies
         if l_y != 0:
             if l_y < 11:
                 l_y -= 3
@@ -884,8 +867,36 @@ while True:
                 l_y -= 2
 
         if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and dx < MAX_CHANGE and dy < MAX_CHANGE:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
         elif p_x != 0 and p_y != 0:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
         else:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), colours["Green"], colours["Black"], 3))
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
+
+
+"""
+Main loop
+"""
+# Reset board
+setAllPixelsColour(COLOURS["Black"])
+
+# Compute test waves
+merged = []
+merged.append(precomputeColours(precomputeRain(10), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merged.append(precomputeColours(precomputeRain(11), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merged.append(precomputeColours(precomputeRain(16), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merged.append(precomputeColours(precomputeRain(5), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merged.append(precomputeColours(precomputeRain(23), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merged.append(precomputeColours(precomputeRain(1), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merged.append(precomputeColours(precomputeRipple(10, 15, 10), COLOURS["Green"], COLOURS["Black"], 7))
+merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
+
+# Main running loop
+x, y = -1, -1
+while True:
+    setAllPixelsColour(COLOURS["Black"])
+    print("Running")
+    displayWave(merge_test_waves, 0.05)
+
+    # To use ultrasonic sensors
+    ultrasonicSensors()
