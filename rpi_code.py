@@ -216,6 +216,45 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
 
     return precomputed_wave
 
+# Creates a true circular wave (using the Bresenham Circle Algorithm)
+def precomputeCircularWave(x, y, duration):
+    precomputed_wave = []
+
+    # Hard-code the first tick
+    precomputed_wave.append([x, y])
+
+    # Go through the number of ticks needed
+    for tick in range(1, duration):
+        tick_array = []
+        first_oct = []
+
+        # Calculate all the first octant LEDs
+        cur_x, cur_y = x + tick, y
+        while cur_x >= cur_y:
+            # if x^2 + y^2 - r^2 > 0
+            if ((cur_x - tick)**2 + cur_y**2 - tick**2) > 0:
+                first_oct.append([cur_x - 1, cur_y])
+            else:
+                first_oct.append([cur_x, cur_y])
+
+            cur_y += 1
+        
+        # Add the first octant and all other octants to the tick_array
+        for led in first_oct:
+            tick_array.append(led)
+            tick_array.append([-led[0], led[1]])
+            tick_array.append([led[0], -led[1]])
+            tick_array.append([-led[0], -led[1]])
+            tick_array.append([led[1], led[0]])
+            tick_array.append([-led[1], led[0]])
+            tick_array.append([led[1], -led[0]])
+            tick_array.append([-led[1], -led[0]])
+
+        # Add tick_array to precomputed_wave
+        precomputed_wave.append(tick_array)
+
+    return precomputed_wave
+
 # Output should be in the same format of precomputeRipple so that precomputeColours can be used on this
 def precomputeWave(pos, duration):
     # Pos:
@@ -634,36 +673,6 @@ def testGraphics(delay = 1):
     setAllPixelsColour(colours["Black"])
     scrollText("Text", -100, 5, colours["Red"], 0.01)
     setAllPixelsColour(colours["Black"])
-
-def drawCircularWave(x, y, duration, trail_length, i_colour, e_colour, delay):
-    # drawCircle(10, 10, 2, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 3, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 4, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 5, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 6, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 7, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 8, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 9, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 10, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 11, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 12, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 13, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 14, colours["Green"])
-    # time.sleep(0.5)
-    # drawCircle(10, 10, 15, colours["Green"])
-    time.sleep(1)
 
 # Displays multiple wave patterns with random colours, positions, durations, and more
 def random_pattern():
