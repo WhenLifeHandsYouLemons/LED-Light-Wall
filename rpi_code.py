@@ -223,33 +223,50 @@ def precomputeCircularWave(x, y, duration):
     offset_x, offset_y = x, y
 
     # Hard-code the first tick
-    precomputed_wave.append([x, y])
+    precomputed_wave.append([[x, y]])
 
     # Go through the number of ticks needed
     for tick in range(1, duration):
-        tick_array = []
         first_oct = []
+        tick_array = []
 
-        # Calculate all the first octant LEDs
-        while x >= y:
-            # if x^2 + y^2 - r^2 > 0
-            if (x**2 + y**2 - tick**2) > 0:
-                first_oct.append([x - 1, y])
+        x = 0
+        y = tick
+        d = 3 - 2 * tick
+
+        while x <= y:
+            # Print out the coordinates in all eight octants
+            first_oct.append([x, y])
+
+            # Update x and y based on the Bresenham circle algorithm
+            x += 1
+            if d < 0:
+                d = d + 4 * x + 6
             else:
-                first_oct.append([x, y])
+                d = d + 4 * (x - y) + 10
+                y -= 1
 
-            y += 1
-        
         # Add the first octant and all other octants to the tick_array
         for LED in first_oct:
-            tick_array.append([offset_x + LED[0], offset_y + LED[1])
-            tick_array.append([offset_x - LED[0], offset_y + LED[1])
-            tick_array.append([offset_x + LED[0], offset_y - LED[1])
-            tick_array.append([offset_x - LED[0], offset_y - LED[1])
-            tick_array.append([offset_x + LED[1], offset_y + LED[0])
-            tick_array.append([offset_x - LED[1], offset_y + LED[0])
-            tick_array.append([offset_x + LED[1], offset_y - LED[0])
-            tick_array.append([offset_x - LED[1], offset_y - LED[0])
+            tick_array.append([offset_x + LED[0], offset_y + LED[1]])
+            tick_array.append([offset_x - LED[0], offset_y + LED[1]])
+            tick_array.append([offset_x + LED[0], offset_y - LED[1]])
+            tick_array.append([offset_x - LED[0], offset_y - LED[1]])
+            tick_array.append([offset_x + LED[1], offset_y + LED[0]])
+            tick_array.append([offset_x - LED[1], offset_y + LED[0]])
+            tick_array.append([offset_x + LED[1], offset_y - LED[0]])
+            tick_array.append([offset_x - LED[1], offset_y - LED[0]])
+
+        # Clear duplicate LEDs
+        i = 0
+        while i < len(tick_array):
+            j = i + 1
+            while j < len(tick_array):
+                if tick_array[i] == tick_array[j]:
+                    tick_array.pop(j)
+                else:
+                    j += 1
+            i += 1
 
         # Add tick_array to precomputed_wave
         precomputed_wave.append(tick_array)
@@ -379,7 +396,7 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
                 w_count -= 1
 
             i += 1
-    
+
     return precomputed_wave
 
 # Extend the precompute array into a 4D array with crest colors and fade colors
@@ -630,16 +647,16 @@ def drawCircle(x, y, radius, colour):
     pixel_framebuf.display()
 
 # Draw text on the screen (starts from the top left corner and can go off screen)
-def drawText(text, x, y = 5, colour):
+def drawText(text, colour, x, y = 5):
     pixel_framebuf.text(text, x, y, RGBToHex(colour))
     pixel_framebuf.display()
 
 # Animate text scrolling from right to left
 # Note: The text will always start from off-screen to the right and go to the left
-def scrollText(text, end_x, y = 5, colour, wait_time):
-    x = BOARD_WIDTH + 1
-    while x > end_x:
-        drawText(text, x, y, colour)
+def scrollText(text, colour, wait_time, end_x, y = 5):
+    start_x = BOARD_WIDTH + 1
+    while start_x > end_x:
+        drawText(text, colour, start_x, y)
         time.sleep(wait_time)
         setAllPixelsColour(COLOURS["Black"])
         x -= 1
@@ -705,7 +722,7 @@ def random_pattern():
             elif d == d_max - 1:
                 i_color = len(COLOURS) - 1
             elif d == d_max - 2:
-                i_color == len(COLOURS) - 2 
+                i_color == len(COLOURS) - 2
             else:
                 i_color = n
                 if n > len(COLOUR_MATCHES) - 4:
@@ -719,14 +736,14 @@ def random_pattern():
             elif d2 == d_max - 1 and d2 != d:
                 e_color = len(COLOURS) - 1
             elif d2 == d_max - 2 and d2 != d:
-                e_color == len(COLOURS) - 2 
+                e_color == len(COLOURS) - 2
             else:
                 e_color = n
                 if n > len(COLOUR_MATCHES) - 4:
                     n = 0
                 else:
                     n += 1
-            
+
             # for i in colors:
             #     if e_color == i[0]:
             #         check = False

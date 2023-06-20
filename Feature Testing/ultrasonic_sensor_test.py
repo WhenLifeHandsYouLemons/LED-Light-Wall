@@ -23,10 +23,11 @@ while amount < 10:
     DURATION = 1
     MAX_CHANGE = 0.25
 
-    initial = 0
     while end_time - start_time < DURATION:
         # Get data from the sensors
+        # s1 is on the short edge (might need to add an extra one here)
         s1 = sensor1.distance
+        # s2, s3, s4 are on the long edge
         s2 = sensor2.distance
         s3 = sensor3.distance
         s4 = sensor4.distance
@@ -61,17 +62,7 @@ while amount < 10:
             y = 0
 
         # Remove if outside allowed range
-        add = True
-        #  and dx < 0.5 and dy < 0.5
-        # if len(y_axis) > 0:
-        #     if x == x_axis[-1] and y == y_axis[-1]:
-        #         add = False
-
-        if initial < 10:
-            add = True
-            initial += 1
-
-        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and (add or (dx < MAX_CHANGE and dy < MAX_CHANGE)):
+        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and dx < MAX_CHANGE and dy < MAX_CHANGE:
             x_axis.append(round(x, 4))
             y_axis.append(round(y, 4))
         elif len(y_axis) > 0:
@@ -94,10 +85,10 @@ while i < len(x_axis):
     x_axis[i] *= 100
     y_axis[i] *= 100
     i += 1
-# print(x_axis, y_axis)
 
-DEBUG = True
+DEBUG = False
 if DEBUG:
+    print(x_axis, y_axis)
     plt.plot(x_axis, y_axis, "ro")
     plt.title("Field of View of the Ultrasonic Sensors")
     plt.grid(True)

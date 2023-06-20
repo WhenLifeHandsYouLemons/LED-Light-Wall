@@ -132,7 +132,7 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end = None):
     pygame.display.update()
 
 # Dictionary for colors
-colours = {
+COLOURS = {
     "Red" : (255, 0, 0),
     "Pink" : (100, 75, 80),
     "Red Orange" : (100, 33, 29),
@@ -154,22 +154,20 @@ colours = {
     "White" : (255, 255, 255)
 }
 
-colour_matches = [
+COLOUR_MATCHES = [
     ["Dark Blue", "Green", "Black"]
 ]
 
 num_to_colours = []
 # Add all the colours to num_to_colours
-for key in iter(colours):
+for key in iter(COLOURS):
     num_to_colours.append(key)
 
-print(len(num_to_colours))
-print(num_to_colours)
 
 # Startup function (To check there is no errors with the code)
 def startup(delay):
-    for key in iter(colours):
-        setAllPixelsColour(colours[key])
+    for key in iter(COLOURS):
+        setAllPixelsColour(COLOURS[key])
         time.sleep(delay)
 
 
@@ -238,6 +236,62 @@ def precomputeRipple(x, y, duration):   # duration is how many ticks the wave go
                 tick_array.append([i_x, i_y - 1])
                 # Add to used_leds
                 used_leds.append([i_x, i_y - 1])
+
+        # Add tick_array to precomputed_wave
+        precomputed_wave.append(tick_array)
+
+    return precomputed_wave
+
+# Precomputes a true circular wave (using the Bresenham Circle Algorithm)
+def precomputeCircularWave(x, y, duration):
+    precomputed_wave = []
+    offset_x, offset_y = x, y
+
+    # Hard-code the first tick
+    precomputed_wave.append([[x, y]])
+
+    # Go through the number of ticks needed
+    for tick in range(1, duration):
+        first_oct = []
+        tick_array = []
+
+        x = 0
+        y = tick
+        d = 3 - 2 * tick
+
+        while x <= y:
+            # Print out the coordinates in all eight octants
+            first_oct.append([x, y])
+
+            # Update x and y based on the Bresenham circle algorithm
+            x += 1
+            if d < 0:
+                d = d + 4 * x + 6
+            else:
+                d = d + 4 * (x - y) + 10
+                y -= 1
+
+        # Add the first octant and all other octants to the tick_array
+        for LED in first_oct:
+            tick_array.append([offset_x + LED[0], offset_y + LED[1]])
+            tick_array.append([offset_x - LED[0], offset_y + LED[1]])
+            tick_array.append([offset_x + LED[0], offset_y - LED[1]])
+            tick_array.append([offset_x - LED[0], offset_y - LED[1]])
+            tick_array.append([offset_x + LED[1], offset_y + LED[0]])
+            tick_array.append([offset_x - LED[1], offset_y + LED[0]])
+            tick_array.append([offset_x + LED[1], offset_y - LED[0]])
+            tick_array.append([offset_x - LED[1], offset_y - LED[0]])
+
+        # Clear duplicate LEDs
+        i = 0
+        while i < len(tick_array):
+            j = i + 1
+            while j < len(tick_array):
+                if tick_array[i] == tick_array[j]:
+                    tick_array.pop(j)
+                else:
+                    j += 1
+            i += 1
 
         # Add tick_array to precomputed_wave
         precomputed_wave.append(tick_array)
@@ -367,7 +421,7 @@ def precomputeLines(x, y, e_x, e_y, width): # Parameters: x, y: Initial center c
                 w_count -= 1
 
             i += 1
-    
+
     return precomputed_wave
 
 # Precompute and extend the precompute array into 4D crest colors and fade colors
@@ -588,8 +642,8 @@ For Pygame
 pixel_size = 20
 gap_size = 5
 
-# Pygame window stuff
-bg_colour = 0, 0, 0
+# Pygame window
+bg_colour = 7, 7, 7
 window_height = (pixel_size + gap_size) * board_height
 window_width = (pixel_size + gap_size) * board_width
 WIN = pygame.display.set_mode((window_width, window_height))
@@ -607,18 +661,18 @@ clock = pygame.time.Clock()
 RUNNING_WINDOW = True
 
 # Reset board
-setAllPixelsColour(colours["Black"])
+setAllPixelsColour(COLOURS["Black"])
 
 # Compute test waves
 # to_merge = []
-# to_merge.append(precomputeColours(precomputeRain(10), colours["Blue"], colours["Black"], 7))
-# to_merge.append(precomputeColours(precomputeRain(11), colours["Blue"], colours["Black"], 7))
-# to_merge.append(precomputeColours(precomputeRain(16), colours["Blue"], colours["Black"], 7))
-# to_merge.append(precomputeColours(precomputeRain(5), colours["Blue"], colours["Black"], 7))
-# to_merge.append(precomputeColours(precomputeRain(23), colours["Blue"], colours["Black"], 7))
-# to_merge.append(precomputeColours(precomputeRain(1), colours["Blue"], colours["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(10), COLOURS["Blue"], COLOURS["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(11), COLOURS["Blue"], COLOURS["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(16), COLOURS["Blue"], COLOURS["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(5), COLOURS["Blue"], COLOURS["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(23), COLOURS["Blue"], COLOURS["Black"], 7))
+# to_merge.append(precomputeColours(precomputeRain(1), COLOURS["Blue"], COLOURS["Black"], 7))
 # merged_test_waves = mergeWaves(to_merge, [0, 5, 14, 10, 20, 17])
-x = precomputeColours(precomputeLines(29, 10, 2, 2, 2), colours["Blue"], colours["Black"], 7)
+test = precomputeColours(precomputeLines(29, 10, 2, 2, 2), COLOURS["Blue"], COLOURS["Black"], 7)
 
 while RUNNING_WINDOW == True:
     clock.tick(30)
@@ -626,8 +680,8 @@ while RUNNING_WINDOW == True:
     keys = pygame.key.get_pressed()
     mouse = pygame.mouse.get_pos()
 
-    setAllPixelsColour(colours["Black"])
-    displayWave(x, 0.1)
+    setAllPixelsColour(COLOURS["Black"])
+    displayWave(test, 0.1)
 
     pygame.display.update()
 
