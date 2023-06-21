@@ -74,7 +74,6 @@ def getLED(input_x, input_y):
     else:
         output += ((BOARD_WIDTH - 1) - input_x)
 
-    # If there's anything wrong with the display, this should be +1 when outputting
     return output
 
 def RGBToHex(colour):
@@ -147,7 +146,7 @@ def startup(delay):
 
 
 """
-For waves
+For precomputation of graphics
 
 Note: The coordinates start from the bottom left and the first LED is (0, 0)
 """
@@ -557,7 +556,7 @@ def mergeWaves(wave_arrays, wave_starts):
     def hasher(x, y):
         return x + y
 
-    no_buckets = 50
+    no_buckets = BOARD_HEIGHT + BOARD_WIDTH
 
     # Merge all duplicates in each tick separately
     merged_wave_array = []
@@ -699,8 +698,9 @@ def scrollText(text, colour, wait_time, end_x, y = 5):
         drawText(text, colour, start_x, y)
         time.sleep(wait_time)
         setAllPixelsColour(COLOURS["Black"])
-        x -= 1
+        start_x -= 1
 
+# Cycles randomly through a list of preset phrases
 def randomiseText(colour, delay, scroll_delay):
     # Store all text in an array
     all_text = ["Hello there!"]
@@ -710,11 +710,15 @@ def randomiseText(colour, delay, scroll_delay):
 
     total_shown = 0
     while total_shown < len(all_text):
-        number = random.randint(0, len(all_text) - 1)
+        number = random.randint(0, len(all_text))
 
         # If it's not already chosen
         if number not in chosen_numbers:
-            drawText(0, 5, all_text[number], colour)
+            # Calculate end_x for the length of the current string
+            end_x = -(len(all_text[number]) * 6)
+
+            scrollText(all_text[number], colour, scroll_delay, end_x)
+
             chosen_numbers.append(number)
             time.sleep(delay)
 
@@ -825,6 +829,7 @@ def random_pattern():
         # elif pattern == 5:
         #     # Call function
 
+
 """
 For images
 
@@ -833,9 +838,9 @@ Note: The images have to be the same or smaller width and height as the board
 def displayImage(image_path, blend = False, lock_aspect = False):
     image = Image.open(image_path)
     if lock_aspect:
-        image = image.thumbnail((30, 30))
+        image = image.thumbnail((BOARD_WIDTH, BOARD_WIDTH))
     else:
-        image = image.resize((30, 20))
+        image = image.resize((BOARD_WIDTH, BOARD_HEIGHT))
 
     if blend:
         background = Image.new("RGBA", (BOARD_WIDTH, BOARD_HEIGHT))
@@ -846,9 +851,10 @@ def displayImage(image_path, blend = False, lock_aspect = False):
 
     pixel_framebuf.display()
 
+# Cycle through random images
 def randomiseImage(delay = 0):
     # Get all the image paths in the images directory
-    image_dir = "images/"
+    image_dir = "assests/images/"
     all_images = [f"{image_dir}{im}" for im in os.listdir(image_dir)]
 
     # Have an empty array to store all the random numbers chosen
@@ -869,7 +875,7 @@ def randomiseImage(delay = 0):
 """
 For external input
 """
-def ultrasonicSensors():
+def ultrasonicSensors(x, y):
     # Store the previous x and y values
     p_x, p_y = x, y
 
@@ -928,7 +934,10 @@ def ultrasonicSensors():
             displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
         else:
             displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
+    else:
+        x, y = 0, 0
 
+    return x, y
 
 """
 Main loop
@@ -948,11 +957,11 @@ merged.append(precomputeColours(precomputeRain(1), COLOURS["Dark Blue"], COLOURS
 merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
 
 # Main running loop
-x, y = -1, -1
+input_x, input_y = -1, -1
 while True:
     setAllPixelsColour(COLOURS["Black"])
     print("Running")
     displayWave(merge_test_waves, 0.05)
 
     # To use ultrasonic sensors
-    ultrasonicSensors()
+    input_x, input_y = ultrasonicSensors(input_x, input_y)
