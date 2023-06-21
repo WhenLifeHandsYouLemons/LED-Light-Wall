@@ -7,11 +7,11 @@ The `scrollText` function animates text scrolling from right to left on a pixel 
 ## Function Signature
 
 ```py
-def scrollText(end_x: int,
-               y: int,
-               text: str,
+def scrollText(text: str,
                colour: Tuple[int, int, int],
-               wait_time: float) -> None:
+               wait_time: float,
+               end_x: int,
+               y: int = 5) -> None:
     pass
 ```
 
@@ -45,7 +45,7 @@ Once the scrolling text animation is complete, the function completes.
 # Animate scrolling text with the message "Hello, world!" in red
 # The scrolling text starts at the right edge of the pixel frame buffer and stops at x = 0
 # The scrolling text animation waits for 0.1 seconds between each frame
-scrollText(0, 5, "Hello, world!", [255, 0, 0], 0.1)
+scrollText("Hello, world!", [255, 0, 0], 0.1, 0, 5)
 ```
 
 In the example above, we call the `scrollText` function to animate scrolling text with the message "Hello, world!" in red on the pixel frame buffer. The scrolling text starts at the right edge of the pixel frame buffer and stops at $x=0$. The scrolling text animation waits for 0.1 seconds between each frame.
