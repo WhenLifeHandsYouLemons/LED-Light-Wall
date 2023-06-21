@@ -8,9 +8,9 @@ The `drawText` function draws text with a specified color at a specified locatio
 
 ```py
 def drawText(text: str,
+             colour: Tuple[int, int, int],
              x: int,
-             y: int,
-             colour: Tuple[int, int, int]) -> None:
+             y: int = 5) -> None:
     pass
 ```
 
@@ -40,7 +40,7 @@ Finally, the function completes when the text has been drawn on the pixel frame 
 
 ```py
 # Draw the text "Hello, world!" at (5, 5) with the color (255, 0, 0)
-drawText("Hello, world!", 5, 5, [255, 0, 0])
+drawText("Hello, world!", [255, 0, 0], 5, 5)
 ```
 
 In the example above, we call the `drawText` function to draw the text "Hello, world!" at $(5, 5)$ with the color $(255, 0, 0)$ on the pixel frame buffer.

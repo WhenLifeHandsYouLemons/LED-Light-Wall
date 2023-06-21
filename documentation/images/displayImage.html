@@ -1,5 +1,5 @@
 <html>
-    <title>Test - LED Light Wall</title>
+    <title>displayImage - LED Light Wall</title>
     <link rel="stylesheet" type="text/css" href="assets/css/markdownFormat.css"/>
 
     <!-- Markdown display script by Oscar Morrison: https://github.com/oscarmorrison/md-page/ -->
@@ -10,59 +10,60 @@
 
 ## Overview
 
-The `displayImage` function displays an image on a pixel frame buffer. The function outputs the image on the pixel frame buffer.
+The `displayImage` function displays an image on the screen. The function loads an image from a given file path, resizes it to fit the screen dimensions, and displays it on the screen. The function can also blend the image with the existing screen contents and lock the aspect ratio of the image.
 
 ## Function Signature
 
-```python
+```py
 def displayImage(image_path: str,
-blend: bool = False) -> None:
+blend: bool = False,
+lock_aspect: bool = False) -> None:
 pass
 ```
 
 ## Parameters
 
-- `image_path` = `(str)`: A string representing the file path of the image to be displayed on the pixel frame buffer.
+- `image_path` = `str`: A string representing the file path of the image to be displayed.
 
-- `blend` = `(bool)`: An optional boolean value indicating whether or not to blend the image with the existing pixels on the pixel frame buffer. The default value is `False`.
+- `blend` = `bool`: A boolean value representing whether to blend the image with the existing screen contents. The default value is `False`.
+
+- `lock_aspect` = `bool`: A boolean value representing whether to lock the aspect ratio of the image. If `True`, the image will be resized to fit the width of the screen while maintaining its aspect ratio. If `False`, the image will be resized to fit the screen dimensions. The default value is `False`.
 
 ## Return Value
 
-- None
+- `None`: The function does not return any value.
 
 ## Function Description
 
-The `displayImage` function displays an image on a pixel frame buffer using the `image` function from the `pixel_framebuf` library. The function takes in the file path of the image to be displayed on the pixel frame buffer and a boolean value indicating whether or not to blend the image with the existing pixels on the pixel frame buffer.
+The `displayImage` function displays an image on the screen.
 
-If the `blend` parameter is `True`, the function creates a new RGBA image with the same dimensions as the pixel frame buffer, blends the specified image with the new image using the `alpha_composite` function from the Python Imaging Library (PIL), and displays the blended image on the pixel frame buffer using the `image` function.
+The function starts by loading the image from the given file path using the `Image.open` function from the `Pillow` library. If the `lock_aspect` parameter is set to `True`, the function resizes the image to fit the width of the screen while maintaining its aspect ratio using the `thumbnail` function. Otherwise, the function resizes the image to fit the screen dimensions using the `resize` function.
 
-If the `blend` parameter is `False`, the function displays the specified image on the pixel frame buffer using the `image` function.
+If the `blend` parameter is set to `True`, the function creates a new transparent image with the same dimensions as the screen using the `Image.new` function and blends the loaded image with the transparent image using the `alpha_composite` function. The blended image is then converted to RGB format and displayed on the screen using the `pixel_framebuf.image` and `pixel_framebuf.display` functions.
 
-Finally, the function calls the `display` function from the `pixel_framebuf` library to update the pixel frame buffer with the newly displayed image.
+If the `blend` parameter is set to `False`, the loaded image is converted to RGB format and displayed on the screen using the `pixel_framebuf.image` and `pixel_framebuf.display` functions.
 
 ## Example Usage
 
 ```py
-# Display an image located at "/path/to/image.jpg" on the pixel frame buffer
-displayImage("/path/to/image.jpg")
+# Display an image on the screen without blending and without locking aspect ratio
+displayImage("image.png")
+
+# Display an image on the screen with blending and with locking aspect ratio
+displayImage("image.png", blend=True, lock_aspect=True)
 ```
 
-In the example above, we call the `displayImage` function to display an image located at "/path/to/image.jpg" on the pixel frame buffer.
-
-```py
-# Blend an image located at "/path/to/image.png" with the existing pixels on the pixel frame buffer
-displayImage("/path/to/image.png", blend=True)
-```
-
-In the example above, we call the `displayImage` function to blend an image located at "`/path/to/image.png`" with the existing pixels on the pixel frame buffer.
+In the example above, we call the `displayImage` function to display an image on the screen. The first call displays the image without blending and without locking the aspect ratio. The second call displays the image with blending and with locking the aspect ratio.
 
 ## Exceptions
 
-- The `displayImage` function assumes that the pixel frame buffer is represented as a rectangular grid of pixels with a width of `board_width` and a height of `board_height`. If the pixel frame buffer is represented differently, the `displayImage` function should be modified accordingly.
+- The `displayImage` function assumes that the `Image.open` function from the `Pillow` library is defined properly and can be used to load images from file paths. If this function is not defined properly, the function may not work as expected.
 
-- The `displayImage` function assumes that the specified image has the same dimensions (width and height) as the pixel frame buffer. If the image has different dimensions, the `displayImage` function may not work properly and the `displayImage` function should be modified accordingly.
+- The `displayImage` function assumes that the `pixel_framebuf.image` and `pixel_framebuf.display` functions are defined properly and can be used to display images on the screen. If these functions are not defined properly, the function may not work as expected.
 
-- The `displayImage` function assumes that the `image` and `display` functions are defined properly in the `pixel_framebuf` library. If either of these functions is not defined properly, the `displayImage` function should be modified accordingly.
+- The `displayImage` function may not work as expected if the image file path is incorrect or if the image cannot be loaded from the file path. In this case, the function may raise a `FileNotFoundError` or an `OSError`.
+
+- The `displayImage` function may not work as expected if the loaded image cannot be resized or blended properly. In this case, the function may raise a `ValueError` or a `TypeError`.
 
 
 </html>

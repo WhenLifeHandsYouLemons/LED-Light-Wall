@@ -26,7 +26,7 @@ for dir in top_level_dir:
         file_contents.insert(0, '    <!-- Markdown display script by Oscar Morrison: https://github.com/oscarmorrison/md-page/ -->')
         file_contents.insert(0, '')
         file_contents.insert(0, '    <link rel="stylesheet" type="text/css" href="assets/css/markdownFormat.css"/>')
-        file_contents.insert(0, '    <title>Test - LED Light Wall</title>')
+        file_contents.insert(0, f'    <title>{filename} - LED Light Wall</title>')
         file_contents.insert(0, '<html>')
         file_contents.append('')
         file_contents.append('')

@@ -1,5 +1,5 @@
 <html>
-    <title>Test - LED Light Wall</title>
+    <title>mergeWaves - LED Light Wall</title>
     <link rel="stylesheet" type="text/css" href="assets/css/markdownFormat.css"/>
 
     <!-- Markdown display script by Oscar Morrison: https://github.com/oscarmorrison/md-page/ -->
@@ -29,11 +29,15 @@ pass
 
 ## Function Description
 
-The `mergeWaves` function firstfinds the longest number of ticks across all the input wave arrays. It then makes all the waves have the same number of ticks by appending copies of the last tick to the end of the wave array until it reaches the desired length.
+The `mergeWaves` function first finds the longest number of ticks across all the input wave arrays. It then makes all the waves have the same number of ticks by appending copies of the last tick to the end of the wave array until it reaches the desired length.
 
 The function then sorts all the LEDs for every wave into one singular array by ticks. It creates a `sorted_wave_array` that contains all the LED coordinates and colors sorted by ticks.
 
-After sorting the LED coordinates, the function merges all duplicates in each tick separately. It creates a `merged_wave_array` that contains the merged LED coordinates and colors for each tick of the waves. The function loops through each tick in the `sorted_wave_array` and merges duplicate LED coordinates by averaging their colors. It keeps track of the used coordinates to avoid merging the same LED multiple times.
+After sorting the LED coordinates, the function merges all duplicates in each tick separately. It creates a `merged_wave_array` that contains the merged LED coordinates and colors for each tick of the waves. The function loops through each tick in the `sorted_wave_array` and merges duplicate LED coordinates by averaging their colors.
+
+The `hasher` function is used to create a hash value for each LED coordinate, which is used to identify duplicates. The function creates a hash table with a fixed number of buckets and merges all duplicates in each tick separately. It creates a new list called merged_wave_array and appends the merged LED coordinates for each tick in the animation to this list.
+
+It keeps track of the used coordinates to avoid merging the same LED multiple times.
 
 Finally, the function returns the `merged_wave_array` with duplicate LED coordinates merged and the colors averaged.
 

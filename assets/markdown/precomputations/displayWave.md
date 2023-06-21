@@ -31,7 +31,7 @@ Finally, the function completes when all ticks in all waves in the wave array ha
 
 ## Example Usage
 
-```python
+```py
 # Display a wave array with a delay of 0.5 seconds between each tick
 displayWave(wave_array, 0.5)
 ```
