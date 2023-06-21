@@ -553,23 +553,31 @@ def mergeWaves(wave_arrays, wave_starts):
 
         sorted_wave_array.append(temp_tick)
 
+    # Hashing function for hash table
+    def hasher(x, y):
+        return x + y
+
+    no_buckets = 50
+
     # Merge all duplicates in each tick separately
     merged_wave_array = []
-    used_coords = []
+    used_coords = [[] for i in range(no_buckets)]
     tick = 0
     while tick < len(sorted_wave_array):
         # Get the current led coords
         current_led_no = 0
         temp_tick = []
-        used_coords = []
+        used_coords = [[] for i in range(no_buckets)]
 
         while current_led_no < len(sorted_wave_array[tick]):
-            if [sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]] not in used_coords:
+            bucket_val = hasher(sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1])
+
+            if [sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]] not in used_coords[bucket_val]:
                 # Go through all the coords in the current tick
                 check_led_no = current_led_no + 1
                 total_leds = 1
                 total_colour = sorted_wave_array[tick][current_led_no][2].copy()
-                used_coords.append([sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]])
+                used_coords[bucket_val].append([sorted_wave_array[tick][current_led_no][0], sorted_wave_array[tick][current_led_no][1]])
 
                 while check_led_no < len(sorted_wave_array[tick]):
                     # If current coords same as checking coords
