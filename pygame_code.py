@@ -621,6 +621,38 @@ def mergeWaves(wave_arrays, wave_starts):
         tick += 1
     return merged_wave_array
 
+# This can takes a wave array which includes colour information
+def changeWaveSpeed(wave_array, ratio = 1):
+    new_wave = []
+
+    # Raise an error if it's not a positive value
+    if ratio < 0:
+        raise ValueError(f"The ratio for wave speed change is out of bounds: ratio = {ratio}")
+    elif ratio < 1:
+        # To slow down the wave
+        duplicate_times = int(round(1 / ratio, 0))
+
+        for tick in wave_array:
+            for i in range(duplicate_times):
+                new_wave.append(tick)
+    else:
+        # To speed up the wave
+        i = len(wave_array) - 1
+        remove_count = 0
+
+        while i >= 0:
+            if remove_count == ratio - 1:
+                remove_count = 0
+            else:
+                wave_array.pop(i)
+                remove_count += 1
+
+            i -= 1
+
+        new_wave = copy.deepcopy(wave_array)
+
+    return new_wave
+
 # This takes a wave array (can be merged or just a single wave array)
 # The wave_array has to be a 4d array (include colour information too)
 def displayWave(wave_array, delay = 0):
