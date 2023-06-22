@@ -854,7 +854,7 @@ def displayImage(image_path, blend = False, lock_aspect = False):
 # Cycle through random images
 def randomiseImage(delay = 0):
     # Get all the image paths in the images directory
-    image_dir = "assests/images/"
+    image_dir = "images/"
     all_images = [f"{image_dir}{im}" for im in os.listdir(image_dir)]
 
     # Have an empty array to store all the random numbers chosen
@@ -865,7 +865,7 @@ def randomiseImage(delay = 0):
         number = random.randint(0, len(all_images) - 1)
         # If it's not already chosen
         if number not in chosen_numbers:
-            displayImage(all_images[number])
+            displayImage(all_images[number], lock_aspect=True)
             chosen_numbers.append(number)
             time.sleep(delay)
 
