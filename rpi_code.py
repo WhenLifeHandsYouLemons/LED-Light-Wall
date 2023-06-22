@@ -740,6 +740,8 @@ def testGraphics(delay = 1):
 def random_pattern():
     n = 5 # n = number of unique patterns
     num_of_patterns = random.randint(1, 3)
+    max_fade = 7
+    max_duration = 30
     if num_of_patterns == 3:
         max_fade = 7
         max_duration = 20
@@ -747,18 +749,20 @@ def random_pattern():
     log = []
     pos = []
     colors = []
-    n = random.randint(0, len(COLOUR_MATCHES) - 4)
+    # Cycle through color wheel for complementary colors
+    color = random.randint(0, len(COLOUR_MATCHES) - 4)
 
     while i < num_of_patterns:
         pattern = random.randint(1, n)
+        # Wave
         if pattern == 1:
-            # Wave
             coords = random.randint(0, 3)
-            duration = random.randint(15, 30)
+            duration = random.randint(15, max_duration)
             wave = precomputeWave(coords, duration)
             # check = True
 
-            # d = dice
+            # Randomize color
+            # d = dice to have chance of outlying colors of brown, grey, black and white
             d_max = 15
             d = random.randint(1, d_max)
             if d == d_max:
@@ -768,11 +772,14 @@ def random_pattern():
             elif d == d_max - 2:
                 i_color == len(COLOURS) - 2
             else:
-                i_color = n
-                if n > len(COLOUR_MATCHES) - 4:
-                    n = 0
+                i_color = color
+                if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
                 else:
-                    n += 1
+                    color += 1
+                # Reset back to 0
+                if color > len(COLOUR_MATCHES) - 4:
+                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
 
             d2 = random.randint(1, d_max)
             if d2 == d_max and d2 != d:
@@ -782,11 +789,14 @@ def random_pattern():
             elif d2 == d_max - 2 and d2 != d:
                 e_color == len(COLOURS) - 2
             else:
-                e_color = n
-                if n > len(COLOUR_MATCHES) - 4:
-                    n = 0
+                e_color = color
+                if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
                 else:
-                    n += 1
+                    color += 1
+                # Reset back to 0
+                if color > len(COLOUR_MATCHES) - 4:
+                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
 
             # for i in colors:
             #     if e_color == i[0]:
@@ -811,17 +821,83 @@ def random_pattern():
 
             colors.append([i_color, e_color])
 
-            if num_of_patterns == 3:
-                fade = max_fade
-            else:
-                fade = random.randint(1, 10)
+            fade = random.randint(1, max_fade)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
 
+        # Ripple
+        elif pattern == 2:
 
-        # elif pattern == 2:
-        #     # Ripple
+            # Randomize duration
+            duration = random.randint(3, max_duration)
+            # Randomize position
+            x = random.randint(0, 29)
+            y = random.rantint(0, 19)
+
+            check = False
+            for ii in pos:
+                dx = math.fabs(x - ii[0])
+                dy = math.fabs(y - ii[1])
+                if (dx < 4 or dy < 4):
+                    check = True
+            while check:
+                x = random.randint(0, 29)
+                y = random.rantint(0, 19)
+                check = False
+                for ii in pos:
+                    dx = math.fabs(x - ii[0])
+                    dy = math.fabs(y - ii[1])
+                    if (dx < 4 or dy < 4):
+                        check = True
+
+            wave = precomputeRipple(x, y, duration)
+            pos.append([x, y])
+
+            # Randomize color
+            # d = dice to have chance of outlying colors of brown, grey, black and white
+            d_max = 15
+            d = random.randint(1, d_max)
+            if d == d_max:
+                i_color = len(COLOURS)
+            elif d == d_max - 1:
+                i_color = len(COLOURS) - 1
+            elif d == d_max - 2:
+                i_color == len(COLOURS) - 2
+            else:
+                i_color = color
+                if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
+                else:
+                    color += 1
+                # Reset back to 0
+                if color > len(COLOUR_MATCHES) - 4:
+                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+
+            d2 = random.randint(1, d_max)
+            if d2 == d_max and d2 != d:
+                e_color = len(COLOURS)
+            elif d2 == d_max - 1 and d2 != d:
+                e_color = len(COLOURS) - 1
+            elif d2 == d_max - 2 and d2 != d:
+                e_color == len(COLOURS) - 2
+            else:
+                e_color = color
+                if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
+                else:
+                    color += 1
+                # Reset back to 0
+                if color > len(COLOUR_MATCHES) - 4:
+                    color = 0 + (n - (len(COLOUR_MATCHES) - 4))
+
+            colors.append([i_color, e_color])
+
+            fade = random.randint(1, max_fade)
+
+            wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
+            log.append(wave)
+
         # elif pattern == 3:
         #     # Call function
         # elif pattern == 4:
