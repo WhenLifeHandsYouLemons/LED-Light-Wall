@@ -20,7 +20,7 @@ from gpiozero import DistanceSensor
 # https://gpiozero.readthedocs.io/en/stable/api_input.html
 # Don't put the GPIO pins to the SDA and SCL on the RPi, it should be on the normal GPIO pins
 sensor1 = DistanceSensor(echo=17, trigger=27)
-sensor2 = DistanceSensor(echo=22, trigger=23)
+sensor2 = DistanceSensor(echo=22, trigger=24)
 sensor3 = DistanceSensor(echo=26, trigger=6)
 sensor4 = DistanceSensor(echo=5, trigger=16)
 # Variables for 2d positioning
