@@ -1032,12 +1032,25 @@ merged.append(precomputeColours(precomputeRain(1), COLOURS["Dark Blue"], COLOURS
 # merged.append(precomputeColours(precomputeRipple(10, 15, 10), COLOURS["Green"], COLOURS["Black"], 7))
 merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
 
+text = scrollText("LED project", COLOURS["Blue Purple"], 0.05, 0)
+
+
+merged2 = []
+merged2.append(circle = precomputeColours(precomputeCircularWave(15, 10, 9), COLOURS["Red"], COLOURS["Pink"], 3))
+merged2.append(wave = precomputeColours(precomputeWave(1, 30), COLOURS["Red Orange"], COLOURS["Yellow"], 8))
+merged2.append(ripple = precomputeColours(precomputeRipple(10, 6, 5), COLOURS["Lime"], COLOURS["Light Blue"], 5))
+
 # Main running loop
 input_x, input_y = -1, -1
 while True:
     setAllPixelsColour(COLOURS["Black"])
     print("Running")
     displayWave(merge_test_waves, 0.05)
+    setAllPixelsColour(COLOURS["Black"])
+    print("Running 2")
+    displayWave(merged2, 0.08)
+    setAllPixelsColour(COLOURS["Black"])
+    print("Running 2")
 
     # To use ultrasonic sensors
     input_x, input_y = ultrasonicSensors(input_x, input_y)
