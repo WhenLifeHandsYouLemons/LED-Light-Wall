@@ -1,12 +1,12 @@
-# randomiser function
+# randomDots function
 
 ```py
 import time, random
 
-def randomDots(wait):
+def randomDots(delay):
     pixels[random.randint(0, num_pixels-1)] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     pixels.show()
-    time.sleep(wait)
+    time.sleep(delay)
 
 while True:
     randomDots(0.1)
