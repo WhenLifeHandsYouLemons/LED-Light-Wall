@@ -69,8 +69,7 @@ def sensingCompensation(x_val, y_val):
 
 # Displays a wave on the board at the inputted xy coordinates
 def displayUltrasonicWave(x_val, y_val):
-    setPixelsColour(pixels, COLOURS["White"], getLED(x_val, y_val))
-    # displayWave(precomputeColours(precomputeRipple(x_val, y_val, 5), COLOURS["Green"], COLOURS["Black"], 3))
+    displayWave(precomputeColours(precomputeCircularWave(x_val, y_val, 10), COLOURS["Green"], COLOURS["Black"], 5))
 
 while True:
     setAllPixelsColour(pixels, COLOURS["Black"])

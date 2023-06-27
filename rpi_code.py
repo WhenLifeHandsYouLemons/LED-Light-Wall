@@ -26,6 +26,7 @@ sensor4 = DistanceSensor(echo=5, trigger=16)
 # Variables for 2d positioning
 MAX_CHANGE = 0.25
 
+
 """
 Initialisation
 """
@@ -141,7 +142,7 @@ for key in iter(COLOURS):
 # Startup function (To check there is no errors with the code)
 def startup(delay):
     for key in iter(COLOURS):
-        setAllPixelsColour(COLOURS[key])
+        setAllPixelsColour(pixels, COLOURS[key])
         time.sleep(delay)
 
 
@@ -247,14 +248,37 @@ def precomputeCircularWave(x, y, duration):
 
         # Add the first octant and all other octants to the tick_array
         for LED in first_oct:
-            tick_array.append([offset_x + LED[0], offset_y + LED[1]])
-            tick_array.append([offset_x - LED[0], offset_y + LED[1]])
-            tick_array.append([offset_x + LED[0], offset_y - LED[1]])
-            tick_array.append([offset_x - LED[0], offset_y - LED[1]])
-            tick_array.append([offset_x + LED[1], offset_y + LED[0]])
-            tick_array.append([offset_x - LED[1], offset_y + LED[0]])
-            tick_array.append([offset_x + LED[1], offset_y - LED[0]])
-            tick_array.append([offset_x - LED[1], offset_y - LED[0]])
+            led1 = [offset_x + LED[0], offset_y + LED[1]]
+            if led1[0] <= BOARD_WIDTH and led1[0] >= 0 and led1[1] <= BOARD_HEIGHT and led1[1] >= 0:
+                tick_array.append(led1)
+
+            led2 = [offset_x - LED[0], offset_y + LED[1]]
+            if led2[0] <= BOARD_WIDTH and led2[0] >= 0 and led2[1] <= BOARD_HEIGHT and led2[1] >= 0:
+                tick_array.append(led2)
+
+            led3 = [offset_x + LED[0], offset_y - LED[1]]
+            if led3[0] <= BOARD_WIDTH and led3[0] >= 0 and led3[1] <= BOARD_HEIGHT and led3[1] >= 0:
+                tick_array.append(led3)
+
+            led4 = [offset_x - LED[0], offset_y - LED[1]]
+            if led4[0] <= BOARD_WIDTH and led4[0] >= 0 and led4[1] <= BOARD_HEIGHT and led4[1] >= 0:
+                tick_array.append(led4)
+
+            led5 = [offset_x + LED[1], offset_y + LED[0]]
+            if led5[0] <= BOARD_WIDTH and led5[0] >= 0 and led5[1] <= BOARD_HEIGHT and led5[1] >= 0:
+                tick_array.append(led5)
+
+            led6 = [offset_x - LED[1], offset_y + LED[0]]
+            if led6[0] <= BOARD_WIDTH and led6[0] >= 0 and led6[1] <= BOARD_HEIGHT and led6[1] >= 0:
+                tick_array.append(led6)
+
+            led7 = [offset_x + LED[1], offset_y - LED[0]]
+            if led7[0] <= BOARD_WIDTH and led7[0] >= 0 and led7[1] <= BOARD_HEIGHT and led7[1] >= 0:
+                tick_array.append(led7)
+
+            led8 = [offset_x - LED[1], offset_y - LED[0]]
+            if led8[0] <= BOARD_WIDTH and led8[0] >= 0 and led8[1] <= BOARD_HEIGHT and led8[1] >= 0:
+                tick_array.append(led8)
 
         # Clear duplicate LEDs
         i = 0
@@ -732,14 +756,11 @@ def testGraphics(delay = 1):
     drawRect(8, 8, 3, 3, COLOURS["Orange"], True)
     drawCircle(10, 10, 1, COLOURS["Green"])
     time.sleep(delay)
-    setAllPixelsColour(COLOURS["Black"])
+    setAllPixelsColour(pixels, COLOURS["Black"])
     scrollText("Text", -100, 5, COLOURS["Red"], 0.01)
-    setAllPixelsColour(COLOURS["Black"])
+    setAllPixelsColour(pixels, COLOURS["Black"])
 
-
-
-
-# Abscract for random_pattern():
+# Abstract for random_pattern():
 # The main idea of this function is to run it once every iteration in the running while loop (which runs forever)
     # and have it continiously output patterns, only to be interrupted using if statements when:
         # 1. Ultrasonics sense something and it goes into the hand tracking ripple/circularWave
@@ -1065,7 +1086,6 @@ def random_pattern():
         # and have it continiously output patterns, only to be interrupted using if statements when:
             # 1. Ultrasonics sense something and it goes into the hand tracking ripple/circularWave
             # 2. When the time isn't when people will be using it; eg: at night, where it will be turned off.
-
 
 
 """
