@@ -1236,7 +1236,7 @@ Main loop
 # Reset board
 setAllPixelsColour(pixels, COLOURS["Black"])
 
-print("Calculating needed waves, please wait...")
+print("Calculating waves, please wait...")
 
 # Compute test waves
 merge1 = []
@@ -1272,7 +1272,7 @@ while True:
     checkUltrasonics()
 
     setAllPixelsColour(pixels, COLOURS["Black"])
-    changeBrightness(PIXEL_BRIGHTNESS)
+    pixels, pixel_framebuf = changeBrightness(PIXEL_BRIGHTNESS)
     drawText("CLASS", COLOURS["Dark Blue"], 0, 2)
     drawText("2023", COLOURS["Purple"], 4, 11)
     time.sleep(5)
