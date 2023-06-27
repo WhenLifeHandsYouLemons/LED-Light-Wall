@@ -1236,6 +1236,8 @@ Main loop
 # Reset board
 setAllPixelsColour(pixels, COLOURS["Black"])
 
+print("Calculating needed waves, please wait...")
+
 # Compute test waves
 merge1 = []
 merge1.append(precomputeColours(precomputeRain(10), COLOURS["Dark Blue"], COLOURS["Black"], 7))
@@ -1253,6 +1255,8 @@ merge2.append(precomputeColours(precomputeWave(1, 29), COLOURS["Red Orange"], CO
 merge2.append(precomputeColours(precomputeRipple(10, 6, 10), COLOURS["Lime"], COLOURS["Black"], 4))
 merged2 = mergeWaves(merge2, [5, 0, 7])
 
+print("Starting display.")
+
 # Main running loop
 while True:
     checkUltrasonics()
@@ -1268,6 +1272,7 @@ while True:
     checkUltrasonics()
 
     setAllPixelsColour(pixels, COLOURS["Black"])
+    changeBrightness(PIXEL_BRIGHTNESS)
     drawText("CLASS", COLOURS["Dark Blue"], 0, 2)
     drawText("2023", COLOURS["Purple"], 4, 11)
     time.sleep(5)
