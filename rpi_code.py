@@ -793,7 +793,7 @@ def random_pattern():
                 # Reset back to 0
                 if color > len(COLOUR_MATCHES) - 4:
                     color = 0 + (color - (len(COLOUR_MATCHES) - 4))
-            
+
             # Set ending color to always be black
             e_color = len(COLOURS) - 1
 
@@ -858,7 +858,7 @@ def random_pattern():
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        
+
         # Rain
         elif pattern == 3:
             num_of_drops = random.randint(3, 10)
@@ -887,7 +887,7 @@ def random_pattern():
                 if color > len(COLOUR_MATCHES) - 4:
                     color = 0 + (color - (len(COLOUR_MATCHES) - 4))
 
-            
+
             # Set ending color to always be black
             e_color = len(COLOURS) - 1
 
@@ -967,7 +967,7 @@ def random_pattern():
             if color > len(COLOUR_MATCHES) - 4:
                 color = 0 + (color - (len(COLOUR_MATCHES) - 4))
 
-            
+
             # Set ending color to always be black
             e_color = len(COLOURS) - 1
 
@@ -1035,7 +1035,7 @@ def random_pattern():
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        
+
 
         # elif pattern == 6:
             # Text
@@ -1047,13 +1047,13 @@ def random_pattern():
 
         # Lemon guy: Do the randomizer for the stuff you did like the words images ect...
         # Since your functions can't merge with other stuff, you might want to make an encapsulating if statement at the start,
-        # with like a 2/num_of_total_patterns chance of it being text or an image or whatever other functions you made 
+        # with like a 2/num_of_total_patterns chance of it being text or an image or whatever other functions you made
 
         # Note: I haven't had the chance to debug this at all, and problably won't have the chance to. Have fun.
         # Note: Change n to the number of unique patterns at the end
         # Note: Randomize timing later since you do it when you merge
 
-        # What this function returns (or void) is therefore undecided because I don't know how you want to implement the mergeWaves 
+        # What this function returns (or void) is therefore undecided because I don't know how you want to implement the mergeWaves
         # with the randomization of timings
         # 4 Options:
         # 1. Do it all in this function, including the actual outputting into the LEDs
@@ -1204,7 +1204,7 @@ setAllPixelsColour(pixels, COLOURS["Black"])
 
 # Main running loop
 x, y = -1, -1
-while True:
+while False:
     # To use ultrasonic sensors
     # Store the previous x and y values
     p_x, p_y = x, y
