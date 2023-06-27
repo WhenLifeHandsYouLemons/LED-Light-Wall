@@ -33,7 +33,7 @@ Initialisation
 DATA_PIN = board.D18
 BOARD_WIDTH = 30
 BOARD_HEIGHT = 20
-PIXEL_BRIGHTNESS = 0.2
+PIXEL_BRIGHTNESS = 1
 
 # Initialise NeoPixel grid
 pixels = neopixel.NeoPixel(
@@ -82,7 +82,7 @@ def RGBToHex(colour):
     return int("{:02x}{:02x}{:02x}".format(colour[0], colour[1], colour[2]), 16)
 
 # Set all pixels to a specified colour
-def setAllPixelsColour(colour):
+def setAllPixelsColour(pixels, colour):
     pixels.fill(colour)
     pixels.show()
 
@@ -1111,7 +1111,7 @@ def randomiseImage(delay = 0):
 
 
 """
-For external input
+Other functions
 """
 def ultrasonicSensors(x, y):
     # Store the previous x and y values
@@ -1177,42 +1177,130 @@ def ultrasonicSensors(x, y):
 
     return x, y
 
+def changeBrightness(brightness):
+    pixels = neopixel.NeoPixel(
+        DATA_PIN,
+        BOARD_WIDTH * BOARD_HEIGHT,
+        brightness=brightness,
+        auto_write=False,
+        pixel_order=neopixel.GRB
+    )
+    pixel_framebuf = PixelFramebuffer(
+        pixels,
+        BOARD_WIDTH,
+        BOARD_HEIGHT,
+        rotation=2,
+        reverse_x=True,
+        reverse_y=False
+    )
+
+    return pixels, pixel_framebuf
+
 """
 Main loop
 """
 # Reset board
-setAllPixelsColour(COLOURS["Black"])
+setAllPixelsColour(pixels, COLOURS["Black"])
 
 # Compute test waves
-merged = []
-merged.append(precomputeColours(precomputeRain(10), COLOURS["Dark Blue"], COLOURS["Black"], 7))
-merged.append(precomputeColours(precomputeRain(11), COLOURS["Dark Blue"], COLOURS["Black"], 7))
-merged.append(precomputeColours(precomputeRain(16), COLOURS["Dark Blue"], COLOURS["Black"], 7))
-merged.append(precomputeColours(precomputeRain(5), COLOURS["Dark Blue"], COLOURS["Black"], 7))
-merged.append(precomputeColours(precomputeRain(23), COLOURS["Dark Blue"], COLOURS["Black"], 7))
-merged.append(precomputeColours(precomputeRain(1), COLOURS["Dark Blue"], COLOURS["Black"], 7))
-# merged.append(precomputeColours(precomputeRipple(10, 15, 10), COLOURS["Green"], COLOURS["Black"], 7))
-merge_test_waves = mergeWaves(merged, [0, 3, 4, 10, 2, 7, 0])
-
-text = scrollText("LED project", COLOURS["Blue Purple"], 0.05, 0)
-
-
-merged2 = []
-merged2.append(circle = precomputeColours(precomputeCircularWave(15, 10, 9), COLOURS["Red"], COLOURS["Pink"], 3))
-merged2.append(wave = precomputeColours(precomputeWave(1, 30), COLOURS["Red Orange"], COLOURS["Yellow"], 8))
-merged2.append(ripple = precomputeColours(precomputeRipple(10, 6, 5), COLOURS["Lime"], COLOURS["Light Blue"], 5))
+# merge1 = []
+# merge1.append(precomputeColours(precomputeRain(10), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merge1.append(precomputeColours(precomputeRain(11), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merge1.append(precomputeColours(precomputeRain(16), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merge1.append(precomputeColours(precomputeRain(5), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merge1.append(precomputeColours(precomputeRain(23), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merge1.append(precomputeColours(precomputeRain(1), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merge1.append(precomputeColours(precomputeRain(29), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+# merged1 = mergeWaves(merge1, [0, 3, 4, 10, 2, 7, 0])
+# 
+# merge2 = []
+# merge2.append(precomputeColours(precomputeCircularWave(15, 10, 9), COLOURS["Red"], COLOURS["Black"], 3))
+# merge2.append(precomputeColours(precomputeWave(1, 29), COLOURS["Red Orange"], COLOURS["Black"], 6))
+# merge2.append(precomputeColours(precomputeRipple(10, 6, 10), COLOURS["Lime"], COLOURS["Black"], 4))
+# merged2 = mergeWaves(merge2, [5, 0, 7])
 
 # Main running loop
-input_x, input_y = -1, -1
+x, y = -1, -1
 while True:
-    setAllPixelsColour(COLOURS["Black"])
-    print("Running")
-    displayWave(merge_test_waves, 0.05)
-    setAllPixelsColour(COLOURS["Black"])
-    print("Running 2")
-    displayWave(merged2, 0.08)
-    setAllPixelsColour(COLOURS["Black"])
-    print("Running 2")
+#     setAllPixelsColour(pixels, COLOURS["Black"])
+#     pixels, pixel_framebuf = changeBrightness(1)
+#     displayWave(merged1, 0.05)
+# 
+#     setAllPixelsColour(pixels, COLOURS["Black"])
+# #     pixels, pixel_framebuf = changeBrightness(0.3)
+#     displayWave(merged2, 0.08)
+# 
+#     setAllPixelsColour(pixels, COLOURS["Black"])
+#     drawText("CLASS", COLOURS["Dark Blue"], 0, 2)
+#     drawText("2023", COLOURS["Purple"], 4, 11)
+#     time.sleep(5)
+# 
+#     setAllPixelsColour(pixels, COLOURS["Black"])
+#     drawText("LED", COLOURS["Lime"], 7, 2)
+#     drawText("WALL", COLOURS["Yellow"], 4, 11)
+#     time.sleep(5)
+
 
     # To use ultrasonic sensors
-    input_x, input_y = ultrasonicSensors(input_x, input_y)
+    # Store the previous x and y values
+    p_x, p_y = x, y
+    print(x, y)
+
+    # Get data from the sensors
+    s1 = sensor1.distance
+    s2 = sensor2.distance
+    s3 = sensor3.distance
+    s4 = sensor4.distance
+
+    # Check if the sensors detected anything
+    if s1 != 1 and (s2 != 1 or s3 != 1 or s4 != 1):
+        # Get the x and y value of the detected object from the multiple sensors
+        if s2 > 0.7:
+            s2 = 1
+        if s3 > 0.7:
+            s3 = 1
+        if s4 > 0.7:
+            s4 = 1
+
+        if s2 < s3 and s2 < s4:
+            y = s2
+        elif s3 < s2 and s3 < s4:
+            y = s3
+        else:
+            y = s4
+
+        x = s1
+        y = 1 - y
+
+        # Weird bug but the sensor data only stores in the variable if you print it out
+        print(x, y)
+
+        # Calculate change in previous and current value
+        if p_x != -1 and p_y != -1:
+            dx = math.fabs(x - p_x)
+            dy = math.fabs(y - p_y)
+        else:
+            dx, dy = 0, 0
+            x = 0
+            y = 0
+
+        # Map the physical positions to the LED positions
+        l_x = int(round(round(x, 4) * 26, 0))
+        l_y = int(round(round(y, 4) * 20, 0))
+
+        # Compensate for sensing inaccuracies
+        if l_y != 0:
+            print(l_x, l_y)
+            if l_y < 11:
+                l_y -= 3
+            elif l_y < 16:
+                l_y -= 2
+
+        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and dx < MAX_CHANGE and dy < MAX_CHANGE:
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
+        elif p_x != 0 and p_y != 0:
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
+        else:
+            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
+    else:
+        x, y = -1, -1
