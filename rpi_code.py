@@ -1137,14 +1137,25 @@ For Ultrasonics
 def checkUltrasonics():
     detected, s1, s2, s3, s4 = objectDetected()
 
+    # While there's an object in the way
     while detected == True:
+        # Poll for new sensor data
         detected, s1, s2, s3, s4 = objectDetected()
+
+        # Recheck if there's still an object and the sensor just didn't pick it up
+        if detected == False:
+            time.sleep(0.5)
+            detected, s1, s2, s3, s4 = objectDetected()
+
+        # Clear board
         setAllPixelsColour(pixels, COLOURS["Black"])
 
+        # Get x and y coordinates of object and map to board
         x, y = getPhysicalXY(s1, s2, s3, s4)
         x, y = getDigitalXY(x, y)
         x, y = sensingCompensation(x, y)
 
+        # Display the wave
         displayUltrasonicWave(x, y)
 
 # Returns True or False if there is an object detected on the board
