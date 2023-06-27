@@ -736,9 +736,18 @@ def testGraphics(delay = 1):
     scrollText("Text", -100, 5, COLOURS["Red"], 0.01)
     setAllPixelsColour(COLOURS["Black"])
 
+
+
+
+# Abscract for random_pattern():
+# The main idea of this function is to run it once every iteration in the running while loop (which runs forever)
+    # and have it continiously output patterns, only to be interrupted using if statements when:
+        # 1. Ultrasonics sense something and it goes into the hand tracking ripple/circularWave
+        # 2. When the time isn't when people will be using it; eg: at night, where it will be turned off.
+
 # Displays multiple wave patterns with random colours, positions, durations, and more
 def random_pattern():
-    n = 5 # n = number of unique patterns
+    n = 9 # n = number of unique patterns
     num_of_patterns = random.randint(1, 3)
     max_fade = 7
     max_duration = 30
@@ -746,9 +755,13 @@ def random_pattern():
         max_fade = 7
         max_duration = 20
     i = 0
+
+    # Log to contain all instances of waves to merge at the end
     log = []
+
+    # Log of position of ripples/circular waves so they don't overly overlap
     pos = []
-    colors = []
+
     # Cycle through color wheel for complementary colors
     color = random.randint(0, len(COLOUR_MATCHES) - 4)
 
@@ -780,46 +793,9 @@ def random_pattern():
                 # Reset back to 0
                 if color > len(COLOUR_MATCHES) - 4:
                     color = 0 + (color - (len(COLOUR_MATCHES) - 4))
-
-            d2 = random.randint(1, d_max)
-            if d2 == d_max and d2 != d:
-                e_color = len(COLOURS)
-            elif d2 == d_max - 1 and d2 != d:
-                e_color = len(COLOURS) - 1
-            elif d2 == d_max - 2 and d2 != d:
-                e_color == len(COLOURS) - 2
-            else:
-                e_color = color
-                if d == 2 or d == 3: # To skip some colors, for variance
-                    color += d
-                else:
-                    color += 1
-                # Reset back to 0
-                if color > len(COLOUR_MATCHES) - 4:
-                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
-
-            # for i in colors:
-            #     if e_color == i[0]:
-            #         check = False
-            # while check == False:
-            #     i_color = random.randint(1, len(COLOURS))
-            #     check = True
-            #     for i in colors:
-            #         if e_color == i[0]:
-            #             check = False
-            # check = True
-            # e_color = random.randint(1, len(COLOURS))
-            # for i in colors:
-            #     if e_color == i[1]:
-            #         check = False
-            # while e_color == i_color and check == False:
-            #     e_color = random.randint(1, len(COLOURS))
-            #     check = True
-            #     for i in colors:
-            #         if e_color == i[1]:
-            #             check = False
-
-            colors.append([i_color, e_color])
+            
+            # Set ending color to always be black
+            e_color = len(COLOURS) - 1
 
             fade = random.randint(1, max_fade)
 
@@ -835,6 +811,7 @@ def random_pattern():
             x = random.randint(0, 29)
             y = random.rantint(0, 19)
 
+            # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
             check = False
             for ii in pos:
                 dx = math.fabs(x - ii[0])
@@ -843,7 +820,7 @@ def random_pattern():
                     check = True
             while check:
                 x = random.randint(0, 29)
-                y = random.rantint(0, 19)
+                y = random.randint(0, 19)
                 check = False
                 for ii in pos:
                     dx = math.fabs(x - ii[0])
@@ -874,36 +851,221 @@ def random_pattern():
                 if color > len(COLOUR_MATCHES) - 4:
                     color = 0 + (color - (len(COLOUR_MATCHES) - 4))
 
-            d2 = random.randint(1, d_max)
-            if d2 == d_max and d2 != d:
-                e_color = len(COLOURS)
-            elif d2 == d_max - 1 and d2 != d:
-                e_color = len(COLOURS) - 1
-            elif d2 == d_max - 2 and d2 != d:
-                e_color == len(COLOURS) - 2
+            # Set ending color to always be black
+            e_color = len(COLOURS) - 1
+
+            fade = random.randint(1, max_fade)
+
+            wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
+            log.append(wave)
+        
+        # Rain
+        elif pattern == 3:
+            num_of_drops = random.randint(3, 10)
+            d_max = 15
+            # Blue Green to Blue Purple; Skew to more 'rain-like colors'
+            d = random.randint(1, d_max)
+            if d == 1:
+                i_color = 9
+            elif d == 2:
+                i_color = 10
+            elif d == 3:
+                i_color = 11
+            elif d == 4:
+                i_color = 12
+            elif d == 5:
+                i_color = 13
+            elif d == 6:
+                i_color = 14
             else:
-                e_color = color
+                i_color = color
                 if d == 2 or d == 3: # To skip some colors, for variance
                     color += d
                 else:
                     color += 1
                 # Reset back to 0
                 if color > len(COLOUR_MATCHES) - 4:
-                    color = 0 + (n - (len(COLOUR_MATCHES) - 4))
+                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
 
-            colors.append([i_color, e_color])
+            
+            # Set ending color to always be black
+            e_color = len(COLOURS) - 1
+
+            temp_pos = []
+
+            ii = 0
+            while i < num_of_drops:
+                # Ensure that the same x position doesn't repeat
+                check = False
+                while check == False:
+                    check = True
+                    x = random.randint(0, 29)
+                    for iii in temp_pos:
+                        if iii == x:
+                            check = False
+                fade = random.randint(1, max_fade)
+                wave = precomputeRain(x)
+                wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
+
+                temp_pos.append(x)
+                log.append(wave)
+
+        # Lines
+        elif pattern == 4:
+            # Randomize width of line
+            width = random.randint(1, 5)
+
+            # Randomize start of line
+            x = random.randint(0, 29)
+            y = random.rantint(0, 19)
+
+            # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
+            check = False
+            for ii in pos:
+                dx = math.fabs(x - ii[0])
+                dy = math.fabs(y - ii[1])
+                if (dx < 4 or dy < 4):
+                    check = True
+            while check:
+                x = random.randint(0, 29)
+                y = random.randint(0, 19)
+                check = False
+                for ii in pos:
+                    dx = math.fabs(x - ii[0])
+                    dy = math.fabs(y - ii[1])
+                    if (dx < 4 or dy < 4):
+                        check = True
+
+            # Randomize end of line
+            e_x = random.randint(0, 29)
+            e_y = random.rantint(0, 19)
+
+            # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
+            check = False
+            for ii in pos:
+                dx = math.fabs(e_x - ii[0])
+                dy = math.fabs(e_y - ii[1])
+                if (dx < 4 or dy < 4):
+                    check = True
+            while check:
+                e_x = random.randint(0, 29)
+                e_y = random.randint(0, 19)
+                check = False
+                for ii in pos:
+                    dx = math.fabs(e_x - ii[0])
+                    dy = math.fabs(e_y - ii[1])
+                    if (dx < 4 or dy < 4):
+                        check = True
+
+            d = random.randint(10)
+            i_color = color
+            if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
+            else:
+                color += 1
+            # Reset back to 0
+            if color > len(COLOUR_MATCHES) - 4:
+                color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+
+            
+            # Set ending color to always be black
+            e_color = len(COLOURS) - 1
+
+            wave = precomputeLines(x, y, e_x, e_y, width)
+            fade = random.randint(1, max_fade)
+            wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
+
+            pos.append([x, y])
+            pos.append([e_x, e_y])
+            log.append(wave)
+
+
+        # Circle
+        elif pattern == 5:
+            # Randomize duration
+            duration = random.randint(3, max_duration)
+            # Randomize position
+            x = random.randint(0, 29)
+            y = random.rantint(0, 19)
+
+            # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
+            check = False
+            for ii in pos:
+                dx = math.fabs(x - ii[0])
+                dy = math.fabs(y - ii[1])
+                if (dx < 4 or dy < 4):
+                    check = True
+            while check:
+                x = random.randint(0, 29)
+                y = random.randint(0, 19)
+                check = False
+                for ii in pos:
+                    dx = math.fabs(x - ii[0])
+                    dy = math.fabs(y - ii[1])
+                    if (dx < 4 or dy < 4):
+                        check = True
+
+            wave = precomputeCircularWave(x, y, duration)
+            pos.append([x, y])
+
+            # Randomize color
+            # d = dice to have chance of outlying colors of brown, grey, black and white
+            d_max = 15
+            d = random.randint(1, d_max)
+            if d == d_max:
+                i_color = len(COLOURS)
+            elif d == d_max - 1:
+                i_color = len(COLOURS) - 1
+            elif d == d_max - 2:
+                i_color == len(COLOURS) - 2
+            else:
+                i_color = color
+                if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
+                else:
+                    color += 1
+                # Reset back to 0
+                if color > len(COLOUR_MATCHES) - 4:
+                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+
+            # Set ending color to always be black
+            e_color = len(COLOURS) - 1
 
             fade = random.randint(1, max_fade)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
+        
 
-        # elif pattern == 3:
-        #     # Call function
-        # elif pattern == 4:
-        #     # Call function
-        # elif pattern == 5:
-        #     # Call function
+        # elif pattern == 6:
+            # Text
+        # elif pattern == 7:
+            # Image
+        # elif pattern == 8:
+            # More stuff
+
+
+        # Lemon guy: Do the randomizer for the stuff you did like the words images ect...
+        # Since your functions can't merge with other stuff, you might want to make an encapsulating if statement at the start,
+        # with like a 2/num_of_total_patterns chance of it being text or an image or whatever other functions you made 
+
+        # Note: I haven't had the chance to debug this at all, and problably won't have the chance to. Have fun.
+        # Note: Change n to the number of unique patterns at the end
+        # Note: Randomize timing later since you do it when you merge
+
+        # What this function returns (or void) is therefore undecided because I don't know how you want to implement the mergeWaves 
+        # with the randomization of timings
+        # 4 Options:
+        # 1. Do it all in this function, including the actual outputting into the LEDs
+        # 2. Output the log and randomize the timings and output it in another function
+        # 3: Output the log and randomize it in the running while loop
+        # 4: Or do some combination of them, or something that I didn't think of.
+
+        # Just FYI: The main idea of this function is to run it once every iteration in the running while loop (which runs forever)
+        # and have it continiously output patterns, only to be interrupted using if statements when:
+            # 1. Ultrasonics sense something and it goes into the hand tracking ripple/circularWave
+            # 2. When the time isn't when people will be using it; eg: at night, where it will be turned off.
+
 
 
 """
