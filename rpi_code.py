@@ -1136,15 +1136,16 @@ For Ultrasonics
 # Runs all ultrasonic code required in a simple function to be called when needed
 def checkUltrasonics():
     detected, s1, s2, s3, s4 = objectDetected()
+
     while detected == True:
-        # if detected == True:
-            setAllPixelsColour(pixels, COLOURS["Black"])
+        detected, s1, s2, s3, s4 = objectDetected()
+        setAllPixelsColour(pixels, COLOURS["Black"])
 
-            x, y = getPhysicalXY(s1, s2, s3, s4)
-            x, y = getDigitalXY(x, y)
-            x, y = sensingCompensation(x, y)
+        x, y = getPhysicalXY(s1, s2, s3, s4)
+        x, y = getDigitalXY(x, y)
+        x, y = sensingCompensation(x, y)
 
-            displayUltrasonicWave(x, y)
+        displayUltrasonicWave(x, y)
 
 # Returns True or False if there is an object detected on the board
 def objectDetected():
