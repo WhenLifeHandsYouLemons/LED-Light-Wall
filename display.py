@@ -5,10 +5,10 @@ import math
 from gpiozero import DistanceSensor
 # https://gpiozero.readthedocs.io/en/stable/api_input.html
 # Don't put the GPIO pins to the SDA and SCL on the RPi, it should be on the normal GPIO pins
-sensor1 = DistanceSensor(echo=17, trigger=27)
-sensor2 = DistanceSensor(echo=22, trigger=24)
-sensor3 = DistanceSensor(echo=26, trigger=6)
-sensor4 = DistanceSensor(echo=5, trigger=16)
+# sensor1 = DistanceSensor(echo=17, trigger=27)
+# sensor2 = DistanceSensor(echo=22, trigger=24)
+# sensor3 = DistanceSensor(echo=26, trigger=6)
+# sensor4 = DistanceSensor(echo=5, trigger=16)
 
 # Returns True or False if there is an object detected on the board
 def objectDetected():
@@ -69,7 +69,7 @@ def sensingCompensation(x_val, y_val):
 
 # Displays a wave on the board at the inputted xy coordinates
 def displayUltrasonicWave(x_val, y_val):
-    setPixelsColour(COLOURS["White"], getLED(x_val, y_val))
+    setPixelsColour(pixels, COLOURS["White"], getLED(x_val, y_val))
     # displayWave(precomputeColours(precomputeRipple(x_val, y_val, 5), COLOURS["Green"], COLOURS["Black"], 3))
 
 while True:

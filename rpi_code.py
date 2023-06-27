@@ -87,7 +87,7 @@ def setAllPixelsColour(pixels, colour):
     pixels.show()
 
 # Set specified colour to consecutive or single pixels
-def setPixelsColour(colour, pixel_index_start, pixel_index_end=None):
+def setPixelsColour(pixels, colour, pixel_index_start, pixel_index_end=None):
     if pixel_index_start > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_start < 0:
         raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
     if pixel_index_end != None:
@@ -644,7 +644,7 @@ def displayWave(wave_array, delay = 0):
             LED[2][0] = int(LED[2][0])
             LED[2][1] = int(LED[2][1])
             LED[2][2] = int(LED[2][2])
-            setPixelsColour(LED[2], getLED(LED[0], LED[1]))
+            setPixelsColour(pixels, LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
         time.sleep(delay)
