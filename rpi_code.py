@@ -249,35 +249,35 @@ def precomputeCircularWave(x, y, duration):
         # Add the first octant and all other octants to the tick_array
         for LED in first_oct:
             led1 = [offset_x + LED[0], offset_y + LED[1]]
-            if led1[0] <= BOARD_WIDTH and led1[0] >= 0 and led1[1] <= BOARD_HEIGHT and led1[1] >= 0:
+            if led1[0] < BOARD_WIDTH and led1[0] >= 0 and led1[1] < BOARD_HEIGHT and led1[1] >= 0:
                 tick_array.append(led1)
 
             led2 = [offset_x - LED[0], offset_y + LED[1]]
-            if led2[0] <= BOARD_WIDTH and led2[0] >= 0 and led2[1] <= BOARD_HEIGHT and led2[1] >= 0:
+            if led2[0] < BOARD_WIDTH and led2[0] >= 0 and led2[1] < BOARD_HEIGHT and led2[1] >= 0:
                 tick_array.append(led2)
 
             led3 = [offset_x + LED[0], offset_y - LED[1]]
-            if led3[0] <= BOARD_WIDTH and led3[0] >= 0 and led3[1] <= BOARD_HEIGHT and led3[1] >= 0:
+            if led3[0] < BOARD_WIDTH and led3[0] >= 0 and led3[1] < BOARD_HEIGHT and led3[1] >= 0:
                 tick_array.append(led3)
 
             led4 = [offset_x - LED[0], offset_y - LED[1]]
-            if led4[0] <= BOARD_WIDTH and led4[0] >= 0 and led4[1] <= BOARD_HEIGHT and led4[1] >= 0:
+            if led4[0] < BOARD_WIDTH and led4[0] >= 0 and led4[1] < BOARD_HEIGHT and led4[1] >= 0:
                 tick_array.append(led4)
 
             led5 = [offset_x + LED[1], offset_y + LED[0]]
-            if led5[0] <= BOARD_WIDTH and led5[0] >= 0 and led5[1] <= BOARD_HEIGHT and led5[1] >= 0:
+            if led5[0] < BOARD_WIDTH and led5[0] >= 0 and led5[1] < BOARD_HEIGHT and led5[1] >= 0:
                 tick_array.append(led5)
 
             led6 = [offset_x - LED[1], offset_y + LED[0]]
-            if led6[0] <= BOARD_WIDTH and led6[0] >= 0 and led6[1] <= BOARD_HEIGHT and led6[1] >= 0:
+            if led6[0] < BOARD_WIDTH and led6[0] >= 0 and led6[1] < BOARD_HEIGHT and led6[1] >= 0:
                 tick_array.append(led6)
 
             led7 = [offset_x + LED[1], offset_y - LED[0]]
-            if led7[0] <= BOARD_WIDTH and led7[0] >= 0 and led7[1] <= BOARD_HEIGHT and led7[1] >= 0:
+            if led7[0] < BOARD_WIDTH and led7[0] >= 0 and led7[1] < BOARD_HEIGHT and led7[1] >= 0:
                 tick_array.append(led7)
 
             led8 = [offset_x - LED[1], offset_y - LED[0]]
-            if led8[0] <= BOARD_WIDTH and led8[0] >= 0 and led8[1] <= BOARD_HEIGHT and led8[1] >= 0:
+            if led8[0] < BOARD_WIDTH and led8[0] >= 0 and led8[1] < BOARD_HEIGHT and led8[1] >= 0:
                 tick_array.append(led8)
 
         # Clear duplicate LEDs
