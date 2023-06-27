@@ -73,6 +73,7 @@ def displayUltrasonicWave(x_val, y_val):
 
 while True:
     setAllPixelsColour(pixels, COLOURS["Black"])
+
     detected, s1, s2, s3, s4 = objectDetected()
 
     if detected == True:
@@ -80,5 +81,6 @@ while True:
         x, y = getDigitalXY(x, y)
         x, y = sensingCompensation(x, y)
         displayUltrasonicWave(x, y)
-
-        print(x, y)
+    else:
+        # Do other stuff here if nothing's detected
+        pass

@@ -1131,72 +1131,73 @@ def randomiseImage(delay = 0):
 
 
 """
+For Ultrasonics
+"""
+# Returns True or False if there is an object detected on the board
+def objectDetected():
+    # s1 is measuring x-axis
+    sen1 = sensor1.distance
+    # s2, s3, s4 are measuring y-axis
+    sen2 = sensor2.distance
+    sen3 = sensor3.distance
+    sen4 = sensor4.distance
+
+    if sen2 >= 0.7:
+        sen2 = 1
+    if sen3 >= 0.7:
+        sen3 = 1
+    if sen4 >= 0.7:
+        sen4 = 1
+
+    if sen1 < 1 and (sen2 < 0.7 or sen3 < 0.7 or sen4 < 0.7):
+        return True, sen1, sen2, sen3, sen4
+
+    return False, sen1, sen2, sen3, sen4
+
+# Returns a physical x and y value from the sensor data given
+# The distances are given in metres from the bottom-left corner
+def getPhysicalXY(s_1, s_2, s_3, s_4):
+    x_val = s_1
+
+    y_values = [s_2, s_3, s_4]
+    y_val = 1 - min(y_values)
+
+    return x_val, y_val
+
+# Returns a digital x and y value from the physical values which can be displayed on the board
+# The values start from the bottom-left corner
+def getDigitalXY(x_val, y_val):
+    # Round to nearest centimetre
+    dig_x = round(x_val, 4)
+    dig_y = round(y_val, 4)
+
+    # Remap to digital scale
+    dig_x *= 26
+    dig_y *= 20
+
+    # Convert it to discrete integer values to display on the board
+    dig_x = int(round(dig_x, 0))
+    dig_y = int(round(dig_y, 0))
+
+    return dig_x, dig_y
+
+# Returns compensated coordinate values for sensing inaccuracies
+def sensingCompensation(x_val, y_val):
+    max_change = 3
+
+    if y_val >= max_change:
+        y_val -= math.ceil((-0.1 * y_val) + 3)
+
+    return x_val, y_val
+
+# Displays a wave on the board at the inputted xy coordinates
+def displayUltrasonicWave(x_val, y_val):
+    displayWave(precomputeColours(precomputeCircularWave(x_val, y_val, 10), COLOURS["Green"], COLOURS["Black"], 5))
+
+
+"""
 Other functions
 """
-def ultrasonicSensors(x, y):
-    # Store the previous x and y values
-    p_x, p_y = x, y
-
-    # Get data from the sensors
-    s1 = sensor1.distance
-    s2 = sensor2.distance
-    s3 = sensor3.distance
-    s4 = sensor4.distance
-
-    # Check if the sensors detected anything
-    if s1 != 1 and (s2 != 1 or s3 != 1 or s4 != 1):
-        # Get the x and y value of the detected object from the multiple sensors
-        if s2 > 0.7:
-            s2 = 1
-        if s3 > 0.7:
-            s3 = 1
-        if s4 > 0.7:
-            s4 = 1
-
-        if s2 < s3 and s2 < s4:
-            y = s2
-        elif s3 < s2 and s3 < s4:
-            y = s3
-        else:
-            y = s4
-
-        x = s1
-        y = 1 - y
-
-        # Weird bug but the sensor data only stores in the variable if you print it out
-        print(x, y)
-
-        # Calculate change in previous and current value
-        if p_x != -1 and p_y != -1:
-            dx = math.fabs(x - p_x)
-            dy = math.fabs(y - p_y)
-        else:
-            dx, dy = 0, 0
-            x = 0
-            y = 0
-
-        # Map the physical positions to the LED positions
-        l_x = int(round(round(x, 4) * 26, 0))
-        l_y = int(round(round(y, 4) * 20, 0))
-
-        # Compensate for sensing inaccuracies
-        if l_y != 0:
-            if l_y < 11:
-                l_y -= 3
-            elif l_y < 16:
-                l_y -= 2
-
-        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and dx < MAX_CHANGE and dy < MAX_CHANGE:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
-        elif p_x != 0 and p_y != 0:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
-        else:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
-    else:
-        x, y = 0, 0
-
-    return x, y
-
 def changeBrightness(brightness):
     pixels = neopixel.NeoPixel(
         DATA_PIN,
@@ -1223,68 +1224,16 @@ Main loop
 setAllPixelsColour(pixels, COLOURS["Black"])
 
 # Main running loop
-x, y = -1, -1
-while False:
-    # To use ultrasonic sensors
-    # Store the previous x and y values
-    p_x, p_y = x, y
-    print(x, y)
+while True:
+    setAllPixelsColour(pixels, COLOURS["Black"])
 
-    # Get data from the sensors
-    s1 = sensor1.distance
-    s2 = sensor2.distance
-    s3 = sensor3.distance
-    s4 = sensor4.distance
+    detected, s1, s2, s3, s4 = objectDetected()
 
-    # Check if the sensors detected anything
-    if s1 != 1 and (s2 != 1 or s3 != 1 or s4 != 1):
-        # Get the x and y value of the detected object from the multiple sensors
-        if s2 > 0.7:
-            s2 = 1
-        if s3 > 0.7:
-            s3 = 1
-        if s4 > 0.7:
-            s4 = 1
-
-        if s2 < s3 and s2 < s4:
-            y = s2
-        elif s3 < s2 and s3 < s4:
-            y = s3
-        else:
-            y = s4
-
-        x = s1
-        y = 1 - y
-
-        # Weird bug but the sensor data only stores in the variable if you print it out
-        print(x, y)
-
-        # Calculate change in previous and current value
-        if p_x != -1 and p_y != -1:
-            dx = math.fabs(x - p_x)
-            dy = math.fabs(y - p_y)
-        else:
-            dx, dy = 0, 0
-            x = 0
-            y = 0
-
-        # Map the physical positions to the LED positions
-        l_x = int(round(round(x, 4) * 26, 0))
-        l_y = int(round(round(y, 4) * 20, 0))
-
-        # Compensate for sensing inaccuracies
-        if l_y != 0:
-            print(l_x, l_y)
-            if l_y < 11:
-                l_y -= 3
-            elif l_y < 16:
-                l_y -= 2
-
-        if s1 < 1 and (s2 < 1 or s3 < 1 or s4 < 1) and dx < MAX_CHANGE and dy < MAX_CHANGE:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
-        elif p_x != 0 and p_y != 0:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
-        else:
-            displayWave(precomputeColours(precomputeRipple(l_x, l_y, 5), COLOURS["Green"], COLOURS["Black"], 3))
+    if detected == True:
+        x, y = getPhysicalXY(s1, s2, s3, s4)
+        x, y = getDigitalXY(x, y)
+        x, y = sensingCompensation(x, y)
+        displayUltrasonicWave(x, y)
     else:
-        x, y = -1, -1
+        # Do other stuff here if nothing's detected
+        pass
