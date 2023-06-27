@@ -1133,6 +1133,19 @@ def randomiseImage(delay = 0):
 """
 For Ultrasonics
 """
+# Runs all ultrasonic code required in a simple function to be called when needed
+def checkUltrasonics():
+    detected, s1, s2, s3, s4 = objectDetected()
+
+    if detected == True:
+        setAllPixelsColour(pixels, COLOURS["Black"])
+
+        x, y = getPhysicalXY(s1, s2, s3, s4)
+        x, y = getDigitalXY(x, y)
+        x, y = sensingCompensation(x, y)
+
+        displayUltrasonicWave(x, y)
+
 # Returns True or False if there is an object detected on the board
 def objectDetected():
     # s1 is measuring x-axis
@@ -1223,17 +1236,45 @@ Main loop
 # Reset board
 setAllPixelsColour(pixels, COLOURS["Black"])
 
+# Compute test waves
+merge1 = []
+merge1.append(precomputeColours(precomputeRain(10), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merge1.append(precomputeColours(precomputeRain(11), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merge1.append(precomputeColours(precomputeRain(16), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merge1.append(precomputeColours(precomputeRain(5), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merge1.append(precomputeColours(precomputeRain(23), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merge1.append(precomputeColours(precomputeRain(1), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merge1.append(precomputeColours(precomputeRain(29), COLOURS["Dark Blue"], COLOURS["Black"], 7))
+merged1 = mergeWaves(merge1, [0, 3, 4, 10, 2, 7, 0])
+
+merge2 = []
+merge2.append(precomputeColours(precomputeCircularWave(15, 10, 9), COLOURS["Red"], COLOURS["Black"], 3))
+merge2.append(precomputeColours(precomputeWave(1, 29), COLOURS["Red Orange"], COLOURS["Black"], 6))
+merge2.append(precomputeColours(precomputeRipple(10, 6, 10), COLOURS["Lime"], COLOURS["Black"], 4))
+merged2 = mergeWaves(merge2, [5, 0, 7])
+
 # Main running loop
 while True:
+    checkUltrasonics()
+
     setAllPixelsColour(pixels, COLOURS["Black"])
+    displayWave(merged1, 0.05)
 
-    detected, s1, s2, s3, s4 = objectDetected()
+    checkUltrasonics()
 
-    if detected == True:
-        x, y = getPhysicalXY(s1, s2, s3, s4)
-        x, y = getDigitalXY(x, y)
-        x, y = sensingCompensation(x, y)
-        displayUltrasonicWave(x, y)
-    else:
-        # Do other stuff here if nothing's detected
-        pass
+    setAllPixelsColour(pixels, COLOURS["Black"])
+    displayWave(merged2, 0.08)
+
+    checkUltrasonics()
+
+    setAllPixelsColour(pixels, COLOURS["Black"])
+    drawText("CLASS", COLOURS["Dark Blue"], 0, 2)
+    drawText("2023", COLOURS["Purple"], 4, 11)
+    time.sleep(5)
+
+    checkUltrasonics()
+
+    setAllPixelsColour(pixels, COLOURS["Black"])
+    drawText("LED", COLOURS["Lime"], 7, 2)
+    drawText("WALL", COLOURS["Yellow"], 4, 11)
+    time.sleep(5)
