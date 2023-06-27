@@ -1,7 +1,20 @@
-from rpi_code import *
+"""
+Main Loop
+"""
+import time
+
+# Custom imports
+from rpi import *
+from utilities import *
+from precomputations import *
+from graphics import *
+from images import *
+from ultrasonics import *
 
 # Reset board
 setAllPixelsColour(pixels, COLOURS["Black"])
+
+print("Calculating waves, please wait...")
 
 # Compute test waves
 merge1 = []
@@ -20,19 +33,29 @@ merge2.append(precomputeColours(precomputeWave(1, 29), COLOURS["Red Orange"], CO
 merge2.append(precomputeColours(precomputeRipple(10, 6, 10), COLOURS["Lime"], COLOURS["Black"], 4))
 merged2 = mergeWaves(merge2, [5, 0, 7])
 
+print("Starting display.")
 
-pixels, pixel_framebuf = changeBrightness(1)
+# Main running loop
 while True:
+    checkUltrasonics()
+
     setAllPixelsColour(pixels, COLOURS["Black"])
     displayWave(merged1, 0.05)
+
+    checkUltrasonics()
 
     setAllPixelsColour(pixels, COLOURS["Black"])
     displayWave(merged2, 0.08)
 
+    checkUltrasonics()
+
     setAllPixelsColour(pixels, COLOURS["Black"])
+    pixels, pixel_framebuf = changeBrightness(PIXEL_BRIGHTNESS)
     drawText("CLASS", COLOURS["Dark Blue"], 0, 2)
     drawText("2023", COLOURS["Purple"], 4, 11)
     time.sleep(5)
+
+    checkUltrasonics()
 
     setAllPixelsColour(pixels, COLOURS["Black"])
     drawText("LED", COLOURS["Lime"], 7, 2)
