@@ -75,11 +75,11 @@ def randomiseText(pixel_framebuf, colour, scroll_delay = None):
 
     total_shown = 0
     while total_shown < len(all_text):
-        number = random.randint(0, len(all_text))
+        number = random.randint(0, len(all_text) - 1)
 
         # If it's not already chosen
         if number not in chosen_numbers:
-            scrollText(pixels, pixel_framebuf, all_text[number], colour, scroll_delay)
+            scrollText(pixel_framebuf, all_text[number], colour, scroll_delay)
 
             chosen_numbers.append(number)
 
@@ -107,11 +107,11 @@ def testGraphics(delay = 1):
 def randomisePatterns():
     n = 6   # Number of patterns to available
     num_of_patterns = random.randint(1, 3)
+    print(f"Total patterns: {num_of_patterns}")
     max_fade = 7
     max_duration = 30
     if num_of_patterns == 3:
         max_duration = 20
-    i = 0
 
     # Log to contain all instances of waves to merge at the end
     log = []
@@ -122,13 +122,15 @@ def randomisePatterns():
     # Cycle through color wheel for complementary colors
     color = random.randint(0, len(COLOURS) - 4)
 
-    while i < num_of_patterns:
+    for i in range(num_of_patterns):
         pattern = random.randint(1, n)
+        
+        print(f"Getting pattern {i}, chosen {pattern}")
 
         # Wave
         if pattern == 1:
             coords = random.randint(0, 3)
-            duration = random.randint(15, max_duration)
+            duration = random.randint(15, max_duration - 1)
             wave = precomputeWave(coords, duration)
             # check = True
 
@@ -137,11 +139,11 @@ def randomisePatterns():
             d_max = 15
             d = random.randint(1, d_max)
             if d == d_max:
-                i_color = len(COLOURS)
-            elif d == d_max - 1:
                 i_color = len(COLOURS) - 1
+            elif d == d_max - 1:
+                i_color = len(COLOURS) - 2
             elif d == d_max - 2:
-                i_color == len(COLOURS) - 2
+                i_color == len(COLOURS) - 3
             else:
                 i_color = color
                 if d == 2 or d == 3: # To skip some colors, for variance
@@ -193,11 +195,11 @@ def randomisePatterns():
             d_max = 15
             d = random.randint(1, d_max)
             if d == d_max:
-                i_color = len(COLOURS)
-            elif d == d_max - 1:
                 i_color = len(COLOURS) - 1
-            elif d == d_max - 2:
+            elif d == d_max - 1:
                 i_color = len(COLOURS) - 2
+            elif d == d_max - 2:
+                i_color = len(COLOURS) - 3
             else:
                 i_color = color
                 if d == 2 or d == 3: # To skip some colors, for variance
@@ -366,11 +368,11 @@ def randomisePatterns():
             d_max = 15
             d = random.randint(1, d_max)
             if d == d_max:
-                i_color = len(COLOURS)
-            elif d == d_max - 1:
                 i_color = len(COLOURS) - 1
-            elif d == d_max - 2:
+            elif d == d_max - 1:
                 i_color = len(COLOURS) - 2
+            elif d == d_max - 2:
+                i_color = len(COLOURS) - 3
             else:
                 i_color = color
                 if d == 2 or d == 3: # To skip some colors, for variance
@@ -400,6 +402,7 @@ def randomisePatterns():
             else:
                 log.append("image")
 
+        print(f"Got pattern {i}")
     # Go through log and either add to a to-merge array or if we need to display text and images
     to_merge = []
     non_merge = []
@@ -418,7 +421,7 @@ def randomisePatterns():
 
 # This takes a precomputed array and a text/image array and displays it on the board
 def displayRandomPatterns(pixel_framebuf, merged_array, non_merged_array):
-    displayWave(merged_array)
+    displayWave(merged_array, 0.05)
 
     # Used for not showing the same image again
     invalid_nums = []

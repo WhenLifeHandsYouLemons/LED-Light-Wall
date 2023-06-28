@@ -21,12 +21,10 @@ pixels, pixel_framebuf = changeBrightness(PIXEL_BRIGHTNESS)
 # Main running loop
 while True:
     checkUltrasonics()
-    setAllPixelsColour(pixels, COLOURS["Black"])
 
     print("Calculating waves...")
     merged, non_merged = randomisePatterns()
     
     print("Displaying waves.")
     displayRandomPatterns(pixel_framebuf, merged, non_merged)
-
-    checkUltrasonics()
+    setAllPixelsColour(pixels, COLOURS["Black"])
