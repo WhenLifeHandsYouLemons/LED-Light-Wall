@@ -10,6 +10,7 @@ import copy
 # Custom imports
 from rpi import *
 from utilities import *
+from ultrasonics import checkUltrasonics
 
 # Wave function that computes every tick of the wave and returns an array
 # Note: A duration of over 60 gets increasingly slower to compute
@@ -529,4 +530,5 @@ def displayWave(wave_array, delay = 0):
             setPixelsColour(pixels, LED[2], getLED(LED[0], LED[1]))
 
         pixels.show()
+        checkUltrasonics()
         time.sleep(delay)

@@ -8,7 +8,7 @@ from gpiozero import DistanceSensor
 # Custom imports
 from rpi import *
 from utilities import *
-from precomputations import *
+import precomputations
 
 # Initialise sensors
 # https://gpiozero.readthedocs.io/en/stable/api_input.html
@@ -101,5 +101,16 @@ def sensingCompensation(x_val, y_val):
     return x_val, y_val
 
 # Displays a wave on the board at the inputted xy coordinates
-def displayUltrasonicWave(x_val, y_val):
-    displayWave(precomputeColours(precomputeCircularWave(x_val, y_val, 10), COLOURS["Green"], COLOURS["Black"], 5))
+def displayUltrasonicWave(x_val, y_val, delay = 0):
+    wave = precomputations.precomputeColours(precomputations.precomputeCircularWave(x_val, y_val, 10), COLOURS["Green"], COLOURS["Black"], 5)
+
+    for tick in wave:
+        for LED in tick:
+            # Change all colour values to integers to stop any float errors
+            LED[2][0] = int(LED[2][0])
+            LED[2][1] = int(LED[2][1])
+            LED[2][2] = int(LED[2][2])
+            setPixelsColour(pixels, LED[2], getLED(LED[0], LED[1]))
+
+        pixels.show()
+        time.sleep(delay)

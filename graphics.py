@@ -14,12 +14,12 @@ from precomputations import *
 from images import *
 
 # To draw a single line between 2 points
-def drawLine(start_x, start_y, end_x, end_y, colour):
+def drawLine(pixel_framebuf, start_x, start_y, end_x, end_y, colour):
     pixel_framebuf.line(start_x, start_y, end_x, end_y, RGBToHex(colour))
     pixel_framebuf.display()
 
 # To draw a vertical or horizontal line
-def drawStraightLine(x, y, length, colour, horizontal):
+def drawStraightLine(pixel_framebuf, x, y, length, colour, horizontal):
     if horizontal == True:
         # It draws the line from left to right
         pixel_framebuf.hline(x, y, length, RGBToHex(colour))
@@ -30,7 +30,7 @@ def drawStraightLine(x, y, length, colour, horizontal):
     pixel_framebuf.display()
 
 # Draw a hollow or filled rectangle (starts from the top left corner)
-def drawRect(x, y, width, height, colour, filled):
+def drawRect(pixel_framebuf, x, y, width, height, colour, filled):
     if filled == True:
         pixel_framebuf.fill_rect(x, y, width, height, RGBToHex(colour))
     else:
@@ -39,18 +39,18 @@ def drawRect(x, y, width, height, colour, filled):
     pixel_framebuf.display()
 
 # Draws a circle with center (x, y)
-def drawCircle(x, y, radius, colour):
+def drawCircle(pixel_framebuf, x, y, radius, colour):
     pixel_framebuf.circle(x, y, radius, colour)
     pixel_framebuf.display()
 
 # Draw text on the screen (starts from the top left corner and can go off screen)
-def drawText(text, colour, x, y = 5):
+def drawText(pixel_framebuf, text, colour, x, y = 5):
     pixel_framebuf.text(text, x, y, RGBToHex(colour))
     pixel_framebuf.display()
 
 # Animate text scrolling from right to left
 # Note: The text will always start and end off-screen, from right to left
-def scrollText(text, colour, delay = 0.05, y = 5):
+def scrollText(pixel_framebuf, text, colour, delay = 0.05, y = 5):
     # Start the text off-screen to the right
     start_x = BOARD_WIDTH + 1
 
@@ -60,13 +60,13 @@ def scrollText(text, colour, delay = 0.05, y = 5):
     # Scroll the text
     while start_x > end_x:
         pixels, pixel_framebuf = changeBrightness(PIXEL_BRIGHTNESS)
-        drawText(text, colour, start_x, y)
+        drawText(pixel_framebuf, text, colour, start_x, y)
         time.sleep(delay)
         setAllPixelsColour(pixels, COLOURS["Black"])
         start_x -= 1
 
 # Cycles randomly through a list of preset phrases
-def randomiseText(colour, scroll_delay = None):
+def randomiseText(pixel_framebuf, colour, scroll_delay = None):
     # Store all text in an array
     all_text = ["Hello there!"]
 
@@ -79,22 +79,22 @@ def randomiseText(colour, scroll_delay = None):
 
         # If it's not already chosen
         if number not in chosen_numbers:
-            scrollText(all_text[number], colour, scroll_delay)
+            scrollText(pixels, pixel_framebuf, all_text[number], colour, scroll_delay)
 
             chosen_numbers.append(number)
 
             total_shown += 1
 
 def testGraphics(delay = 1):
-    drawLine(0, 0, 3, 2, COLOURS["Green"])
-    drawStraightLine(4, 4, 5, COLOURS["Blue"], True)
-    drawStraightLine(4, 4, 4, COLOURS["Blue"], False)
-    drawRect(6, 6, 8, 8, COLOURS["Red"], False)
-    drawRect(8, 8, 3, 3, COLOURS["Orange"], True)
-    drawCircle(10, 10, 1, COLOURS["Green"])
+    drawLine(pixel_framebuf, 0, 0, 3, 2, COLOURS["Green"])
+    drawStraightLine(pixel_framebuf, 4, 4, 5, COLOURS["Blue"], True)
+    drawStraightLine(pixel_framebuf, 4, 4, 4, COLOURS["Blue"], False)
+    drawRect(pixel_framebuf, 6, 6, 8, 8, COLOURS["Red"], False)
+    drawRect(pixel_framebuf, 8, 8, 3, 3, COLOURS["Orange"], True)
+    drawCircle(pixel_framebuf, 10, 10, 1, COLOURS["Green"])
     time.sleep(delay)
     setAllPixelsColour(pixels, COLOURS["Black"])
-    scrollText("Text", COLOURS["Red"], 0.01)
+    scrollText(pixels, pixel_framebuf, "Text", COLOURS["Red"], 0.01)
     setAllPixelsColour(pixels, COLOURS["Black"])
 
 # Abstract for randomisePatterns():
@@ -120,7 +120,7 @@ def randomisePatterns():
     pos = []
 
     # Cycle through color wheel for complementary colors
-    color = random.randint(0, len(COLOUR_MATCHES) - 4)
+    color = random.randint(0, len(COLOURS) - 4)
 
     while i < num_of_patterns:
         pattern = random.randint(1, n)
@@ -149,8 +149,8 @@ def randomisePatterns():
                 else:
                     color += 1
                 # Reset back to 0
-                if color > len(COLOUR_MATCHES) - 4:
-                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+                if color > len(COLOURS) - 4:
+                    color = 0 + (color - (len(COLOURS) - 4))
 
             # Set ending color to always be black
             e_color = len(COLOURS) - 1
@@ -205,8 +205,8 @@ def randomisePatterns():
                 else:
                     color += 1
                 # Reset back to 0
-                if color > len(COLOUR_MATCHES) - 4:
-                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+                if color > len(COLOURS) - 4:
+                    color = 0 + (color - (len(COLOURS) - 4))
 
             # Set ending color to always be black
             e_color = len(COLOURS) - 1
@@ -240,8 +240,8 @@ def randomisePatterns():
                 else:
                     color += 1
                 # Reset back to 0
-                if color > len(COLOUR_MATCHES) - 4:
-                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+                if color > len(COLOURS) - 4:
+                    color = 0 + (color - (len(COLOURS) - 4))
 
 
             # Set ending color to always be black
@@ -319,8 +319,8 @@ def randomisePatterns():
             else:
                 color += 1
             # Reset back to 0
-            if color > len(COLOUR_MATCHES) - 4:
-                color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+            if color > len(COLOURS) - 4:
+                color = 0 + (color - (len(COLOURS) - 4))
 
 
             # Set ending color to always be black
@@ -378,8 +378,8 @@ def randomisePatterns():
                 else:
                     color += 1
                 # Reset back to 0
-                if color > len(COLOUR_MATCHES) - 4:
-                    color = 0 + (color - (len(COLOUR_MATCHES) - 4))
+                if color > len(COLOURS) - 4:
+                    color = 0 + (color - (len(COLOURS) - 4))
 
             # Set ending color to always be black
             e_color = len(COLOURS) - 1
@@ -417,7 +417,7 @@ def randomisePatterns():
     return merged_patterns, non_merge
 
 # This takes a precomputed array and a text/image array and displays it on the board
-def displayRandomPatterns(merged_array, non_merged_array):
+def displayRandomPatterns(pixel_framebuf, merged_array, non_merged_array):
     displayWave(merged_array)
 
     # Used for not showing the same image again
@@ -425,10 +425,10 @@ def displayRandomPatterns(merged_array, non_merged_array):
 
     for item in non_merged_array:
         if item == "image":
-            num = randomiseImage(invalid_nums, 1)
+            num = randomiseImage(pixel_framebuf, invalid_nums, 1)
             invalid_nums.append(num)
         elif item == "text":
             # Get random colour
             colour_val = random.randint(0, len(num_to_colours) - 1)
 
-            randomiseText(num_to_colours[colour_val])
+            randomiseText(pixel_framebuf, num_to_colours[colour_val])

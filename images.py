@@ -11,7 +11,7 @@ from PIL import Image
 # Custom imports
 from rpi import *
 
-def displayImage(image_path, blend = False, lock_aspect = False):
+def displayImage(pixel_framebuf, image_path, blend = False, lock_aspect = False):
     image = Image.open(image_path)
     if lock_aspect:
         image = image.thumbnail((BOARD_WIDTH, BOARD_WIDTH))
@@ -28,7 +28,7 @@ def displayImage(image_path, blend = False, lock_aspect = False):
     pixel_framebuf.display()
 
 # Cycle through random images
-def randomiseImage(invalid_numbers, delay = 1):
+def randomiseImage(pixel_framebuf, invalid_numbers, delay = 1):
     # Get all the image paths in the images directory
     image_dir = "images/"
     all_images = [f"{image_dir}{img}" for img in os.listdir(image_dir)]
@@ -38,7 +38,7 @@ def randomiseImage(invalid_numbers, delay = 1):
     while number in invalid_numbers:
         number = random.randint(0, len(all_images) - 1)
 
-    displayImage(all_images[number], lock_aspect=True)
+    displayImage(pixel_framebuf, all_images[number], lock_aspect=True)
     time.sleep(delay)
 
     # Return the number so that it can be removed from being chosen again
