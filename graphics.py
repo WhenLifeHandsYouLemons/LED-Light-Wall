@@ -97,17 +97,13 @@ def testGraphics(delay = 1):
     scrollText(pixels, pixel_framebuf, "Text", COLOURS["Red"], 0.01)
     setAllPixelsColour(pixels, COLOURS["Black"])
 
-# Abstract for randomisePatterns():
-# The main idea of this function is to run it once every iteration in the running while loop (which runs forever)
-# and have it continiously output patterns, only to be interrupted using if statements when:
-    # 1. Ultrasonics sense something and it goes into the hand tracking ripple/circularWave
-    # 2. When the time isn't when people will be using it; eg: at night, where it will be turned off.
-
 # Displays multiple wave patterns with random colours, positions, durations, and more
 def randomisePatterns():
-    n = 6   # Number of patterns to available
+    n = 6   # Number of patterns available
     num_of_patterns = random.randint(1, 3)
+
     print(f"Total patterns: {num_of_patterns}")
+
     max_fade = 7
     max_duration = 30
     if num_of_patterns == 3:
@@ -120,52 +116,50 @@ def randomisePatterns():
     pos = []
 
     # Cycle through color wheel for complementary colors
-    color = random.randint(0, len(COLOURS) - 4)
+    color = random.randint(0, len(COLOURS) - 5)
 
     for i in range(num_of_patterns):
         pattern = random.randint(1, n)
-        
+
         print(f"Getting pattern {i}, chosen {pattern}")
 
-        # Wave
-        if pattern == 1:
+        if pattern == 1:    # Wave
             coords = random.randint(0, 3)
             duration = random.randint(15, max_duration - 1)
             wave = precomputeWave(coords, duration)
-            # check = True
 
             # Randomize color
             # d = dice to have chance of outlying colors of brown, grey, black and white
             d_max = 15
-            d = random.randint(1, d_max)
+            d = random.randint(0, d_max)
+
             if d == d_max:
                 i_color = len(COLOURS) - 1
-            elif d == d_max - 1:
-                i_color = len(COLOURS) - 2
             elif d == d_max - 2:
                 i_color == len(COLOURS) - 3
             else:
                 i_color = color
+
                 if d == 2 or d == 3: # To skip some colors, for variance
                     color += d
                 else:
                     color += 1
+
                 # Reset back to 0
-                if color > len(COLOURS) - 4:
-                    color = 0 + (color - (len(COLOURS) - 4))
+                if color > len(COLOURS) - 5:
+                    color = 0 + (color - (len(COLOURS) - 5))
 
             # Set ending color to always be black
-            e_color = len(COLOURS) - 1
+            e_color = len(COLOURS) - 2
 
             fade = random.randint(1, max_fade)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        # Ripple
-        elif pattern == 2:
-
+        elif pattern == 2:  # Ripple
             # Randomize duration
             duration = random.randint(3, max_duration)
+
             # Randomize position
             x = random.randint(0, 29)
             y = random.randint(0, 19)
@@ -175,15 +169,20 @@ def randomisePatterns():
             for ii in pos:
                 dx = math.fabs(x - ii[0])
                 dy = math.fabs(y - ii[1])
+
                 if (dx < 4 or dy < 4):
                     check = True
+
             while check:
                 x = random.randint(0, 29)
                 y = random.randint(0, 19)
+
                 check = False
+
                 for ii in pos:
                     dx = math.fabs(x - ii[0])
                     dy = math.fabs(y - ii[1])
+
                     if (dx < 4 or dy < 4):
                         check = True
 
@@ -193,36 +192,36 @@ def randomisePatterns():
             # Randomize color
             # d = dice to have chance of outlying colors of brown, grey, black and white
             d_max = 15
-            d = random.randint(1, d_max)
+            d = random.randint(0, d_max)
             if d == d_max:
                 i_color = len(COLOURS) - 1
-            elif d == d_max - 1:
-                i_color = len(COLOURS) - 2
             elif d == d_max - 2:
                 i_color = len(COLOURS) - 3
             else:
                 i_color = color
+
                 if d == 2 or d == 3: # To skip some colors, for variance
                     color += d
                 else:
                     color += 1
+
                 # Reset back to 0
-                if color > len(COLOURS) - 4:
-                    color = 0 + (color - (len(COLOURS) - 4))
+                if color > len(COLOURS) - 5:
+                    color = 0 + (color - (len(COLOURS) - 5))
 
             # Set ending color to always be black
-            e_color = len(COLOURS) - 1
+            e_color = len(COLOURS) - 2
 
             fade = random.randint(1, max_fade)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        # Rain
-        elif pattern == 3:
+        elif pattern == 3:  # Rain
             num_of_drops = random.randint(3, 10)
             d_max = 15
             # Blue Green to Blue Purple; Skew to more 'rain-like colors'
             d = random.randint(1, d_max)
+
             if d == 1:
                 i_color = 9
             elif d == 2:
@@ -237,38 +236,39 @@ def randomisePatterns():
                 i_color = 14
             else:
                 i_color = color
+
                 if d == 2 or d == 3: # To skip some colors, for variance
                     color += d
                 else:
                     color += 1
-                # Reset back to 0
-                if color > len(COLOURS) - 4:
-                    color = 0 + (color - (len(COLOURS) - 4))
 
+                # Reset back to 0
+                if color > len(COLOURS) - 5:
+                    color = 0 + (color - (len(COLOURS) - 5))
 
             # Set ending color to always be black
-            e_color = len(COLOURS) - 1
+            e_color = len(COLOURS) - 2
 
             temp_pos = []
 
-            ii = 0
-            while i < num_of_drops:
+            for ii in range(num_of_drops):
                 # Ensure that the same x position doesn't repeat
                 check = False
                 while check == False:
                     check = True
                     x = random.randint(0, 29)
+
                     for iii in temp_pos:
                         if iii == x:
                             check = False
+
                 fade = random.randint(1, max_fade)
                 wave = precomputeRain(x)
                 wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
 
                 temp_pos.append(x)
                 log.append(wave)
-        # Lines
-        elif pattern == 4:
+        elif pattern == 4:  # Lines
             # Randomize width of line
             width = random.randint(1, 5)
 
@@ -281,15 +281,19 @@ def randomisePatterns():
             for ii in pos:
                 dx = math.fabs(x - ii[0])
                 dy = math.fabs(y - ii[1])
+
                 if (dx < 4 or dy < 4):
                     check = True
+
             while check:
                 x = random.randint(0, 29)
                 y = random.randint(0, 19)
                 check = False
+
                 for ii in pos:
                     dx = math.fabs(x - ii[0])
                     dy = math.fabs(y - ii[1])
+
                     if (dx < 4 or dy < 4):
                         check = True
 
@@ -302,31 +306,42 @@ def randomisePatterns():
             for ii in pos:
                 dx = math.fabs(e_x - ii[0])
                 dy = math.fabs(e_y - ii[1])
+
                 if (dx < 4 or dy < 4):
                     check = True
+
             while check:
                 e_x = random.randint(0, 29)
                 e_y = random.randint(0, 19)
                 check = False
+
                 for ii in pos:
                     dx = math.fabs(e_x - ii[0])
                     dy = math.fabs(e_y - ii[1])
+
                     if (dx < 4 or dy < 4):
                         check = True
 
-            d = random.randint(0, 10)
-            i_color = color
-            if d == 2 or d == 3: # To skip some colors, for variance
-                    color += d
+            d_max = 15
+            d = random.randint(0, d_max)
+            if d == d_max:
+                i_color = len(COLOURS) - 1
+            elif d == d_max - 2:
+                i_color == len(COLOURS) - 3
             else:
-                color += 1
-            # Reset back to 0
-            if color > len(COLOURS) - 4:
-                color = 0 + (color - (len(COLOURS) - 4))
+                i_color = color
 
+                if d == 2 or d == 3: # To skip some colors, for variance
+                    color += d
+                else:
+                    color += 1
+
+                # Reset back to 0
+                if color > len(COLOURS) - 5:
+                    color = 0 + (color - (len(COLOURS) - 5))
 
             # Set ending color to always be black
-            e_color = len(COLOURS) - 1
+            e_color = len(COLOURS) - 2
 
             wave = precomputeLines(x, y, e_x, e_y, width)
             fade = random.randint(1, max_fade)
@@ -335,10 +350,10 @@ def randomisePatterns():
             pos.append([x, y])
             pos.append([e_x, e_y])
             log.append(wave)
-        # Circle
-        elif pattern == 5:
+        elif pattern == 5:  # Circle
             # Randomize duration
             duration = random.randint(3, max_duration)
+
             # Randomize position
             x = random.randint(0, 29)
             y = random.randint(0, 19)
@@ -348,15 +363,19 @@ def randomisePatterns():
             for ii in pos:
                 dx = math.fabs(x - ii[0])
                 dy = math.fabs(y - ii[1])
+
                 if (dx < 4 or dy < 4):
                     check = True
+
             while check:
                 x = random.randint(0, 29)
                 y = random.randint(0, 19)
                 check = False
+
                 for ii in pos:
                     dx = math.fabs(x - ii[0])
                     dy = math.fabs(y - ii[1])
+
                     if (dx < 4 or dy < 4):
                         check = True
 
@@ -366,32 +385,31 @@ def randomisePatterns():
             # Randomize color
             # d = dice to have chance of outlying colors of brown, grey, black and white
             d_max = 15
-            d = random.randint(1, d_max)
+            d = random.randint(0, d_max)
             if d == d_max:
                 i_color = len(COLOURS) - 1
-            elif d == d_max - 1:
-                i_color = len(COLOURS) - 2
             elif d == d_max - 2:
                 i_color = len(COLOURS) - 3
             else:
                 i_color = color
+
                 if d == 2 or d == 3: # To skip some colors, for variance
                     color += d
                 else:
                     color += 1
+
                 # Reset back to 0
-                if color > len(COLOURS) - 4:
-                    color = 0 + (color - (len(COLOURS) - 4))
+                if color > len(COLOURS) - 5:
+                    color = 0 + (color - (len(COLOURS) - 5))
 
             # Set ending color to always be black
-            e_color = len(COLOURS) - 1
+            e_color = len(COLOURS) - 2
 
             fade = random.randint(1, max_fade)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        # Text or image
-        elif pattern == 6:
+        elif pattern == 6:  # Text or image
             # Choose between text or image
             pat_type = random.randint(0, 1)
 
@@ -403,7 +421,8 @@ def randomisePatterns():
                 log.append("image")
 
         print(f"Got pattern {i}")
-    # Go through log and either add to a to-merge array or if we need to display text and images
+
+    # Go through log and either add to a to-merge array or if we need to display text and images (non-merge array)
     to_merge = []
     non_merge = []
     for item in log:
