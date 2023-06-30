@@ -85,6 +85,7 @@ def randomiseText(pixel_framebuf, colour, scroll_delay = None):
 
             total_shown += 1
 
+# Tests all graphics functions
 def testGraphics(delay = 1):
     drawLine(pixel_framebuf, 0, 0, 3, 2, COLOURS["Green"])
     drawStraightLine(pixel_framebuf, 4, 4, 5, COLOURS["Blue"], True)
@@ -99,15 +100,20 @@ def testGraphics(delay = 1):
 
 # Displays multiple wave patterns with random colours, positions, durations, and more
 def randomisePatterns():
-    n = 6   # Number of patterns available
-    num_of_patterns = random.randint(1, 3)
+    N = 6   # Number of patterns available
+    NUM_PATTERNS = random.randint(1, 3)
 
-    print(f"Total patterns: {num_of_patterns}")
+    print(f"Total patterns: {NUM_PATTERNS}")
 
-    max_fade = 7
-    max_duration = 30
-    if num_of_patterns == 3:
-        max_duration = 20
+    MIN_FADE = 3
+    MAX_FADE = 7
+
+    MIN_RIPPLE_DURATION = 5
+    MAX_DURATION = 30
+    if NUM_PATTERNS == 3:
+        MAX_DURATION = 20
+
+    MAX_TIME = 10
 
     # Log to contain all instances of waves to merge at the end
     log = []
@@ -118,15 +124,18 @@ def randomisePatterns():
     # Cycle through color wheel for complementary colors
     color = random.randint(0, len(COLOURS) - 5)
 
-    for i in range(num_of_patterns):
-        pattern = random.randint(1, n)
+    for i in range(NUM_PATTERNS):
+        pattern = random.randint(1, N)
 
         print(f"Getting pattern {i}, chosen {pattern}")
 
         if pattern == 1:    # Wave
-            coords = random.randint(0, 3)
-            duration = random.randint(15, max_duration - 1)
-            wave = precomputeWave(coords, duration)
+            direction = random.randint(0, 3)
+            if direction in [0, 2]:
+                duration = random.randint(10, BOARD_HEIGHT - 1)
+            else:
+                duration = random.randint(15, BOARD_WIDTH - 1)
+            wave = precomputeWave(direction, duration)
 
             # Randomize color
             # d = dice to have chance of outlying colors of brown, grey, black and white
@@ -136,7 +145,7 @@ def randomisePatterns():
             if d == d_max:
                 i_color = len(COLOURS) - 1
             elif d == d_max - 2:
-                i_color == len(COLOURS) - 3
+                i_color = len(COLOURS) - 3
             else:
                 i_color = color
 
@@ -152,13 +161,13 @@ def randomisePatterns():
             # Set ending color to always be black
             e_color = len(COLOURS) - 2
 
-            fade = random.randint(1, max_fade)
+            fade = random.randint(MIN_FADE, MAX_FADE)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
         elif pattern == 2:  # Ripple
             # Randomize duration
-            duration = random.randint(3, max_duration)
+            duration = random.randint(MIN_RIPPLE_DURATION, MAX_DURATION)
 
             # Randomize position
             x = random.randint(0, 29)
@@ -212,12 +221,12 @@ def randomisePatterns():
             # Set ending color to always be black
             e_color = len(COLOURS) - 2
 
-            fade = random.randint(1, max_fade)
+            fade = random.randint(MIN_FADE, MAX_FADE)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
         elif pattern == 3:  # Rain
-            num_of_drops = random.randint(3, 10)
+            num_of_drops = random.randint(5, 10)
             d_max = 15
             # Blue Green to Blue Purple; Skew to more 'rain-like colors'
             d = random.randint(1, d_max)
@@ -262,7 +271,7 @@ def randomisePatterns():
                         if iii == x:
                             check = False
 
-                fade = random.randint(1, max_fade)
+                fade = random.randint(MIN_FADE, MAX_FADE)
                 wave = precomputeRain(x)
                 wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
 
@@ -270,7 +279,7 @@ def randomisePatterns():
                 log.append(wave)
         elif pattern == 4:  # Lines
             # Randomize width of line
-            width = random.randint(1, 5)
+            width = random.randint(1, 3)
 
             # Randomize start of line
             x = random.randint(0, 29)
@@ -327,7 +336,7 @@ def randomisePatterns():
             if d == d_max:
                 i_color = len(COLOURS) - 1
             elif d == d_max - 2:
-                i_color == len(COLOURS) - 3
+                i_color = len(COLOURS) - 3
             else:
                 i_color = color
 
@@ -344,7 +353,7 @@ def randomisePatterns():
             e_color = len(COLOURS) - 2
 
             wave = precomputeLines(x, y, e_x, e_y, width)
-            fade = random.randint(1, max_fade)
+            fade = random.randint(MIN_FADE, MAX_FADE)
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
 
             pos.append([x, y])
@@ -352,13 +361,13 @@ def randomisePatterns():
             log.append(wave)
         elif pattern == 5:  # Circle
             # Randomize duration
-            duration = random.randint(3, max_duration)
+            duration = random.randint(MIN_RIPPLE_DURATION, MAX_DURATION)
 
             # Randomize position
             x = random.randint(0, 29)
             y = random.randint(0, 19)
 
-            # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
+            # Check that positioning of the origin is 'unique'- the difference in positions must be greater than 4 LEDs
             check = False
             for ii in pos:
                 dx = math.fabs(x - ii[0])
@@ -405,7 +414,7 @@ def randomisePatterns():
             # Set ending color to always be black
             e_color = len(COLOURS) - 2
 
-            fade = random.randint(1, max_fade)
+            fade = random.randint(MIN_FADE, MAX_FADE)
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
@@ -432,9 +441,9 @@ def randomisePatterns():
             to_merge.append(item)
 
     # Randomise all the pattern timings
-    timings = [random.randint(0, 15) for item in to_merge]
+    TIMINGS = [random.randint(0, MAX_TIME) for item in to_merge]
     # Merge all to_merge patterns
-    merged_patterns = mergeWaves(to_merge, timings)
+    merged_patterns = mergeWaves(to_merge, TIMINGS)
 
     return merged_patterns, non_merge
 
