@@ -115,6 +115,8 @@ def randomisePatterns():
 
     MAX_TIME = 10
 
+    MIN_SEPARATION = 2
+
     # Log to contain all instances of waves to merge at the end
     log = []
 
@@ -125,9 +127,13 @@ def randomisePatterns():
     color = random.randint(0, len(COLOURS) - 5)
 
     for i in range(NUM_PATTERNS):
-        pattern = random.randint(1, N)
+        pattern = random.randint(1, N**2)
+        # Making it rarer that an image or text is chosen
+        if pattern != 36:
+            pattern = pattern % 5
+            pattern += 1
 
-        print(f"Getting pattern {i}, chosen {pattern}")
+        print(f"Getting pattern {i+1}, chosen {pattern}")
 
         if pattern == 1:    # Wave
             direction = random.randint(0, 3)
@@ -179,7 +185,7 @@ def randomisePatterns():
                 dx = math.fabs(x - ii[0])
                 dy = math.fabs(y - ii[1])
 
-                if (dx < 4 or dy < 4):
+                if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                     check = True
 
             while check:
@@ -192,7 +198,7 @@ def randomisePatterns():
                     dx = math.fabs(x - ii[0])
                     dy = math.fabs(y - ii[1])
 
-                    if (dx < 4 or dy < 4):
+                    if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                         check = True
 
             wave = precomputeRipple(x, y, duration)
@@ -291,7 +297,7 @@ def randomisePatterns():
                 dx = math.fabs(x - ii[0])
                 dy = math.fabs(y - ii[1])
 
-                if (dx < 4 or dy < 4):
+                if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                     check = True
 
             while check:
@@ -303,56 +309,64 @@ def randomisePatterns():
                     dx = math.fabs(x - ii[0])
                     dy = math.fabs(y - ii[1])
 
-                    if (dx < 4 or dy < 4):
+                    if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                         check = True
 
-            # Randomize end of line
-            e_x = random.randint(0, 29)
-            e_y = random.randint(0, 19)
-
-            # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
-            check = False
-            for ii in pos:
-                dx = math.fabs(e_x - ii[0])
-                dy = math.fabs(e_y - ii[1])
-
-                if (dx < 4 or dy < 4):
-                    check = True
-
-            while check:
+            e_check = True
+            while e_check:
+                # Randomize end of line
                 e_x = random.randint(0, 29)
                 e_y = random.randint(0, 19)
-                check = False
+                e_check = False
 
+                # Check that positioning of the origin is 'Unique'- the difference in positioning must be greater than 4 LEDs
+                check = False
                 for ii in pos:
                     dx = math.fabs(e_x - ii[0])
                     dy = math.fabs(e_y - ii[1])
 
-                    if (dx < 4 or dy < 4):
+                    if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                         check = True
 
-            d_max = 15
-            d = random.randint(0, d_max)
-            if d == d_max:
-                i_color = len(COLOURS) - 1
-            elif d == d_max - 2:
-                i_color = len(COLOURS) - 3
-            else:
-                i_color = color
+                while check:
+                    e_x = random.randint(0, 29)
+                    e_y = random.randint(0, 19)
+                    check = False
 
-                if d == 2 or d == 3: # To skip some colors, for variance
-                    color += d
+                    for ii in pos:
+                        dx = math.fabs(e_x - ii[0])
+                        dy = math.fabs(e_y - ii[1])
+
+                        if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
+                            check = True
+
+                d_max = 15
+                d = random.randint(0, d_max)
+                if d == d_max:
+                    i_color = len(COLOURS) - 1
+                elif d == d_max - 2:
+                    i_color = len(COLOURS) - 3
                 else:
-                    color += 1
+                    i_color = color
 
-                # Reset back to 0
-                if color > len(COLOURS) - 5:
-                    color = 0 + (color - (len(COLOURS) - 5))
+                    if d == 2 or d == 3: # To skip some colors, for variance
+                        color += d
+                    else:
+                        color += 1
 
-            # Set ending color to always be black
-            e_color = len(COLOURS) - 2
+                    # Reset back to 0
+                    if color > len(COLOURS) - 5:
+                        color = 0 + (color - (len(COLOURS) - 5))
 
-            wave = precomputeLines(x, y, e_x, e_y, width)
+                # Set ending color to always be black
+                e_color = len(COLOURS) - 2
+
+                wave = precomputeLines(x, y, e_x, e_y, width)
+
+                # Fixes ZeroDivisionError in precomputeColours
+                if len(wave) == 1:
+                    e_check = True
+
             fade = random.randint(MIN_FADE, MAX_FADE)
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
 
@@ -373,7 +387,7 @@ def randomisePatterns():
                 dx = math.fabs(x - ii[0])
                 dy = math.fabs(y - ii[1])
 
-                if (dx < 4 or dy < 4):
+                if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                     check = True
 
             while check:
@@ -385,7 +399,7 @@ def randomisePatterns():
                     dx = math.fabs(x - ii[0])
                     dy = math.fabs(y - ii[1])
 
-                    if (dx < 4 or dy < 4):
+                    if (dx < MIN_SEPARATION or dy < MIN_SEPARATION):
                         check = True
 
             wave = precomputeCircularWave(x, y, duration)
@@ -418,7 +432,7 @@ def randomisePatterns():
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        elif pattern == 6:  # Text or image
+        elif pattern == 36:  # Text or image
             # Choose between text or image
             pat_type = random.randint(0, 1)
 
@@ -429,7 +443,7 @@ def randomisePatterns():
             else:
                 log.append("image")
 
-        print(f"Got pattern {i}")
+        print(f"Got pattern {i+1}")
 
     # Go through log and either add to a to-merge array or if we need to display text and images (non-merge array)
     to_merge = []
@@ -442,6 +456,9 @@ def randomisePatterns():
 
     # Randomise all the pattern timings
     TIMINGS = [random.randint(0, MAX_TIME) for item in to_merge]
+
+    print("Merging waves...")
+
     # Merge all to_merge patterns
     merged_patterns = mergeWaves(to_merge, TIMINGS)
 

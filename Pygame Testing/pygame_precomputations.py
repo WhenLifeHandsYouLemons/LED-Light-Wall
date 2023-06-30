@@ -1,5 +1,5 @@
 """
-Precomputations of wave patterns for pygame
+Precomputations of patterns for pygame
 
 Note: The coordinates start from the bottom left and the first LED is (0, 0)
 """
@@ -460,8 +460,14 @@ def mergeWaves(wave_arrays, wave_starts):
                         total_colour[1] += sorted_wave_array[tick][check_led_no][2][1]
                         total_colour[2] += sorted_wave_array[tick][check_led_no][2][2]
 
+                        # Get the highest contributing value to see how much it should contribute to the total colour
+                        highest_value = max(sorted_wave_array[tick][check_led_no][2])
+                        highest_value = math.log(highest_value + 1) / math.log(255)
+                        if highest_value > 255:
+                            highest_value = 255
+
                         # Increment total leds
-                        total_leds += 1
+                        total_leds += highest_value
                     check_led_no += 1
 
                 # Get average of total
@@ -482,7 +488,7 @@ def changeWaveSpeed(wave_array, ratio = 1):
     new_wave = []
 
     # Raise an error if it's not a positive value
-    if ratio < 0:
+    if ratio <= 0:
         raise ValueError(f"The ratio for wave speed change is out of bounds: ratio = {ratio}")
     elif ratio < 1:
         # To slow down the wave
@@ -520,6 +526,7 @@ def displayWave(wave_array, delay = 0):
             LED[2][2] = int(LED[2][2])
             setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
+        pygame.display.update()
         time.sleep(delay)
 
 # Displays multiple wave patterns with random colours, positions, durations, and more
@@ -551,7 +558,11 @@ def randomisePatterns():
     color = random.randint(0, len(COLOURS) - 5)
 
     for i in range(NUM_PATTERNS):
-        pattern = random.randint(1, N)
+        pattern = random.randint(1, N**2)
+        # Making it rarer that an image or text is chosen
+        if pattern != 36:
+            pattern = pattern % 5
+            pattern += 1
 
         print(f"Getting pattern {i+1}, chosen {pattern}")
 
@@ -852,7 +863,7 @@ def randomisePatterns():
 
             wave = precomputeColours(wave, COLOURS[num_to_colours[i_color]], COLOURS[num_to_colours[e_color]], fade)
             log.append(wave)
-        elif pattern == 6:  # Text or image
+        elif pattern == 36:  # Text or image
             # Choose between text or image
             pat_type = random.randint(0, 1)
 
@@ -885,5 +896,5 @@ def randomisePatterns():
     return merged_patterns, non_merge
 
 # This takes a precomputed array and a text/image array and displays it on the board
-def displayRandomPatterns(merged_array, non_merged_array):
-    displayWave(merged_array, 0.05)
+def displayRandomPatterns(merged_array, non_merged_array, delay=0.05):
+    displayWave(merged_array, delay)

@@ -458,8 +458,14 @@ def mergeWaves(wave_arrays, wave_starts):
                         total_colour[1] += sorted_wave_array[tick][check_led_no][2][1]
                         total_colour[2] += sorted_wave_array[tick][check_led_no][2][2]
 
+                        # Get the highest contributing value to see how much it should contribute to the total colour
+                        highest_value = max(sorted_wave_array[tick][check_led_no][2])
+                        highest_value = math.log(highest_value + 1) / math.log(255)
+                        if highest_value > 255:
+                            highest_value = 255
+
                         # Increment total leds
-                        total_leds += 1
+                        total_leds += highest_value
                     check_led_no += 1
 
                 # Get average of total
@@ -480,7 +486,7 @@ def changeWaveSpeed(wave_array, ratio = 1):
     new_wave = []
 
     # Raise an error if it's not a positive value
-    if ratio < 0:
+    if ratio <= 0:
         raise ValueError(f"The ratio for wave speed change is out of bounds: ratio = {ratio}")
     elif ratio < 1:
         # To slow down the wave
@@ -516,8 +522,7 @@ def displayWave(wave_array, delay = 0):
             LED[2][0] = int(LED[2][0])
             LED[2][1] = int(LED[2][1])
             LED[2][2] = int(LED[2][2])
-            setPixelsColour(pixels, LED[2], getLED(LED[0], LED[1]))
+            setPixelsColour(LED[2], getLED(LED[0], LED[1]))
 
-        pixels.show()
-        checkUltrasonics()
+        pygame.display.update()
         time.sleep(delay)

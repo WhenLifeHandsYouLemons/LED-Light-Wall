@@ -12,7 +12,7 @@ from pygame_precomputations import *
 # Reset board
 setAllPixelsColour(COLOURS["Black"])
 
-# tiles = [[17, 2], [22, 12], [3, 17], [8, 7]]
+print("\nStarting display.")
 
 while RUNNING_WINDOW == True:
     clock.tick(60)
@@ -21,9 +21,10 @@ while RUNNING_WINDOW == True:
     merged, non_merged = randomisePatterns()
 
     print("Displaying waves.")
-    # displayRandomPatterns(merged, non_merged)
+    displayRandomPatterns(merged, non_merged)
 
     setAllPixelsColour(COLOURS["Black"])
+
     pygame.display.update()
 
     for event in pygame.event.get():

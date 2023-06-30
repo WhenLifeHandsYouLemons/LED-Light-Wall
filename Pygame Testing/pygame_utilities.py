@@ -131,9 +131,6 @@ def setPixelsColour(colour, pixel_index_start, pixel_index_end = None):
             # Increment LED index
             pixel_index_start = pixel_index_start + 1
 
-    # Update LEDs
-    pygame.display.update()
-
 # Dictionary for colors
 COLOURS = {
     "Red" : (255, 0, 0),
