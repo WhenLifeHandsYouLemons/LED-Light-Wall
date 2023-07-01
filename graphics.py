@@ -113,7 +113,7 @@ def randomisePatterns():
     if NUM_PATTERNS == 3:
         MAX_DURATION = 20
 
-    MAX_TIME = 10
+    MAX_TIME_START = 10
 
     MIN_SEPARATION = 2
 
@@ -133,7 +133,7 @@ def randomisePatterns():
             pattern = pattern % 5
             pattern += 1
 
-        print(f"Getting pattern {i+1}, chosen {pattern}")
+        print(f"Getting pattern number {i+1}, chosen pattern {pattern}")
 
         if pattern == 1:    # Wave
             direction = random.randint(0, 3)
@@ -364,7 +364,8 @@ def randomisePatterns():
                 wave = precomputeLines(x, y, e_x, e_y, width)
 
                 # Fixes ZeroDivisionError in precomputeColours
-                if len(wave) == 1:
+                # Also makes sure the generated line isn't too short
+                if len(wave) < 5:
                     e_check = True
 
             fade = random.randint(MIN_FADE, MAX_FADE)
@@ -443,7 +444,7 @@ def randomisePatterns():
             else:
                 log.append("image")
 
-        print(f"Got pattern {i+1}")
+        print(f"Got pattern number {i+1}")
 
     # Go through log and either add to a to-merge array or if we need to display text and images (non-merge array)
     to_merge = []
@@ -455,7 +456,7 @@ def randomisePatterns():
             to_merge.append(item)
 
     # Randomise all the pattern timings
-    TIMINGS = [random.randint(0, MAX_TIME) for item in to_merge]
+    TIMINGS = [random.randint(0, MAX_TIME_START) for i in range(len(to_merge))]
 
     print("Merging waves...")
 
