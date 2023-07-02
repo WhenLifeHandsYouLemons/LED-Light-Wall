@@ -27,7 +27,7 @@ def formatTime(time_array, hour = False, minute = False, second = False, ampm = 
         time_array.pop(0)
     elif ampm == True:  # If user wants it in 24-hour time
         if time_array[0] >= 12:
-            time_array[0] -= time_array[0] - 12
+            time_array[0] -= 12
             time_value = "PM"
         else:
             time_value = "AM"
@@ -48,7 +48,7 @@ def getDay():
     day = datetime.weekday(datetime.now())
     return days[day], day
 
-on_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday", "Friday"]
+on_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 on_time_range = [[8, 0, 0], [16, 30, 0]]
 
 
@@ -68,32 +68,17 @@ while True:
         this_time = getTime()
         print(f"\nCurrent time: {formatTime(this_time, hour=True, minute=True, second=True, ampm=True)}")
 
-        # To use if other works
-        # (if day is weekday) and ((if the hour is in between but not equal to start and end hour) or ((if the hour is equal to start hour) and if minute is higher than start minute and ((if minute is higher than start minute) or (if minute is equal to start minute and if second is higher than or equal to start second))) or ((if the hour is equal to end) and ((if minute is less than end) or (if minute is equal to end and if second is less than end))))
-            # set true
-
         # Checks if current time and day is within valid range
         run_check = False
-        if this_day[0] in on_days:
-            if this_time[0] > on_time_range[0][0] and this_time[0] < on_time_range[1][0]:
-                run_check = True
-            elif this_time[0] == on_time_range[0][0]:
-                if this_time[1] > on_time_range[0][1]:
-                    run_check = True
-                elif this_time[1] == on_time_range[0][1]:
-                    if this_time[2] >= on_time_range[0][2]:
-                        run_check = True
-            elif this_time[0] == on_time_range[1][0]:
-                if this_time[1] < on_time_range[1][1]:
-                    run_check = True
-                elif this_time[1] == on_time_range[1][1]:
-                    if this_time[2] < on_time_range[1][2]:
-                        run_check = True
+        if (this_day[0] in on_days) and ((this_time[0] > on_time_range[0][0] and this_time[0] < on_time_range[1][0]) or ((this_time[0] == on_time_range[0][0]) and ((this_time[1] > on_time_range[0][1]) or ((this_time[1] == on_time_range[0][1]) and (this_time[2] >= on_time_range[0][2])))) or ((this_time[0] == on_time_range[1][0]) and ((this_time[1] < on_time_range[1][1]) or ((this_time[1] == on_time_range[1][1]) and (this_time[2] < on_time_range[1][2]))))):
+            run_check = True
 
         # If it's supposed to be displaying
         if run_check == True:
-            # Do stuff
+            # Display anything in here
             pass
+        else:
+            time.sleep(60)
 
     # While it's a weekend
     while this_day[0] not in on_days:
