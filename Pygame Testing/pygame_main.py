@@ -4,57 +4,141 @@ Main loop
 import sys
 import pygame
 from datetime import datetime
+import time
 
 # Custom imports
 from pygame_constants import *
 from pygame_utilities import *
 from pygame_precomputations import *
 
-# Returns the current time (timezone sensitive) in the format ["hh", "mm", "ss"]
+
+# Returns the current time (timezone sensitive) in the format [hour, minute, second]
+# where each value is an integer
 def getTime():
     time = str(datetime.now()).split(" ")[1].split(".")[0]
     time_array = time.split(":")
 
+    for i in range(len(time_array)):
+        time_array[i] = int(time_array[i])
+
     return time_array
 
 # Formats the getTime output into "hh:mm:ss"
-def formatTime(time_array, hour = False, minute = False, second = False):
+def formatTime(time_array, hour = False, minute = False, second = False, ampm = False):
+    # Don't alter original data
+    time_array = time_array.copy()
+
+    time_value = ""
+    # Remove any values that user doesn't want
     if second == False:
         time_array.pop(2)
     if minute == False:
         time_array.pop(1)
     if hour == False:
         time_array.pop(0)
+    elif ampm == True:  # If user wants it in 24-hour time
+        if time_array[0] >= 12:
+            time_array[0] -= time_array[0] - 12
+            time_value = "PM"
+        else:
+            time_value = "AM"
 
-    time = ":".join(time_array)
+        if time_array[0] == 0:
+            time_array[0] = 12
+
+    for i in range(len(time_array)):
+        time_array[i] = str(time_array[i])
+
+    time = f"{':'.join(time_array)} {time_value}"
 
     return time
+
+# Returns a string of today's day
+def getDay():
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    day = datetime.weekday(datetime.now())
+    return days[day], day
+
+# Allowed time and days
+on_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday", "Friday"]
+# Uses 24-hour time format
+on_time_range = [[12, 45, 0], [13, 0, 0]]
 
 # Reset board
 setAllPixelsColour(COLOURS["Black"])
 
+# Startup information
 print("\nStarting display.")
+print(f"\n{formatTime(getTime(), hour=True, minute=True, second=True, ampm=True)}")
+print(getDay()[0])
 
-while RUNNING_WINDOW == True:
-    this_time = formatTime(getTime(), hour=True, minute=True, second=True)
-    print(f"\nCurrent time: {this_time}")
-
+# Main loop
+while RUNNING_WINDOW:
     clock.tick(60)
 
-    print("\nCalculating waves...")
-    merged, non_merged = randomisePatterns()
+    # Get today's day
+    this_day = getDay()
+    run_check = False
 
-    print("Displaying waves.")
-    #! Remember to remove the delay of 0 or change it to 0.05
-    displayRandomPatterns(merged, non_merged, 0)
+    # While it's a weekday
+    while this_day[0] in on_days and RUNNING_WINDOW:
+        # Get current time
+        this_time = getTime()
+        print(f"\nCurrent time: {formatTime(this_time, hour=True, minute=True, second=True, ampm=True)}")
 
-    setAllPixelsColour(COLOURS["Black"])
+        # To use if other works
+        # (if day is weekday) and ((if the hour is in between but not equal to start and end hour) or ((if the hour is equal to start hour) and if minute is higher than start minute and ((if minute is higher than start minute) or (if minute is equal to start minute and if second is higher than or equal to start second))) or ((if the hour is equal to end) and ((if minute is less than end) or (if minute is equal to end and if second is less than end))))
+            # set true
 
-    pygame.display.update()
+        # Checks if current time and day is within valid range
+        run_check = False
+        if this_day[0] in on_days:
+            if this_time[0] > on_time_range[0][0] and this_time[0] < on_time_range[1][0]:
+                run_check = True
+            elif this_time[0] == on_time_range[0][0]:
+                if this_time[1] > on_time_range[0][1]:
+                    run_check = True
+                elif this_time[1] == on_time_range[0][1]:
+                    if this_time[2] >= on_time_range[0][2]:
+                        run_check = True
+            elif this_time[0] == on_time_range[1][0]:
+                if this_time[1] < on_time_range[1][1]:
+                    run_check = True
+                elif this_time[1] == on_time_range[1][1]:
+                    if this_time[2] < on_time_range[1][2]:
+                        run_check = True
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            RUNNING_WINDOW = False
-            pygame.quit()
+        # If it's supposed to be displaying
+        if run_check == True:
+            # Do stuff
+            print("\nCalculating waves...")
+            merged, non_merged = randomisePatterns()
+
+            print("Displaying waves.")
+            #! Remember to remove the delay of 0 or change it to 0.05
+            displayRandomPatterns(merged, non_merged, 0.05)
+
+            setAllPixelsColour(COLOURS["Black"])
+
+            pygame.display.update()
+        else:
+            time.sleep(5)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                RUNNING_WINDOW = False
+                pygame.quit()
+
+    # While it's a weekend
+    while this_day[0] not in on_days and RUNNING_WINDOW:
+        this_day = getDay()
+        print(f"\nStopped for 24 hours because today is {this_day[0]}.\nWait until one of these days: {on_days}.")
+
+        # Don't do anything for the minimum amount of time possible -1
+        # I choose the number so that there's enough time for it to
+        # recheck the day and go into normal operation by it's specified on time.
+        time.sleep((on_time_range[0][0] * 60 * 60) + (on_time_range[0][1] * 60) + (on_time_range[0][2]) - 1)
 
 sys.exit()

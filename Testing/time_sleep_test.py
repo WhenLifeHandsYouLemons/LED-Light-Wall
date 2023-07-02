@@ -1,23 +1,44 @@
 from datetime import datetime
 import time
 
-# Returns the current time (timezone sensitive) in the format ["hh", "mm", "ss"]
+# Returns the current time (timezone sensitive) in the format [hour, minute, second]
+# where each value is an integer
 def getTime():
     time = str(datetime.now()).split(" ")[1].split(".")[0]
     time_array = time.split(":")
 
+    for i in range(len(time_array)):
+        time_array[i] = int(time_array[i])
+
     return time_array
 
 # Formats the getTime output into "hh:mm:ss"
-def formatTime(time_array, hour = False, minute = False, second = False):
+def formatTime(time_array, hour = False, minute = False, second = False, ampm = False):
+    # Don't alter original data
+    time_array = time_array.copy()
+
+    time_value = ""
+    # Remove any values that user doesn't want
     if second == False:
         time_array.pop(2)
     if minute == False:
         time_array.pop(1)
     if hour == False:
         time_array.pop(0)
+    elif ampm == True:  # If user wants it in 24-hour time
+        if time_array[0] >= 12:
+            time_array[0] -= time_array[0] - 12
+            time_value = "PM"
+        else:
+            time_value = "AM"
 
-    time = ":".join(time_array)
+        if time_array[0] == 0:
+            time_array[0] = 12
+
+    for i in range(len(time_array)):
+        time_array[i] = str(time_array[i])
+
+    time = f"{':'.join(time_array)} {time_value}"
 
     return time
 
@@ -25,36 +46,61 @@ def formatTime(time_array, hour = False, minute = False, second = False):
 def getDay():
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     day = datetime.weekday(datetime.now())
-    return days[day]
+    return days[day], day
 
-print(getTime())
-print(getDay())
+on_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday", "Friday"]
+on_time_range = [[8, 0, 0], [16, 30, 0]]
 
-on_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-on_time_ranges = [[["08", "00", "00"], []]]
 
+# Startup information
+print(f"\n{formatTime(getTime(), hour=True, minute=True, second=True, ampm=True)}")
+print(getDay()[0])
+
+# Main loop
 while True:
     # Get today's day
     this_day = getDay()
+    run_check = False
 
-    # While it is a weekday
-    while this_day in on_days:
+    # While it's a weekday
+    while this_day[0] in on_days:
         # Get current time
         this_time = getTime()
-        print(this_time)
+        print(f"\nCurrent time: {formatTime(this_time, hour=True, minute=True, second=True, ampm=True)}")
 
-        # Get the current day at 8am every day
-        if this_time == ["08", "00", "00"]:
-            this_day = getDay()
+        # To use if other works
+        # (if day is weekday) and ((if the hour is in between but not equal to start and end hour) or ((if the hour is equal to start hour) and if minute is higher than start minute and ((if minute is higher than start minute) or (if minute is equal to start minute and if second is higher than or equal to start second))) or ((if the hour is equal to end) and ((if minute is less than end) or (if minute is equal to end and if second is less than end))))
+            # set true
 
-        # If the time is in the valid time range
+        # Checks if current time and day is within valid range
+        run_check = False
+        if this_day[0] in on_days:
+            if this_time[0] > on_time_range[0][0] and this_time[0] < on_time_range[1][0]:
+                run_check = True
+            elif this_time[0] == on_time_range[0][0]:
+                if this_time[1] > on_time_range[0][1]:
+                    run_check = True
+                elif this_time[1] == on_time_range[0][1]:
+                    if this_time[2] >= on_time_range[0][2]:
+                        run_check = True
+            elif this_time[0] == on_time_range[1][0]:
+                if this_time[1] < on_time_range[1][1]:
+                    run_check = True
+                elif this_time[1] == on_time_range[1][1]:
+                    if this_time[2] < on_time_range[1][2]:
+                        run_check = True
+
+        # If it's supposed to be displaying
+        if run_check == True:
             # Do stuff
+            pass
 
-    # If it's a weekend
-    while this_day not in on_days:
+    # While it's a weekend
+    while this_day[0] not in on_days:
         this_day = getDay()
+        print(f"\nStopped for 24 hours because today is {this_day[0]}.\nWait until one of these days: {on_days}.")
 
-        # Don't do anything for 23h59m59s
+        # Don't do anything for 7h59m59s
         # I chose that specific number so that there's enough time for it to
         # recheck the day and go into normal operation by 8am.
-        time.sleep(86399)
+        time.sleep(28799)
