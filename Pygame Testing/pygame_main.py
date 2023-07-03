@@ -99,7 +99,6 @@ while RUNNING_WINDOW:
             merged, non_merged = randomisePatterns()
 
             print("Displaying waves.")
-            #! Remember to remove the delay of 0 or change it to 0.05
             displayRandomPatterns(merged, non_merged, 0.05)
 
             setAllPixelsColour(COLOURS["Black"])
@@ -117,12 +116,16 @@ while RUNNING_WINDOW:
 
     # While it's a weekend
     while this_day[0] not in on_days and RUNNING_WINDOW:
-        this_day = getDay()
         print(f"\nStopped for 8 hours because today is {this_day[0]}.\nWait until one of these days: {on_days}.")
 
         # Don't do anything for the minimum amount of time possible -1
         # I choose the number so that there's enough time for it to
         # recheck the day and go into normal operation by it's specified on time.
         time.sleep((on_time_range[0][0] * 60 * 60) + (on_time_range[0][1] * 60) + (on_time_range[0][2]) - 1)
+
+        # Recheck the day after sleeping
+        # This fixes an issue where it would get the day but finish the loop
+        # once more before exiting, which meant it sleeps for 8 hours on Monday
+        this_day = getDay()
 
 sys.exit()
