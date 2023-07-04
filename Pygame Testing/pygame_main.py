@@ -105,7 +105,8 @@ while RUNNING_WINDOW:
 
             pygame.display.update()
         else:
-            time.sleep(60)
+            # Wait for 5 minutes before rechecking the day and time
+            time.sleep(60 * 5)
 
         pygame.display.update()
 
@@ -118,10 +119,10 @@ while RUNNING_WINDOW:
     while this_day[0] not in on_days and RUNNING_WINDOW:
         print(f"\nStopped for 8 hours because today is {this_day[0]}.\nWait until one of these days: {on_days}.")
 
-        # Don't do anything for the minimum amount of time possible -1
+        # Don't do anything for the minimum amount of time possible - 10 seconds
         # I choose the number so that there's enough time for it to
         # recheck the day and go into normal operation by it's specified on time.
-        time.sleep((on_time_range[0][0] * 60 * 60) + (on_time_range[0][1] * 60) + (on_time_range[0][2]) - 1)
+        time.sleep((on_time_range[0][0] * 60 * 60) + (on_time_range[0][1] * 60) + (on_time_range[0][2]) - 10)
 
         # Recheck the day after sleeping
         # This fixes an issue where it would get the day but finish the loop
