@@ -7,13 +7,16 @@ The `displayImage` function displays an image on the screen. The function loads 
 ## Function Signature
 
 ```py
-def displayImage(image_path: str,
+def displayImage(pixel_framebuf,
+                 image_path: str,
                  blend: bool = False,
                  lock_aspect: bool = False) -> None:
     pass
 ```
 
 ## Parameters
+
+- `pixel_framebuf`: A Neopixel pixel_framebuffer object to display the text and images on.
 
 - `image_path` = `str`: A string representing the file path of the image to be displayed.
 
@@ -39,10 +42,10 @@ If the `blend` parameter is set to `False`, the loaded image is converted to RGB
 
 ```py
 # Display an image on the screen without blending and without locking aspect ratio
-displayImage("image.png")
+displayImage(pixel_framebuf, "image.png")
 
 # Display an image on the screen with blending and with locking aspect ratio
-displayImage("image.png", blend=True, lock_aspect=True)
+displayImage(pixel_framebuf, "image.png", blend=True, lock_aspect=True)
 ```
 
 In the example above, we call the `displayImage` function to display an image on the screen. The first call displays the image without blending and without locking the aspect ratio. The second call displays the image with blending and with locking the aspect ratio.

@@ -7,25 +7,25 @@ The `scrollText` function animates text scrolling from right to left on a pixel 
 ## Function Signature
 
 ```py
-def scrollText(text: str,
+def scrollText(pixel_framebuf,
+               text: str,
                colour: Tuple[int, int, int],
-               wait_time: float,
-               end_x: int,
+               delay: float = 0.05,
                y: int = 5) -> None:
     pass
 ```
 
 ## Parameters
 
-- `end_x` = `(int)`: An integer representing the x coordinate where the scrolling text will stop.
+- `pixel_framebuf`: A Neopixel pixel_framebuffer object to display the text and images on.
 
-- `y` = `(int)`: An integer representing the y coordinate of the top-left corner of the scrolling text.
-
-- `text` = `(str)`: A string representing the text to be scrolled on the pixel frame buffer.
+- `text` = `(str)`: A string representing the text to be scrolled on the Neopixel's pixel framebuffer.
 
 - `colour` = `(Tuple[int, int, int])`: A tuple of three integers representing the RGB color values for the scrolling text.
 
-- `wait_time` = `(float)`: A floating-point number representing the duration in seconds between each frame of the scrolling text animation.
+- `delay` = `(float)`: A floating-point number representing the duration in seconds between each frame of the scrolling text animation. The default is $0.05$.
+
+- `y` = `(int)`: An integer representing the y coordinate of the top-left corner of the scrolling text. The default is $5$.
 
 ## Return Value
 
@@ -33,7 +33,7 @@ def scrollText(text: str,
 
 ## Function Description
 
-The `scrollText` function animates the scrolling text on a pixel frame buffer by repeatedly calling the `drawText` function with different x coordinates. The function takes in the x coordinate where the scrolling text will stop, the y coordinate of the top-left corner of the scrolling text, the text to be scrolled,the RGB color values of the scrolling text, and the duration in seconds between each frame of the scrolling text animation.
+The `scrollText` function animates the scrolling text on a pixel frame buffer by repeatedly calling the `drawText` function with different x coordinates. The function takes in the y coordinate of the top-left corner of the scrolling text, the text to be scrolled, the RGB color values of the scrolling text, and the duration in seconds between each frame of the scrolling text animation.
 
 The `scrollText` function initializes the x coordinate to be off-screen to the right (`board_width + 1`). Then, it enters a loop where it calls the `drawText` function with the current x coordinate, y coordinate, text, and color. After displaying the text, the function waits for the specified duration using the `time.sleep` function and clears the pixel frame buffer by calling the `setAllPixelsColour` function with the color black. Finally, the function decrements the x coordinate by 1 and repeats the loop until the x coordinate is less than or equal to the specified end_x coordinate.
 
@@ -43,12 +43,12 @@ Once the scrolling text animation is complete, the function completes.
 
 ```py
 # Animate scrolling text with the message "Hello, world!" in red
-# The scrolling text starts at the right edge of the pixel frame buffer and stops at x = 0
+# The scrolling text starts at the right edge of the pixel frame buffer
 # The scrolling text animation waits for 0.1 seconds between each frame
-scrollText("Hello, world!", [255, 0, 0], 0.1, 0, 5)
+scrollText(pixel_framebuf, "Hello, world!", (255, 0, 0), 0.1, 5)
 ```
 
-In the example above, we call the `scrollText` function to animate scrolling text with the message "Hello, world!" in red on the pixel frame buffer. The scrolling text starts at the right edge of the pixel frame buffer and stops at $x=0$. The scrolling text animation waits for 0.1 seconds between each frame.
+In the example above, we call the `scrollText` function to animate scrolling text with the message "Hello, world!" in red on the pixel frame buffer. The scrolling text starts at the right edge of the screen. The scrolling text animation waits for 0.1 seconds between each frame.
 
 ## Exceptions
 

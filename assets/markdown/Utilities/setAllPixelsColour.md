@@ -7,7 +7,8 @@ The `setAllPixelsColour` function takes an RGB color as a tuple of three integer
 ## Function Signature
 
 ```py
-def setAllPixelsColour(colour: Tuple[int, int, int]) -> None:
+def setAllPixelsColour(pixels,
+                       colour: Tuple[int, int, int]) -> None:
     pass
 ```
 

@@ -7,17 +7,17 @@ The `randomiseText` function cycles randomly through a list of preset phrases an
 ## Function Signature
 
 ```py
-def randomiseText(colour: Tuple[int, int, int],
-                  delay: float,
+def randomiseText(pixel_framebuf,
+                  colour: Tuple[int, int, int],
                   scroll_delay: float) -> None:
     pass
 ```
 
 ## Parameters
 
-- `colour` = `Tuple[int, int, int]`: A tuple of three integers representing the RGB color values for the text.
+- `pixel_framebuf`: A Neopixel pixel_framebuffer object to display the text and images on.
 
-- `delay` = `float`: A float value representing the time to wait between each phrase.
+- `colour` = `Tuple[int, int, int]`: A tuple of three integers representing the RGB color values for the text.
 
 - `scroll_delay` = `float`: A float value representing the time to wait between each frame of the scrolling animation.
 
@@ -39,7 +39,7 @@ The loop continues until all the phrases in `all_text` have been displayed.
 
 ```py
 # Scroll through preset phrases randomly with a delay of 2 seconds between each phrase and 0.1 seconds between each frame of the scrolling animation
-randomiseText((255, 255, 255), 2, 0.1)
+randomiseText(pixel_framebuf, (255, 255, 255), 0.1)
 ```
 
 In the example above, we call the `randomiseText` function to cycle randomly through a list of preset phrases and scroll them on the screen.

@@ -7,36 +7,42 @@ The `randomiseImage` function cycles through random images from a directory and 
 ## Function Signature
 
 ```py
-def randomiseImage(delay: float = 0.0) -> None:
+def randomiseImage(pixel_framebuf,
+                   invalid_numbers: List[int],
+                   delay: float = 1) -> None:
     pass
 ```
 
 ## Parameters
 
-- `delay` = `float`: A float value representing the time to wait between each image being displayed on the screen. The default value is 0 seconds.
+- `pixel_framebuf`: A Neopixel pixel_framebuffer object to display the text and images on.
+
+- `invalid_numbers` = `(List[int])`: A one-dimensional list of integers that the random number generated can't be. This stops the same images from being repeatedly chosen.
+
+- `delay` = `float`: A float value representing the time to wait between each image being displayed on the screen. The default value is 1 second.
 
 ## Return Value
 
-- `None`: The function does not return any value.
+- `number` = `int`: An integer value of the number corresponding to the image displayed. This can be added to an array and passed again as an argument to stop the same image from being selected again.
 
 ## Function Description
 
-The `randomiseImage` function cycles through random images from a directory and displays them on the screen.
+The `randomiseImage` function chooses a random image from a directory and displays it on the screen.
 
 The function starts by getting the file paths of all images in the given directory using the `os.listdir` function. It then creates a list of all the image paths by concatenating the directory path with the image file name.
 
-The function then enters a loop where it chooses a random number between 0 and the total number of images in the directory minus 1 using the `random.randint` function. If the chosen number has not already been chosen before, the function displays the corresponding image on the screen using the `displayImage` function, adds the chosen number to an array of chosen numbers, and waits for a specified amount of time using the `time.sleep` function.
+The function then enters a loop where it chooses a random number between 0 and the total number of images in the directory minus 1 using the `random.randint` function. If the chosen number has not already been chosen before, the function displays the corresponding image on the screen using the `displayImage` function and waits for a specified amount of time using the `time.sleep` function.
 
-The loop repeats until all images in the directory have been displayed on the screen.
+The function then exits and returns the chosen number.
 
 ## Example Usage
 
 ```py
-# Cycle through random images with a delay of 1 second
-randomiseImage(1)
+# Cycle through random images with a delay of 2 seconds
+randomiseImage(pixel_framebuf, [1, 3, 9], 2)
 ```
 
-In the example above, we call the `randomiseImage` function to cycle through random images from a directory and display them on the screen. The function waits for 1 second between each image being displayed.
+In the example above, we call the `randomiseImage` function to choose a random image (that isn't $1$, $3$, or $9$) from a directory and display it on the screen. The function waits for $2$ seconds before exiting.
 
 ## Exceptions
 

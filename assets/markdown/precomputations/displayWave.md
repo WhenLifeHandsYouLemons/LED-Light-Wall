@@ -7,7 +7,8 @@ The `displayWave` function takes in a wave array (which can be a merged or a sin
 ## Function Signature
 
 ```py
-def displayWave(wave_array: List[List[List[List[int]]]], delay: float) -> None:
+def displayWave(wave_array: List[List[List[int, int, List[int, int, int]]]],
+                delay: float = 0.05) -> None:
     pass
 ```
 
@@ -25,7 +26,7 @@ def displayWave(wave_array: List[List[List[List[int]]]], delay: float) -> None:
 
 The `displayWave` function loops through each tick in the `wave_array`, and for each tick, it loops through each LED in the tick and sets the color of the corresponding LED on the LED matrix using the `setPixelsColour` function and the `getLED` function.
 
-After setting the colorsof the LEDs for the current tick, the function calls `pixels.show()` to update the display and `time.sleep(delay)` to pause for the specified delay between each tick.
+After setting the colors of the LEDs for the current tick, the function calls `pixels.show()` to update the display and `time.sleep(delay)` to pause for the specified delay between each tick.
 
 Finally, the function completes when all ticks in all waves in the wave array have been displayed.
 

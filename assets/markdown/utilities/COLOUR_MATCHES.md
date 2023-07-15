@@ -1,4 +1,4 @@
-# COLOUR_MATCHES List
+# COLOUR_MATCHES list
 
 ## Overview
 
