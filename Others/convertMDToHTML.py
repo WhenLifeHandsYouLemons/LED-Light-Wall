@@ -1,10 +1,12 @@
 import os
 
-top_level_dir = os.listdir("assets/markdown")
+main_folder = "assets/markdown"
+
+top_level_dir = os.listdir(f"{main_folder}")
 
 # Go through each folder in "assets/markdown"
 for dir in top_level_dir:
-    sub_dir = os.listdir(f"assets/markdown/{dir}")
+    sub_dir = os.listdir(f"{main_folder}/{dir}")
     # Go through each file in that folder
     for file in sub_dir:
         # Get the name of the file
@@ -14,7 +16,7 @@ for dir in top_level_dir:
         file_contents = []
 
         # Get each line from the file
-        with open(f"assets/markdown/{dir}/{file}", "r") as lines:
+        with open(f"{main_folder}/{dir}/{file}", "r") as lines:
             # Store it into the array
             for line in lines:
                 file_contents.append(line.strip())
@@ -35,3 +37,5 @@ for dir in top_level_dir:
         # Save it to a new file with name_of_orig_file.html as the filename to "assets/templates"
         with open(f"documentation/{dir}/{filename}.html", "w") as new_file:
             new_file.write("\n".join(file_contents))
+
+print("\nCompleted converting markdown files to HTML.\n")
