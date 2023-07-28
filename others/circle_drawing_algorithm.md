@@ -1,8 +1,11 @@
+# Bresenham's Circle Algorithm
+
+We've used this in our precomputeCircularWave function, but we haven't explained how it works there. This is a simple explanation of how it works and how we've implemented it in our code.
+
 Using
 [Bresenham's Circle Algorithm](https://en.m.wikipedia.org/wiki/Midpoint_circle_algorithm), we can compute one octant (one eighth of a circle) and then mirror it four times, flip the x and y values, and mirror it 4 more times to get the whole circle.
 
-
-## Bresenham's Circle Algorithm
+## Explanation
 
 1. Given a radius, $r$, we can store $x=r$ and $y=0$.
 2. The $y$ value will be incremented for every point, while the $x$ value will be calculated using a simple comparison.
@@ -15,7 +18,6 @@ Using
 9. Reflect the points in the $x$ only, $y$ only, and $x$ and $y$ axes. This gives the coordinates for three more octants.
 10. Flip the $x$ and $y$ values of the originally computed points and repeat step 9 to get the last 4 octants.
 11. Display all stored points on the grid, assuming $(0, 0)$ is the center of the grid.
-
 
 ## Implementation
 
