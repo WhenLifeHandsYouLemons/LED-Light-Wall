@@ -1,0 +1,8 @@
+pygame
+datetime
+Pillow
+rpi_ws281x
+adafruit-circuitpython-neopixel
+adafruit-blinka
+adafruit-circuitpython-pixel-framebuf
+gpiozero

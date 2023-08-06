@@ -1,7 +1,7 @@
 """
 For images
 
-Note: The images have to be the same or smaller width and height as the board
+Note: The images have to be the same aspect ratio as the board to display properly.
 """
 import time
 import os
@@ -13,6 +13,7 @@ from rpi import *
 
 def displayImage(pixel_framebuf, image_path, blend = False, lock_aspect = False):
     image = Image.open(image_path)
+    # Resize the image to fit the board
     if lock_aspect:
         image = image.thumbnail((BOARD_WIDTH, BOARD_WIDTH))
     else:
