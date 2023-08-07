@@ -5,8 +5,8 @@
 1. [Contents](#contents)
 2. [About](#about)
 3. [Installation](#installation)
-4. [Usage](#usage)
-    a. [Physical Version](#physical-version)
+4. [Usage](#usage)\
+    a. [Physical Version](#physical-version)\
     b. [Testing Version](#testing-version)
 5. [Features](#features)
 
