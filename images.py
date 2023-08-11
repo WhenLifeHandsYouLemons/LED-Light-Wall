@@ -15,7 +15,7 @@ def displayImage(pixel_framebuf, image_path, blend = False, lock_aspect = False)
     image = Image.open(image_path)
     # Resize the image to fit the board
     if lock_aspect:
-        image = image.thumbnail((BOARD_WIDTH, BOARD_WIDTH))
+        image.thumbnail((BOARD_WIDTH, BOARD_WIDTH))
     else:
         image = image.resize((BOARD_WIDTH, BOARD_HEIGHT))
 
