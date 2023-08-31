@@ -1,3 +1,4 @@
+# Used this: https://towardsdatascience.com/how-to-spit-a-pickled-model-file-to-bypass-upload-limits-on-pythonanywhere-e051ea1cec2d
 import os
 
 def split(source, dest_folder, write_size):
@@ -72,5 +73,5 @@ def join(dest_file, read_size):
     # Close the output file
     output_file.close()
 
-print(split("Original Website File.bsdesign", "/Website_Split/", 10000000))
-# join("LED Light Wall Website.bsdesign", 4000000)
+# print(split("Original Website File.bsdesign", "/Website_Split/", 10000000))
+join("LED Light Wall Website.bsdesign", 10000000)

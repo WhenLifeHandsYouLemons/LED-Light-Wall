@@ -28,6 +28,8 @@ cd LED-Light-Wall
 pip install requirements.txt
 ```
 
+**Note**: If you want to get the file that was used to create the website, then run `split_join_bsdesign_file.py` (located inside the "*Others*" folder). It should create a new file called `LED Light Wall Website.bsdesign` which can be opened using [Bootstrap Studio](https://bootstrapstudio.io/).
+
 ## Usage
 
 ### Physical Version
