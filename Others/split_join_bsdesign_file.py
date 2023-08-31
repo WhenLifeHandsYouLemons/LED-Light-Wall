@@ -72,5 +72,5 @@ def join(dest_file, read_size):
     # Close the output file
     output_file.close()
 
-# print(split("Original Website File.bsdesign", "/Website_Split/", 4000000))
-join("LED Light Wall Website.bsdesign", 4000000)
+print(split("Original Website File.bsdesign", "/Website_Split/", 10000000))
+# join("LED Light Wall Website.bsdesign", 4000000)
