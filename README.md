@@ -20,7 +20,7 @@ This project was initially in a private repository and on May 24, 2023, it was m
 
 ## Installation
 
-To install this project, you will need to clone the repository and then install the dependencies. To do this, run the following commands on a Raspberry Pi:
+To install this project, you will need to clone the repository and then install the dependencies. To do this, run the following commands on a Raspberry Pi (RPi 3 or newer with Raspberry Pi OS installed):
 
 ```console
 git clone https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall.git
