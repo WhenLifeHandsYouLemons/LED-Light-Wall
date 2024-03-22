@@ -16,7 +16,7 @@ This project is our attempt at creating an LED light wall that can display rando
 
 The documentation is hosted at: "<https://whenlifehandsyoulemons.github.io/LED-Light-Wall/>".
 
-This project was initially in a private repository and on May 24, 2023, it was moved to a new public repository.
+This project was initially in a private repository and on May 24, 2023, it was moved to a new public repository and so much of the git history isn't present here.
 
 ## Installation
 
@@ -48,7 +48,7 @@ sudo python3 rpi_main.py
 To run the testing version, you will need to run the `pygame_main.py` file (located inside the "*Testing Version*" folder). To do this, run the following command:
 
 ```console
-cd LED-Light-Wall/Pygame\ Testing
+cd LED-Light-Wall/Testing\ Version
 python pygame_main.py
 ```
 
