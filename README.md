@@ -14,9 +14,9 @@
 
 This is a passion project, made independently, and exclusively by two high school students: [WhenLifeHandsYouLemons](https://github.com/WhenLifeHandsYouLemons) and [DreamingElectricSheep](https://github.com/DreamingElectricSheep). 
 
-This project is our creation of a LED light wall-- Essentially a large screen that is able to display pretty much anything-- just like the screens on your phone, computer or TV. We've specialized ours to act as a sort of visual spectacle, inpired by the likes of Fireworks, Lazershows, and Nanoleafs. Our LED light wall displays a continous flow of random [patterns](#features)-- largely inspired by natural patterns like waves, and which can also be controlled via ultrasonic sensors. This GitHub repository contains all of the code and documentation throughout the development of our project.
+This project is our creation of a LED light wall-- Essentially a large screen that is able to display pretty much anything-- just like the screens on your phone, computer or TV. We've specialized ours to act as a sort of visual spectacle, inpired by the likes of Fireworks, Lazershows, and Nanoleafs. Our LED light wall displays a continous flow of random [patterns](#features)-- largely inspired by natural patterns like waves, which can also be controlled via ultrasonic sensors. This GitHub repository contains all of the code and documentation throughout the development of our project.
 
-The documentation is hosted at: "<https://whenlifehandsyoulemons.github.io/LED-Light-Wall/>".
+The documentation is hosted at: <https://whenlifehandsyoulemons.github.io/LED-Light-Wall/>.
 
 This project was initially in a private repository and on May 24, 2023, it was moved to a new public repository and so much of the git history isn't present here.
 
@@ -74,5 +74,8 @@ python pygame_main.py
   - Turns off the display on certain days and at certain times to conserve power.
 - [Includes a testing version](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/tree/main/Testing%20Version)
   - Can be used to test patterns without the need for a physical board.
+
+
+
 
 [Back to top](#led-light-wall-project)
