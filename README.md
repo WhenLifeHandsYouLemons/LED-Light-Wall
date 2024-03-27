@@ -16,6 +16,8 @@ This is a passion project, made independently, and exclusively by two high schoo
 
 This project is our creation of a LED light wall-- Essentially a large screen that is able to display pretty much anything-- just like the screens on your phone, computer or TV. We've specialized ours to act as a sort of visual spectacle, inpired by the likes of Fireworks, Lazershows, and Nanoleafs. Our LED light wall displays a continous flow of random [patterns](#features)-- largely inspired by natural patterns like waves, which can also be controlled via ultrasonic sensors. This GitHub repository contains all of the code and documentation throughout the development of our project.
 
+This enourmous project took more than a year to complete, covering far more than just the scope of Computer Science and Programming-- Enginnering, Design, Electronics, Modeling, Planning and of course, Programming and Mathematics were all integral processes in the creation of this project.
+
 The documentation is hosted at: <https://whenlifehandsyoulemons.github.io/LED-Light-Wall/>.
 
 This project was initially in a private repository and on May 24, 2023, it was moved to a new public repository and so much of the git history isn't present here.
