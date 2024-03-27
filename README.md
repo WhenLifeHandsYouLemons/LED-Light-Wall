@@ -58,7 +58,7 @@ python pygame_main.py
 
 ## Features
 
-- Displays a multitude of patterns and graphics, continious and static:
+- Displays a multitude of extensively customizable patterns and graphics, both continious and static:
   - [Circular waves](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L83)
   - [Square waves](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L18)
   - [Normal waves](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L162)
@@ -70,9 +70,9 @@ python pygame_main.py
   - [Images](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/sblob/main/images.py)
 - [Ultrasonic sensors](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/ultrasonics.py)
   - Uses ultrasonic sensors to detect when an object is near the board and starts a different pattern.
-- Power saving mode
+- [Power saving mode](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/rpi_main.py#L111)
   - Turns off the display on certain days and at certain times to conserve power.
-- Includes a testing version
+- [Includes a testing version](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/tree/main/Testing%20Version)
   - Can be used to test patterns without the need for a physical board.
 
 [Back to top](#led-light-wall-project)

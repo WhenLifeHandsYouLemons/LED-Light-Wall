@@ -98,11 +98,6 @@ COLOURS = {
     "White" : (255, 255, 255)
 }
 
-# Array for colours that match well on the display
-COLOUR_MATCHES = [
-    ["Dark Blue", "Green", "Black"]
-]
-
 num_to_colours = []
 # Add all the colours to num_to_colours
 for key in iter(COLOURS):
