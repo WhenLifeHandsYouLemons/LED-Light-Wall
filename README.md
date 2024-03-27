@@ -18,6 +18,8 @@ The documentation is hosted at: "<https://whenlifehandsyoulemons.github.io/LED-L
 
 This project was initially in a private repository and on May 24, 2023, it was moved to a new public repository and so much of the git history isn't present here.
 
+Contributers: <https://github.com/WhenLifeHandsYouLemons/>, <https://github.com/DreamingElectricSheep/>
+
 ## Installation
 
 To install this project, you will need to clone the repository and then install the dependencies. To do this, run the following commands on a Raspberry Pi (RPi 3 or newer with Raspberry Pi OS installed):
@@ -56,17 +58,17 @@ python pygame_main.py
 
 ## Features
 
-- Displays a multitude of patterns and graphics:
-  - Circular waves
-  - Square waves
-  - Full screen waves
-  - Rain drops
-  - Lines
-  - Circles
-  - Rectangles
-  - Scrolling text
-  - Images
-- Ultrasonic sensors
+- Displays a multitude of patterns and graphics, continious and static:
+  - [Circular waves](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L83)
+  - [Square waves](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L18)
+  - [Normal waves](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L162)
+  - [Rain drops](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L197)
+  - [Lines](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/precomputations.py#L210)
+  - [Circles](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/graphics.py#L40)
+  - [Rectangles](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/graphics.py#L31)
+  - [Scrolling text](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/graphics.py#L51)
+  - [Images](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/sblob/main/images.py)
+- [Ultrasonic sensors](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/blob/main/ultrasonics.py)
   - Uses ultrasonic sensors to detect when an object is near the board and starts a different pattern.
 - Power saving mode
   - Turns off the display on certain days and at certain times to conserve power.
