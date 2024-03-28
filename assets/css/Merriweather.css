@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7lXff1jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-6724fca4141cfb6b93ec47286910dfc6.woff2) format('woff2');
 	font-weight: 300;
 	font-style: italic;
 	font-display: swap;
@@ -9,7 +9,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7lXff8jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-26e736d527e1b7b677e0d7f256c3a440.woff2) format('woff2');
 	font-weight: 300;
 	font-style: italic;
 	font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7lXff3jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-a36566a451dfacaa0b997489eda7b366.woff2) format('woff2');
 	font-weight: 300;
 	font-style: italic;
 	font-display: swap;
@@ -27,16 +27,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7lXff2jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-98041ffea247df41605d37e51236dd5a.woff2) format('woff2');
 	font-weight: 300;
 	font-style: italic;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7lXff4jvw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-fbe93c5cfe970d48fa84e040634d2f0f.woff2) format('woff2');
 	font-weight: 300;
 	font-style: italic;
 	font-display: swap;
@@ -45,7 +45,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4m0qyriQwlOrhSvowK_l5-eRZDf-LHrw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-19a7c8a46b81004df40c102c6df84679.woff2) format('woff2');
 	font-weight: 400;
 	font-style: italic;
 	font-display: swap;
@@ -54,7 +54,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4m0qyriQwlOrhSvowK_l5-eRZKf-LHrw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-2187e0a5075346d4e7167847b3eb75a8.woff2) format('woff2');
 	font-weight: 400;
 	font-style: italic;
 	font-display: swap;
@@ -63,7 +63,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4m0qyriQwlOrhSvowK_l5-eRZBf-LHrw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-4872931a5f7ac28d1a2789695ded390f.woff2) format('woff2');
 	font-weight: 400;
 	font-style: italic;
 	font-display: swap;
@@ -72,16 +72,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4m0qyriQwlOrhSvowK_l5-eRZAf-LHrw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-5fea7bad16ad42e814a92afda2beb74a.woff2) format('woff2');
 	font-weight: 400;
 	font-style: italic;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4m0qyriQwlOrhSvowK_l5-eRZOf-I.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-c68c21229ebf41c4fd99a9cf8b7be1fc.woff2) format('woff2');
 	font-weight: 400;
 	font-style: italic;
 	font-display: swap;
@@ -90,7 +90,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR71Wvf1jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-334da41257cfc91ab207dc40bc90ea22.woff2) format('woff2');
 	font-weight: 700;
 	font-style: italic;
 	font-display: swap;
@@ -99,7 +99,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR71Wvf8jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-81e08ee84c1556596ea036a336b64e64.woff2) format('woff2');
 	font-weight: 700;
 	font-style: italic;
 	font-display: swap;
@@ -108,7 +108,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR71Wvf3jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-a1bd76a01e3a1d7f013cd6e0cb1b0d99.woff2) format('woff2');
 	font-weight: 700;
 	font-style: italic;
 	font-display: swap;
@@ -117,16 +117,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR71Wvf2jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-7929a6c830b567083adc822c90d2760a.woff2) format('woff2');
 	font-weight: 700;
 	font-style: italic;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR71Wvf4jvw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-3f703e4082ab8bc14d7079e6815d3a1d.woff2) format('woff2');
 	font-weight: 700;
 	font-style: italic;
 	font-display: swap;
@@ -135,7 +135,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7NWPf1jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-bba3d3c43987d58ba05a7b658872655d.woff2) format('woff2');
 	font-weight: 900;
 	font-style: italic;
 	font-display: swap;
@@ -144,7 +144,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7NWPf8jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-2b2af41c216ce8dc8bb9074b6ab7cf4f.woff2) format('woff2');
 	font-weight: 900;
 	font-style: italic;
 	font-display: swap;
@@ -153,7 +153,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7NWPf3jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-c2d75ec230d35d1b279f79d11c72f7b3.woff2) format('woff2');
 	font-weight: 900;
 	font-style: italic;
 	font-display: swap;
@@ -162,16 +162,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7NWPf2jvzRPA.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-aa0256c744419c6bca370408e19d8049.woff2) format('woff2');
 	font-weight: 900;
 	font-style: italic;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4l0qyriQwlOrhSvowK_l5-eR7NWPf4jvw.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-05eda49ef03723d2e9f7605c7f91fbcf.woff2) format('woff2');
 	font-weight: 900;
 	font-style: italic;
 	font-display: swap;
@@ -180,7 +180,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l521wRZVcf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-bac17b0154c481edfe11f2ce678f90cf.woff2) format('woff2');
 	font-weight: 300;
 	font-style: normal;
 	font-display: swap;
@@ -189,7 +189,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l521wRZXMf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-9353f517761efe5c304aeb11fa37c973.woff2) format('woff2');
 	font-weight: 300;
 	font-style: normal;
 	font-display: swap;
@@ -198,7 +198,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l521wRZV8f6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-2cd7fa7e844e75cf74d5e7870b86ac1d.woff2) format('woff2');
 	font-weight: 300;
 	font-style: normal;
 	font-display: swap;
@@ -207,16 +207,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l521wRZVsf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-703539429bf86881df0c2295908bea1a.woff2) format('woff2');
 	font-weight: 300;
 	font-style: normal;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l521wRZWMf6.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-55a4b086549004a7505cd89b11f47ddf.woff2) format('woff2');
 	font-weight: 300;
 	font-style: normal;
 	font-display: swap;
@@ -225,7 +225,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-440qyriQwlOrhSvowK_l5-cSZMZ-Y.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-1fe7e1457e4a5970720ae85751b955ee.woff2) format('woff2');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -234,7 +234,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-440qyriQwlOrhSvowK_l5-eCZMZ-Y.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-c910c00980d5879b411db15e16934ecc.woff2) format('woff2');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -243,7 +243,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-440qyriQwlOrhSvowK_l5-cyZMZ-Y.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-1473a44ee52277bed7c0d1b2c4d61f8c.woff2) format('woff2');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -252,16 +252,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-440qyriQwlOrhSvowK_l5-ciZMZ-Y.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-77a91d0303b605ed0105c639ed7c89a2.woff2) format('woff2');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-440qyriQwlOrhSvowK_l5-fCZM.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-39dabae0c0f20fc0dee38d02744ec122.woff2) format('woff2');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -270,7 +270,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52xwNZVcf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-9084e13f18e1c8b634762e10f1105183.woff2) format('woff2');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -279,7 +279,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52xwNZXMf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-152f410a253367725340fd4be666dcf1.woff2) format('woff2');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -288,7 +288,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52xwNZV8f6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-d6abd25c6a74d13c414ad669f72dcef9.woff2) format('woff2');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -297,16 +297,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52xwNZVsf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-12dd9984d64552cfe09837e9b90dbbad.woff2) format('woff2');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52xwNZWMf6.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-bab35973d153cb40230d03df26779ad1.woff2) format('woff2');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -315,7 +315,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52_wFZVcf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-5e6e8a639c41fdfd3b74af69a710e78d.woff2) format('woff2');
 	font-weight: 900;
 	font-style: normal;
 	font-display: swap;
@@ -324,7 +324,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52_wFZXMf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-625bf4c9c075d1b7448bc63a906ee5f0.woff2) format('woff2');
 	font-weight: 900;
 	font-style: normal;
 	font-display: swap;
@@ -333,7 +333,7 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52_wFZV8f6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-b7ad0e8cee99e693a3d363e0b24613fc.woff2) format('woff2');
 	font-weight: 900;
 	font-style: normal;
 	font-display: swap;
@@ -342,16 +342,16 @@
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52_wFZVsf6lvg.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-5aeb64fd63b5eaddd6904f0885c03937.woff2) format('woff2');
 	font-weight: 900;
 	font-style: normal;
 	font-display: swap;
-	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+	unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
 	font-family: 'Merriweather';
-	src: url(../../assets/fonts/u-4n0qyriQwlOrhSvowK_l52_wFZWMf6.woff2) format('woff2');
+	src: url(../../assets/fonts/Merriweather-5598b769c017ac768b208acff790820d.woff2) format('woff2');
 	font-weight: 900;
 	font-style: normal;
 	font-display: swap;
