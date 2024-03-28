@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `getPhysicalXY` function is a Python function that takes distance readings from ultrasonic sensors and returns the physical X and Y coordinates of an object on a screen. The distances are given in meters from the bottom-left corner of the screen.
+The `getPhysicalXY` function takes distance readings from ultrasonic sensors and returns the physical X and Y coordinates of an object on a screen. The distances are given in meters from the bottom-left corner of the screen.
 
 ## Function Signature
 

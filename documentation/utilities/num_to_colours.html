@@ -29,19 +29,19 @@ The `for` loop iterates through the keys of the `COLOURS` dictionary and appends
 ```py
 # Define the COLOURS dictionary
 COLOURS = {
-"Red": (255, 0, 0),
-"Green": (0, 255, 0),
-"Blue": (0, 0, 255),
-"Yellow": (255, 255, 0),
-"Magenta": (255, 0, 255),
-"Cyan": (0, 255, 255),
-"White": (255, 255, 255)
+    "Red": (255, 0, 0),
+    "Green": (0, 255, 0),
+    "Blue": (0, 0, 255),
+    "Yellow": (255, 255, 0),
+    "Magenta": (255, 0, 255),
+    "Cyan": (0, 255, 255),
+    "White": (255, 255, 255)
 }
 
 # Create the num_to_colours list
 num_to_colours = []
 for key in iter(COLOURS):
-num_to_colours.append(key)
+    num_to_colours.append(key)
 
 print(num_to_colours)  # Output: ["Red", "Green", "Blue", "Yellow", "Magenta", "Cyan", "White"]
 ```

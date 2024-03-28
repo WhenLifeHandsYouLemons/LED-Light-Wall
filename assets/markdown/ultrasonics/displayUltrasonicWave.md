@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `displayUltrasonicWave` function is a Python function that displays a wave on the board at the inputted XY coordinates. The function takes an X and Y coordinate, generates a circular wave, and displays it on the board.
+The `displayUltrasonicWave` function displays a wave on the board at the inputted XY coordinates. The function takes an X and Y coordinate, generates a circular wave, and displays it on the board.
 
 ## Function Signature
 

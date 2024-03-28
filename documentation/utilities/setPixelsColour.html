@@ -16,32 +16,32 @@ The `setPixelsColour` function takes an RGB color as a tuple of three integers, 
 
 ```py
 def setPixelsColour(pixels: neopixel.NeoPixel,
-colour: Tuple[int, int, int],
-pixel_index_start: int,
-pixel_index_end: Optional[int] = None) -> None:
-pass
+                    colour: Tuple[int, int, int],
+                    pixel_index_start: int,
+                    pixel_index_end: Optional[int] = None) -> None:
+    pass
 ```
 
 ```py
 # Set specified colour to consecutive or single pixels
 def setPixelsColour(pixels, colour, pixel_index_start, pixel_index_end=None):
-if pixel_index_start > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_start < 0:
-raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
-if pixel_index_end != None:
-if pixel_index_end > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_end < 0:
-raise IndexError(f"pixel_index_end is out of the allowed range: pixel_index_end = {pixel_index_end}")
+    if pixel_index_start > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_start < 0:
+        raise IndexError(f"pixel_index_start is out of the allowed range: pixel_index_start = {pixel_index_start}")
+    if pixel_index_end != None:
+        if pixel_index_end > BOARD_HEIGHT * BOARD_WIDTH or pixel_index_end < 0:
+            raise IndexError(f"pixel_index_end is out of the allowed range: pixel_index_end = {pixel_index_end}")
 
-# Checks if it's one pixel or multiple that need to change
-if pixel_index_end == None:
-# Change LED colour
-pixels[pixel_index_start] = colour
-else:
-# Start loop to change all LEDs to specified colour
-while pixel_index_start != pixel_index_end + 1:
-# Change LED colour
-pixels[pixel_index_start] = colour
-# Increment LED index
-pixel_index_start = pixel_index_start + 1
+    # Checks if it's one pixel or multiple that need to change
+    if pixel_index_end == None:
+        # Change LED colour
+        pixels[pixel_index_start] = colour
+    else:
+        # Start loop to change all LEDs to specified colour
+        while pixel_index_start != pixel_index_end + 1:
+            # Change LED colour
+            pixels[pixel_index_start] = colour
+            # Increment LED index
+            pixel_index_start = pixel_index_start + 1
 ```
 
 ## Parameters

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `objectDetected` function is a Python function that uses ultrasonic sensors to detect whether an object is present on a screen. The function returns a boolean value indicating whether an object is present, as well as the distance readings from the sensors.
+The `objectDetected` function uses ultrasonic sensors to detect whether an object is present on a screen. The function returns a boolean value indicating whether an object is present, as well as the distance readings from the sensors.
 
 ## Function Signature
 

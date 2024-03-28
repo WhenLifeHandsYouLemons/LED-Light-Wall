@@ -10,13 +10,13 @@
 
 ## Overview
 
-The `objectDetected` function is a Python function that uses ultrasonic sensors to detect whether an object is present on a screen. The function returns a boolean value indicating whether an object is present, as well as the distance readings from the sensors.
+The `objectDetected` function uses ultrasonic sensors to detect whether an object is present on a screen. The function returns a boolean value indicating whether an object is present, as well as the distance readings from the sensors.
 
 ## Function Signature
 
 ```py
 def objectDetected() -> Tuple[bool, float, float, float, float]:
-pass
+    pass
 ```
 
 ## Parameters
@@ -44,12 +44,12 @@ The function also adjusts the distance values for `s2`, `s3`, and `s4` to ensure
 ```py
 # Check whether an object is detected and get sensor readings
 while True:
-detected, s1, s2, s3, s4 = objectDetected()
+    detected, s1, s2, s3, s4 = objectDetected()
 
-if detected:
-print("Object detected!")
-else:
-print("No object detected.")
+    if detected:
+        print("Object detected!")
+    else:
+        print("No object detected.")
 ```
 
 In the example above, we call the `objectDetected` function to check whether an object is present on the screen and retrieve the sensor readings. If an object is detected, we print a message indicating that an object has been detected. Otherwise, we print a message indicating that no object has been detected.

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `sensingCompensation` function is a Python function that takes physical X and Y coordinates of an object on a screen and compensates for sensing inaccuracies. The function returns compensated X and Y coordinates.
+The `sensingCompensation` function takes physical X and Y coordinates of an object on a screen and compensates for sensing inaccuracies. The function returns compensated X and Y coordinates.
 
 ## Function Signature
 

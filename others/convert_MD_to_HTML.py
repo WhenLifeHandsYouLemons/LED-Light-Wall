@@ -19,7 +19,8 @@ for dir in top_level_dir:
         with open(f"{main_folder}/{dir}/{file}", "r") as lines:
             # Store it into the array
             for line in lines:
-                file_contents.append(line.strip())
+                # Remove the final newline in each line
+                file_contents.append(line[:-1])
 
         # Add some template code to the array
         file_contents.insert(0, '')

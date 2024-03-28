@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `getDigitalXY` function is a Python function that takes physical X and Y coordinates of an object on a screen and returns digital X and Y coordinates that can be displayed on the board.
+The `getDigitalXY` function takes physical X and Y coordinates of an object on a screen and returns digital X and Y coordinates that can be displayed on the board.
 
 ## Function Signature
 

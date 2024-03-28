@@ -18,9 +18,9 @@ The `COLOUR_MATCHES` list has the following structure:
 
 ```py
 COLOUR_MATCHES = [
-["Colour name 1", "Colour name 2", "Colour name 3"],
-["Colour name 4", "Colour name 5", "Colour name 6"],
-# more sets of color matches can be added here
+    ["Colour name 1", "Colour name 2", "Colour name 3"],
+    ["Colour name 4", "Colour name 5", "Colour name 6"],
+    # more sets of color matches can be added here
 ]
 ```
 
@@ -34,11 +34,11 @@ To check if a set of colors matches any of the sets of color matches in the `COL
 
 ```py
 if ["Colour name 1", "Colour name 2", "Colour name 3"] in COLOUR_MATCHES:
-# the set of colors matches the first set of color matches in COLOUR_MATCHES
-# do something here
+    # the set of colors matches the first set of color matches in COLOUR_MATCHES
+    # do something here
 else:
-# the set of colors does not match any of the sets of color matches in COLOUR_MATCHES
-# do something else here
+    # the set of colors does not match any of the sets of color matches in COLOUR_MATCHES
+    # do something else here
 ```
 
 In this example, the code checks if the set of colors "Colour name 1", "Colour name 2", and "Colour name 3" matches the set of colors in the first inner list of `COLOUR_MATCHES`.
