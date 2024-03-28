@@ -12,7 +12,7 @@
 
 ## About
 
-This is a passion project, made independently, and exclusively by two high school students: [WhenLifeHandsYouLemons](https://github.com/WhenLifeHandsYouLemons) and [DreamingElectricSheep](https://github.com/DreamingElectricSheep). 
+This is a passion project, made independently, and exclusively by two high school students: [WhenLifeHandsYouLemons](https://github.com/WhenLifeHandsYouLemons) and [DreamingElectricSheep](https://github.com/DreamingElectricSheep).
 
 This project is our creation of a LED light wall-- Essentially a large screen that is able to display pretty much anything-- just like the screens on your phone, computer or TV. We've specialized ours to act as a sort of visual spectacle, inpired by the likes of Fireworks, Lazershows, and Nanoleafs. Our LED light wall displays a continous flow of random [patterns](#features)-- largely inspired by natural patterns like waves, which can also be controlled via ultrasonic sensors. This GitHub repository contains all of the code and documentation throughout the development of our project.
 
@@ -31,8 +31,6 @@ git clone https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall.git
 cd LED-Light-Wall
 pip install requirements.txt
 ```
-
-**Note**: If you want to get the file that was used to create the website, then run `split_join_bsdesign_file.py` (located inside the "*Others*" folder). It should create a new file called `LED Light Wall Website.bsdesign` which can be opened using [Bootstrap Studio](https://bootstrapstudio.io/).
 
 ## Usage
 
@@ -76,8 +74,5 @@ python pygame_main.py
   - Turns off the display on certain days and at certain times to conserve power.
 - [Includes a testing version](https://github.com/WhenLifeHandsYouLemons/LED-Light-Wall/tree/main/Testing%20Version)
   - Can be used to test patterns without the need for a physical board.
-
-
-
 
 [Back to top](#led-light-wall-project)
