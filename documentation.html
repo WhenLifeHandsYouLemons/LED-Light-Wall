@@ -25,12 +25,13 @@
     <link rel="stylesheet" href="assets/css/Merriweather.css">
     <link rel="stylesheet" href="assets/css/Open%20Sans.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/documentation-page-styles.css">
 </head>
 
-<body>
+<body style="min-height: 0px;">
     <!-- Start: Navigation Bar -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-light" id="mainNav" style="background: rgb(50, 50, 50);">
-        <div class="container"><a class="navbar-brand" href="index.html#page-top">LED Light Wall</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-align-justify"></i></button>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light" id="mainNav" style="background: rgb(255, 255, 255);">
+        <div class="container"><a class="navbar-brand" href="index.html#page-top" style="color: #f05f40;">LED Light Wall</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-align-justify"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html#images">Images</a></li>
@@ -43,230 +44,70 @@
     </nav><!-- End: Navigation Bar -->
     <!-- Start: Documentation Links -->
     <section style="margin-top: 57px;padding-top: 20px;padding-bottom: 0px;">
-        <div class="row" style="margin: 0px;">
-            <div class="col" style="margin: 0px 5%;">
-                <!-- Start: Utilities -->
-                <div class="row">
-                    <div class="col">
-                        <h1>Utilities</h1>
-                    </div>
-                </div><!-- End: Utilities -->
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/COLOURS.html">COLOURS</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/COLOUR_MATCHES.html">COLOUR_MATCHES</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/num_to_colours.html">num_to_colours</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/getLED.html">getLED</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/RGBToHex.html">RGBToHex</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/setAllPixelsColour.html">setAllPixelsColour</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/setPixelsColour.html">setPixelsColour</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/startup.html">startup</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/utilities/changeBrightness.html">changeBrightness</a></p>
-                    </div>
-                </div><!-- Start: Graphics -->
-                <div class="row">
-                    <div class="col">
-                        <h1>Graphics</h1>
-                    </div>
-                </div><!-- End: Graphics -->
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/drawCircle.html">drawCircle</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/drawLine.html">drawLine</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/drawStraightLine.html">drawStraightLine</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/drawRect.html">drawRect</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/drawText.html">drawText</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/scrollText.html">scrollText</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/randomiseText.html">randomiseText</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/graphics/testGraphics.html">testGraphics</a></p>
-                    </div>
-                </div><!-- Start: Images -->
-                <div class="row">
-                    <div class="col">
-                        <h1>Images</h1>
-                    </div>
-                </div><!-- End: Images -->
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/images/displayImage.html">displayImage</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/images/randomiseImage.html">randomiseImage</a></p>
-                    </div>
-                </div><!-- Start: Precomputations -->
-                <div class="row">
-                    <div class="col">
-                        <h1>Precomputations</h1>
-                    </div>
-                </div><!-- End: Precomputations -->
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeCircularWave.html">precomputeCircularWave</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeRipple.html">precomputeRipple</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeWave.html">precomputeWave</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeRain.html">precomputeRain</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeLines.html">precomputeLines</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeColours.html">precomputeColours</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/mergeWaves.html">mergeWaves</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/displayWave.html">displayWave</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/changeWaveSpeed.html">changeWaveSpeed</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/randomisePatterns.html">randomisePatterns</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/precomputations/displayRandomPatterns.html">displayRandomPatterns</a></p>
-                    </div>
-                </div><!-- Start: Ultrasonics -->
-                <div class="row">
-                    <div class="col">
-                        <h1>Ultrasonics</h1>
-                    </div>
-                </div><!-- End: Ultrasonics -->
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/ultrasonics/objectDetected.html">objectDetected</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/ultrasonics/getPhysicalXY.html">getPhysicalXY</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/ultrasonics/getDigitalXY.html">getDigitalXY</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/ultrasonics/sensingCompensation.html">sensingCompensation</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/ultrasonics/displayUltrasonicWave.html">displayUltrasonicWave</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/ultrasonics/checkUltrasonics.html">checkUltrasonics</a></p>
-                    </div>
-                </div><!-- Start: Others -->
-                <div class="row">
-                    <div class="col">
-                        <h1>Others</h1>
-                    </div>
-                </div><!-- End: Others -->
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/others/rainbowCycle.html">rainbowCycle</a></p>
-                    </div>
-                </div>
-                <div class="row" style="width: 100%;margin: 0px;">
-                    <div class="col" style="margin: 0px 2.5%;">
-                        <p><a class="font-monospace link-dark" href="documentation/others/randomDots.html">randomDots</a></p>
-                    </div>
-                </div>
-            </div>
+        <h1 style="padding: 50px 0px 10px 25px;margin: 0px;color: #f05f40;"><strong>Documentation</strong></h1>
+        <div class="d-flex flex-row justify-content-evenly align-items-start flex-wrap" style="height: fit-content;padding: 0px;margin: 0px;">
+            <!-- Start: Utilities -->
+            <section style="background: rgb(250, 250, 250);border-radius: 10px;padding: 25px;margin: 10px;box-shadow: 0px 0px 10px 5px rgb(200, 200, 200);">
+                <h1 style="margin: 0px;color: rgb(0, 0, 0);font-size: 32px;font-weight: bold;padding-bottom: 10px;text-align: center;">Utilities</h1>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/COLOURS.html">COLOURS</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/COLOUR_MATCHES.html">COLOUR_MATCHES</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/num_to_colours.html">num_to_colours</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/getLED.html">getLED</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/RGBToHex.html">RGBToHex</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/setAllPixelsColour.html">setAllPixelsColour</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/setPixelsColour.html">setPixelsColour</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/startup.html">startup</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/utilities/changeBrightness.html">changeBrightness</a></p>
+            </section><!-- End: Utilities -->
+            <!-- Start: Graphics -->
+            <section style="padding: 25px;border-radius: 10px;background: rgb(250, 250, 250);margin: 10px;box-shadow: 0px 0px 10px 5px rgb(200, 200, 200);">
+                <h1 style="color: rgb(0, 0, 0);font-size: 32px;font-weight: bold;margin: 0px;padding-bottom: 10px;text-align: center;">Graphics</h1>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/drawCircle.html">drawCircle</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/drawLine.html">drawLine</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/drawStraightLine.html">drawStraightLine</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/drawRect.html">drawRect</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/drawText.html">drawText</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/scrollText.html">scrollText</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/randomiseText.html">randomiseText</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/graphics/testGraphics.html">testGraphics</a></p>
+            </section><!-- End: Graphics -->
+            <!-- Start: Images -->
+            <section style="padding: 25px;border-radius: 10px;background: rgb(250, 250, 250);margin: 10px;box-shadow: 0px 0px 10px 5px rgb(200, 200, 200);">
+                <h1 style="color: rgb(0, 0, 0);font-size: 32px;font-weight: bold;margin: 0px;padding-bottom: 10px;text-align: center;">Images</h1>
+                <p><a class="font-monospace link-dark" href="documentation/images/displayImage.html">displayImage</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/images/randomiseImage.html">randomiseImage</a></p>
+            </section><!-- End: Images -->
+            <!-- Start: Precomputations -->
+            <section style="padding: 25px;border-radius: 10px;background: rgb(250, 250, 250);margin: 10px;box-shadow: 0px 0px 10px 5px rgb(200, 200, 200);">
+                <h1 style="color: rgb(0, 0, 0);font-size: 32px;font-weight: bold;margin: 0px;padding-bottom: 10px;text-align: center;">Precomputations</h1>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeCircularWave.html">precomputeCircularWave</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeRipple.html">precomputeRipple</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeWave.html">precomputeWave</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeRain.html">precomputeRain</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeLines.html">precomputeLines</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/precomputeColours.html">precomputeColours</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/mergeWaves.html">mergeWaves</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/displayWave.html">displayWave</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/changeWaveSpeed.html">changeWaveSpeed</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/randomisePatterns.html">randomisePatterns</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/precomputations/displayRandomPatterns.html">displayRandomPatterns</a></p>
+            </section><!-- End: Precomputations -->
+            <!-- Start: Ultrasonics -->
+            <section style="padding: 25px;border-radius: 10px;background: rgb(250, 250, 250);margin: 10px;box-shadow: 0px 0px 10px 5px rgb(200, 200, 200);">
+                <h1 style="color: rgb(0, 0, 0);font-size: 32px;font-weight: bold;margin: 0px;padding-bottom: 10px;text-align: center;">Ultrasonics</h1>
+                <p><a class="font-monospace link-dark" href="documentation/ultrasonics/objectDetected.html">objectDetected</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/ultrasonics/getPhysicalXY.html">getPhysicalXY</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/ultrasonics/getDigitalXY.html">getDigitalXY</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/ultrasonics/sensingCompensation.html">sensingCompensation</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/ultrasonics/displayUltrasonicWave.html">displayUltrasonicWave</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/ultrasonics/checkUltrasonics.html">checkUltrasonics</a></p>
+            </section><!-- End: Ultrasonics -->
+            <!-- Start: Others -->
+            <section style="padding: 25px;border-radius: 10px;background: rgb(250, 250, 250);margin: 10px;box-shadow: 0px 0px 10px 5px rgb(200, 200, 200);">
+                <h1 style="color: rgb(0, 0, 0);font-size: 32px;font-weight: bold;margin: 0px;padding-bottom: 10px;text-align: center;">Others</h1>
+                <p><a class="font-monospace link-dark" href="documentation/others/rainbowCycle.html">rainbowCycle</a></p>
+                <p><a class="font-monospace link-dark" href="documentation/others/randomDots.html">randomDots</a></p>
+            </section><!-- End: Others -->
         </div>
     </section><!-- End: Documentation Links -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
